@@ -1,0 +1,36 @@
+Package: AuthoritarianismBook
+Type: Package
+Title: Replication Package for the Book Non-Democratic Politics by Xavier
+    Marquez
+Version: 0.1.0
+Authors@R: person("Xavier", "Marquez", role=c("aut", "cre"),
+  email = "marquez.x@gmail.com")
+Description: Vignettes and datasets to support Marquez, "Non-democratic Politics: Authoritarianism, Dictatorships,
+    and Democratization" (Palgrave Macmillan 2016).
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Depends:
+    R (>= 2.10)
+Suggests: knitr,
+    rmarkdown,
+    plyr,
+    dplyr,
+    reshape2,
+    ggplot2,
+    GGally,
+    ggrepel,
+    ggalt,
+    scales,
+    survival,
+    lubridate,
+    forcats,
+    mirt,
+    cshapes,
+    stringr,
+    broom,
+    maptools,
+    rgeos
+VignetteBuilder: knitr
+URL: https://github.com/xmarquez/AuthoritarianismBook
+BugReports: https://github.com/xmarquez/AuthoritarianismBook/issues
