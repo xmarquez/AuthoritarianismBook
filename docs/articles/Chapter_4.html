@@ -38,7 +38,7 @@
       <h1>Chapter 4: Personal Rule</h1>
                         <h4 class="author">Xavier Marquez</h4>
             
-            <h4 class="date">2016-10-28</h4>
+            <h4 class="date">2016-10-29</h4>
           </div>
 
     
@@ -119,7 +119,6 @@ top_leaders &lt;-<span class="st"> </span><span class="kw">left_join</span>(top_
 data &lt;-<span class="st"> </span>personal_scores %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(year &gt;=<span class="st"> </span><span class="dv">1900</span>, year &lt;=<span class="st"> </span><span class="dv">2012</span>) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(GWn, country_name) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">z1 =</span> -z1) %&gt;%
 <span class="st">  </span><span class="kw">summarise</span>(<span class="dt">mean_personalism =</span> <span class="kw">mean</span>(z1,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),
             <span class="dt">sum_personalism =</span> <span class="kw">sum</span>(z1,<span class="dt">na.rm=</span><span class="ot">TRUE</span>),
             <span class="dt">n =</span> <span class="kw">n</span>())
@@ -131,7 +130,7 @@ top_leaders &lt;-<span class="st"> </span><span class="kw">left_join</span>(top_
 data &lt;-<span class="st"> </span>data %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">country_name =</span> <span class="kw">ifelse</span>(country_name ==<span class="st"> "Germany (Prussia)"</span>, <span class="st">"German Federal Republic"</span>, country_name))
 
 <span class="kw">library</span>(ggrepel)
-<span class="kw">ggplot</span>() +<span class="st"> </span><span class="kw">geom_map</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> -sum_personalism,<span class="dt">map_id =</span> country_name),<span class="dt">map =</span> world,<span class="dt">data =</span> data) +
+<span class="kw">ggplot</span>() +<span class="st"> </span><span class="kw">geom_map</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> sum_personalism,<span class="dt">map_id =</span> country_name),<span class="dt">map =</span> world,<span class="dt">data =</span> data) +
 <span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> world,<span class="kw">aes</span>(<span class="dt">y =</span> lat,<span class="dt">x =</span> long,<span class="dt">group =</span> group)) +
 <span class="st">  </span><span class="kw">scale_fill_gradient2</span>(<span class="dt">mid =</span> <span class="st">"lightgrey"</span>) +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> top_leaders, <span class="kw">aes</span>(<span class="dt">x=</span>lon,<span class="dt">y=</span>lat))  +

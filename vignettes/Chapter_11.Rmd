@@ -52,7 +52,8 @@ if(!require(knitr)) {
 
 ```{r setup_chapter_11, include=FALSE}
 knitr::opts_chunk$set(fig.height = 7, 
-fig.width = 7)
+                      fig.width = 7,
+                      warning = FALSE)
 ```
 
 ## Figure 11.1: Transition events in non-democratic regimes, 1945-2010

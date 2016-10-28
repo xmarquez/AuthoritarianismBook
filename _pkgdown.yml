@@ -14,7 +14,7 @@ articles:
 - title: Replication code and instructions for all figures
   desc: Code and instructions to build and extend all the figures in the book
   contents:
-  - ends_with("Chapter_1")
+  - Chapter_1
   - Chapter_2
   - Chapter_3
   - Chapter_4
@@ -23,8 +23,8 @@ articles:
   - Chapter_7
   - Chapter_8
   - Chapter_9
-  - ends_with("Chapter_10")
-  - ends_with("Chapter_11")
+  - Chapter_10
+  - Chapter_11
 - title: Additional material
   desc: Code and instructions for building additional data or figures
   contents:

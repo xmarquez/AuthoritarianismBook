@@ -103,7 +103,6 @@ top_leaders <- top_leaders %>%
 data <- personal_scores %>%
   filter(year >= 1900, year <= 2012) %>%
   group_by(GWn, country_name) %>%
-  mutate(z1 = -z1) %>%
   summarise(mean_personalism = mean(z1,na.rm=TRUE),
             sum_personalism = sum(z1,na.rm=TRUE),
             n = n())
@@ -115,7 +114,7 @@ world <- world %>% filter(id != "Antarctica")
 data <- data %>% mutate(country_name = ifelse(country_name == "Germany (Prussia)", "German Federal Republic", country_name))
 
 library(ggrepel)
-ggplot() + geom_map(aes(fill = -sum_personalism,map_id = country_name),map = world,data = data) +
+ggplot() + geom_map(aes(fill = sum_personalism,map_id = country_name),map = world,data = data) +
   geom_path(data = world,aes(y = lat,x = long,group = group)) +
   scale_fill_gradient2(mid = "lightgrey") +
   geom_point(data = top_leaders, aes(x=lon,y=lat))  +
