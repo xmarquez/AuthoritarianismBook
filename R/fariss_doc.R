@@ -1,0 +1,145 @@
+#' Fariss latent variable index of repression
+#'
+#' The index of repression/violations of physical integrity rights described in
+#' Fariss, Christopher J. 2014. "Respect for Human Rights Has Improved over Time:
+#' Modeling the Changing Standard of Accountability." American Political Science
+#' Review 108 (02): 297-318. doi:doi:10.1017/S0003055414000070.
+#'
+#' @section Variable descriptions:
+#'
+#' \describe{ \item{country_name}{Standardized country name. This is the same
+#' across all datasets in this package, so you can always join them by
+#' country_name and year. Character with 204 distinct values. Most common:
+#' Afghanistan (65), Albania (65), Argentina (65), Australia (65), Belgium (65),
+#' Bolivia (65), Brazil (65), Bulgaria (65), Canada (65), Chile (65), China (65),
+#' Colombia (65), Costa Rica (65), Cuba (65), Denmark (65), Dominican Republic
+#' (65), Ecuador (65), Egypt (65), El Salvador (65), Ethiopia (65), Finland (65),
+#' France (65), Greece (65), Guatemala (65), Haiti (65), Honduras (65), Hungary
+#' (65), Iceland (65), India (65), Indonesia (65), Iran (Persia) (65), Iraq (65),
+#' Ireland (65), Israel (65), Italy/Sardinia (65), Jordan (65), Korea, People's
+#' Republic of (65), Korea, Republic of (65), Lebanon (65), Liberia (65),
+#' Luxembourg (65), Mexico (65), Mongolia (65), Myanmar (Burma) (65), Nepal (65),
+#' Netherlands (65), New Zealand (65), Nicaragua (65), Norway (65), Pakistan (65),
+#' Panama (65), Paraguay (65), Peru (65), Philippines (65), Poland (65), Portugal
+#' (65), Rumania (65), Russia (Soviet Union) (65), Saudi Arabia (65), South Africa
+#' (65), Spain (65), Sri Lanka (Ceylon) (65), Sweden (65), Switzerland (65),
+#' Taiwan (65), Thailand (65), Turkey (Ottoman Empire) (65), United Kingdom (65),
+#' United States of America (65), Uruguay (65), Venezuela (65), Yemen (Arab
+#' Republic of Yemen) (66). NAs = 0.}
+#'
+#'
+#' \item{GWn}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
+#' Numeric. Max = 990, min = 2, distinct = 204, mean = 456.466, sd = 258.091, NAs
+#' = 0.}
+#'
+#'
+#' \item{year}{Year. Numeric. Max = 2013, min = 1949, distinct = 65, mean =
+#' 1985.866, sd = 17.618, NAs = 0.}
+#'
+#'
+#' \item{latentmean}{The latent mean of the estimate. Higher values mean less
+#' repression/volations of physical integrity rights. Numeric. Max = 4.705, min =
+#' -3.112, distinct = 9862, mean = 0.291, sd = 1.366, NAs = 0.}
+#'
+#'
+#' \item{latentsd}{The standard deviation of the estimate. Numeric. Max = 0.985,
+#' min = 0.191, distinct = 9862, mean = 0.345, sd = 0.171, NAs = 0.}
+#'
+#'
+#' \item{latentpct025}{Lower bound of the 95\% confidence interval. Numeric. Max =
+#' 3.075, min = -3.744, distinct = 9862, mean = -0.384, sd = 1.216, NAs = 0.}
+#'
+#'
+#' \item{latentpct975}{Higher bound of the 95\% confidence interval. Numeric. Max
+#' = 6.633, min = -2.48, distinct = 9862, mean = 0.967, sd = 1.575, NAs = 0.}
+#'
+#'
+#' \item{fariss_country}{Country name in the original dataset. Character with 206
+#' distinct values. Most common: Afghanistan (65), Albania (65), Argentina (65),
+#' Australia (65), Belgium (65), Bolivia (65), Brazil (65), Bulgaria (65), Canada
+#' (65), Chile (65), China (65), Colombia (65), Costa Rica (65), Cuba (65),
+#' Denmark (65), Dominican Republic (65), Ecuador (65), Egypt (65), El Salvador
+#' (65), Ethiopia (65), Finland (65), France (65), Greece (65), Guatemala (65),
+#' Haiti (65), Honduras (65), Hungary (65), Iceland (65), India (65), Indonesia
+#' (65), Iran (65), Iraq (65), Ireland (65), Israel (65), Italy (65), Jordan (65),
+#' Lebanon (65), Liberia (65), Luxembourg (65), Mexico (65), Mongolia (65),
+#' Myanmar (65), Nepal (65), Netherlands (65), New Zealand (65), Nicaragua (65),
+#' North Korea (65), Norway (65), Pakistan (65), Panama (65), Paraguay (65), Peru
+#' (65), Philippines (65), Poland (65), Portugal (65), Romania (65), Russia (65),
+#' Saudi Arabia (65), South Africa (65), South Korea (65), Spain (65), Sri Lanka
+#' (65), Sweden (65), Switzerland (65), Taiwan (65), Thailand (65), Turkey (65),
+#' United Kingdom (65), United States of America (65), Uruguay (65), Venezuela
+#' (65). NAs = 0.}
+#'
+#'
+#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
+#' Character with 204 distinct values. Most common: AFG (65), ALB (65), ARG (65),
+#' AUL (65), BEL (65), BOL (65), BRA (65), BUL (65), CAN (65), CHL (65), CHN (65),
+#' COL (65), COS (65), CUB (65), DEN (65), DOM (65), ECU (65), EGY (65), ETH (65),
+#' FIN (65), FRN (65), GRC (65), GUA (65), HAI (65), HON (65), HUN (65), ICE (65),
+#' IND (65), INS (65), IRE (65), IRN (65), IRQ (65), ISR (65), ITA (65), JOR (65),
+#' LBR (65), LEB (65), LUX (65), MEX (65), MON (65), MYA (65), NEP (65), NEW (65),
+#' NIC (65), NOR (65), NTH (65), PAK (65), PAN (65), PAR (65), PER (65), PHI (65),
+#' POL (65), POR (65), PRK (65), ROK (65), RUM (65), RUS (65), SAF (65), SAL (65),
+#' SAU (65), SPN (65), SRI (65), SWD (65), SWZ (65), TAW (65), THI (65), TUR (65),
+#' UKG (65), URU (65), USA (65), VEN (65), YEM (66). NAs = 0.}
+#'
+#'
+#' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few
+#' country-years. See Gleditsch and Ward (1999). Numeric. Max = 990, min = 2,
+#' distinct = 206, mean = 456.306, sd = 257.845, NAs = 0.}
+#'
+#'
+#' \item{region}{Region. Character with 22 distinct values. Most common: Eastern
+#' Africa (804), Western Africa (845), Western Asia (963). NAs = 0.}
+#'
+#'
+#' \item{continent}{Continent. Character with 5 distinct values. Most common:
+#' Africa (2699), Asia (2609), Europe (2141). NAs = 0.}
+#'
+#'
+#' \item{GW_startdate}{Date at which the state entered the system of states
+#' according to Gleditsch and Ward, or NA if it has never been a member. Other.}
+#'
+#'
+#' \item{GW_enddate}{Date at which the state ceased to be a member of the system
+#' of states according to Gleditsch and Ward, or NA if it still exists. Other.}
+#'
+#'
+#' \item{microstate}{Indicator of whether the state is a microstate, according to
+#' Gleditsch's list of microstates. Logical. TRUE = 586, FALSE = 9276, NAs = 0.}
+#'
+#'
+#' \item{lat}{Latitude. Numeric. Max = 64.963, min = -40.901, distinct = 201, mean
+#' = 19.156, sd = 24.045, NAs = 0.}
+#'
+#'
+#' \item{lon}{Longitude. Numeric. Max = 178.68, min = -175.198, distinct = 201,
+#' mean = 17.887, sd = 64.905, NAs = 0.}
+#'
+#'
+#' \item{in_system}{Whether the country-year is in the Gleditsch-Ward system of
+#' states. See Gleditsch and Ward (1999). Logical. TRUE = 9801, FALSE = 61, NAs =
+#' 0.}
+#'
+#'
+#' }
+#'
+#'
+#'
+#' @references
+#'
+#' Fariss, Christopher J. 2014. "Respect for Human Rights Has Improved over Time:
+#' Modeling the Changing Standard of Accountability." American Political Science
+#' Review 108 (02): 297-318. doi:doi:10.1017/S0003055414000070.
+#'
+#' Gleditsch, Kristian S. & Michael D. Ward. 1999. "Interstate System Membership:
+#' A Revised List of the Independent States since 1816." International
+#' Interactions 25: 393-413. The list can be found at
+#' \url{http://privatewww.essex.ac.uk/~ksg/statelist.html}
+#'
+#'
+#'
+#'
+#' @family violence
+"fariss"

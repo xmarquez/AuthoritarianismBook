@@ -1,0 +1,233 @@
+---
+title: "Chapter 7: Dynastic Families"
+author: "Xavier Marquez"
+date: "`r Sys.Date()`"
+bibliography: bibfile.bib
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{Chapter 7}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+# Introduction
+  
+This vignette shows how to replicate and extend the charts in chapter 7 of my book [*Non-democratic Politics: Authoritarianism, Dictatorships, and Democratization*](https://he.palgrave.com/page/detail/non-democratic-politics-xavier-marquez/?sf1=barcode&st1=9781137486301) (Palgrave Macmillan, 2016). It assumes that you have downloaded the replication package as follows:
+  
+```{r, echo = TRUE, eval = FALSE}
+if(!require(devtools)) {
+  install.packages("devtools")
+}
+
+devtools::install_github('xmarquez/AuthoritarianismBook')
+
+```
+
+It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, `GGally`, `reshape2` and `knitr` packages installed:
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require(dplyr)) {
+  install.packages("dplyr")
+}
+
+if(!require(ggplot2)) {
+  install.packages("ggplot2")
+}
+
+if(!require(scales)) {
+  install.packages("forcats")
+}
+
+if(!require(forcats)) {
+  install.packages("scales")
+}
+
+if(!require(GGally)) {
+  install.packages("GGally")
+}
+
+if(!require(reshape2)) {
+  install.packages("reshape2")
+}
+
+if(!require(knitr)) {
+  install.packages("knitr")
+}
+```
+
+```{r setup_chapter_7, include=FALSE}
+knitr::opts_chunk$set(fig.height = 7, 
+fig.width = 7)
+```
+
+# Figure 7.1: Proportion of monarchies around the world, 1800-2015
+
+## Original figure
+
+The figure identifies the proportion of monarchies around the world by identifying those countries whose executive is selected through `ascription' (whether or not it is paired with other forms of selection) in Polity IV [@Marshall2010]. The data excludes periods of foreign occupation or anarchy, and countries with fewer than 500,000 people.
+
+```{r fig_7_1}
+
+library(AuthoritarianismBook)
+library(dplyr)
+library(ggplot2)
+
+data <- polity_annual %>%
+  mutate(exrec2 = plyr::mapvalues(exrec, 
+                                  from = sort(unique(exrec)), 
+                                  to = c("Transition",
+                                         "Anarchy",
+                                         "Foreign occupation",
+                                         "1-Monarchy", 
+                                         "1-Monarchy", 
+                                         "2-Other non-democratic",
+                                         "2-Other non-democratic", 
+                                         "2-Other non-democratic", 
+                                         "1-Monarchy", 
+                                         "3-Electoral regime", 
+                                         "3-Electoral regime"))) %>%
+  filter(!exrec2 %in% c("Anarchy","Transition","Foreign occupation")) %>%
+  mutate(exrec2 = ifelse(polity2 > 6,
+                         "4-Democracy (polity score > 6)", 
+                         as.character(exrec2)))
+
+ggplot(data = data, aes(x = year, fill = exrec2))+
+  geom_bar(width = 1, position = "fill") +
+  theme_bw() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "", 
+       x = "Year", 
+       y = "Proportion of independent states") +
+  guides(fill = guide_legend(ncol=1, title.position = "top")) + 
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  scale_y_continuous(labels = scales::percent)
+
+```
+
+## Extension 1: Disaggregating by country
+
+We can disaggregate this data by country to see the main transitions:
+
+```{r monarchies_per_country, fig.height = 30}
+data <- data %>%
+  group_by(country_name) %>%
+  mutate(last_monarchy = ifelse(any(exrec2 == "1-Monarchy"),
+                                max(year[ exrec2 == "1-Monarchy"], na.rm = TRUE),
+                                2016))
+
+ggplot(data = data, 
+       aes(x = forcats::fct_rev(reorder(country_name,
+                                        last_monarchy)), 
+           y = year))+
+  geom_tile(aes(fill = exrec2)) +
+  theme_bw() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "", 
+       x = "", 
+       y = "Year") +
+  guides(fill = guide_legend(ncol=1, title.position = "top")) + 
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  coord_flip()
+
+```
+
+## Extension 2: Correlations between different measures of monarchy
+
+Coders don't always agree. Other measures of monarchy [in @GeddesWrightFrantz2014; @Kailitz2013; @MagaloniChuMin2013; and @WahmanTeorellHadenius2013] are highly but not perfectly correlated with the measure of monarchy derived from the `exrec` variable of Polity IV:
+
+```{r monarchies_comparison}
+
+data <- data %>%
+  ungroup() %>%
+  mutate(is_polity_monarchy = (exrec2 == "1-Monarchy")) %>%
+  full_join(all_gwf_extended_yearly %>%
+              select(country_name, year, gwf_full_regimetype) %>%
+              mutate(is_gwf_monarchy = (gwf_full_regimetype == "monarchy"))) %>%
+  full_join(kailitz_yearly %>%
+              select(country_name, year, combined_regime, monarchy) %>%
+              mutate(is_kailitz_monarchy = monarchy)) %>%
+  full_join(magaloni %>%
+              select(country_name, year, regime_nr) %>%
+              mutate(is_magaloni_monarchy = (regime_nr == "Monarchy"))) %>%
+  full_join(wahman_teorell %>%
+              select(country_name, year, regime1ny) %>%
+              filter(!is.na(regime1ny)) %>%
+              mutate(is_wahman_teorell_monarchy = (regime1ny == "Monarchy"))) 
+
+
+library(GGally)
+
+corr_data <- data %>% 
+  ungroup() %>%
+  select(is_polity_monarchy, 
+         is_gwf_monarchy, 
+         is_kailitz_monarchy, 
+         is_magaloni_monarchy,
+         is_wahman_teorell_monarchy) %>%
+  mutate_all(as.numeric)
+
+ggcorr(data = corr_data, label = TRUE, label_round = 2)
+
+```
+
+We can visualize the differences like this:
+
+```{r monarchies_differences, fig.height=20}
+
+library(reshape2)
+
+data <- data %>%
+  filter(in_system) %>%
+  melt(measure.vars = c("is_polity_monarchy",
+                        "is_gwf_monarchy",
+                        "is_kailitz_monarchy",
+                        "is_magaloni_monarchy",
+                        "is_wahman_teorell_monarchy"), 
+       na.rm = TRUE) %>%
+  mutate(variable = stringr::str_extract(variable,
+                                         "_[a-z]+_"),
+         variable = stringr::str_replace_all(variable, "_", "")) %>%
+  group_by(country_name, year) %>%
+  summarise(num_measures = n(),
+            sum_measures = sum(value),
+            prop_measures = sum_measures/num_measures,
+            which_measures = ifelse(prop_measures == 1,
+                                    "All agree",
+                                    paste(variable[ value ], collapse = ", ")),
+            measures_disagreeing = ifelse(prop_measures == 1,
+                                    "All agree",
+                                    paste(variable[ !value ], collapse = ", "))) %>%
+  group_by(country_name) %>%
+  mutate(last_monarchy = ifelse(any(prop_measures > 0),
+                                max(year[ prop_measures > 0 ], na.rm = TRUE),
+                                2016)) %>%
+  filter(prop_measures > 0)
+
+ggplot(data = data,
+       aes(x = forcats::fct_rev(reorder(country_name,
+                                        last_monarchy)),
+           y = year)) +
+  geom_tile(aes(fill = which_measures,
+                alpha = prop_measures)) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  labs(fill = "Measures indicating country is monarchy",
+       alpha = "Degree of agreement",
+       x = "",
+       y = "Year") +
+  guides(fill = guide_legend(title.position = "top", ncol = 1)) +
+  coord_flip()
+
+data %>% 
+  filter(prop_measures < 1,
+         num_measures > 1) %>%
+  group_by(country_name, prop_measures, num_measures, which_measures, measures_disagreeing) %>%
+  summarise(min(year), max(year)) %>%
+  knitr::kable()
+
+```
+
+# References

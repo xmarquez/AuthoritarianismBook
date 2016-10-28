@@ -1,0 +1,11 @@
+^packrat/
+^\.Rprofile$
+^.*\.Rproj$
+^\.Rproj\.user$
+^data-raw$
+^README\.Rmd$
+^README-.*\.png$
+^building_package_site.*$
+^docs/
+^README_cache/
+^_pkgdown.yml$

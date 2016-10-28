@@ -1,0 +1,15 @@
+base
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+lubridate
+PoliticalDatasets
+reshape2
+GGally
+lattice
+mirt
+ggrepel

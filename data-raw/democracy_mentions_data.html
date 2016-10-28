@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Xavier Marquez" />
+
+<meta name="date" content="2016-10-21" />
+
+<title>Clean Up and Test Democracy Mentions Data</title>
+
+<script src="democracy_mentions_data_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="democracy_mentions_data_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="democracy_mentions_data_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="democracy_mentions_data_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="democracy_mentions_data_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="democracy_mentions_data_files/highlight/default.css"
+      type="text/css" />
+<script src="democracy_mentions_data_files/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="democracy_mentions_data_files/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Clean Up and Test Democracy Mentions Data</h1>
+<h4 class="author"><em>Xavier Marquez</em></h4>
+<h4 class="date"><em>2016-10-21</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#raw-data-description">Raw data description</a><ul>
+<li><a href="#loading-and-cleanup">Loading and cleanup</a></li>
+</ul></li>
+<li><a href="#creation-of-the-country-year-dataset">Creation of the country-year dataset</a></li>
+<li><a href="#tests">Tests</a></li>
+<li><a href="#final-setup">Final setup</a></li>
+</ul>
+</div>
+
+<div id="raw-data-description" class="section level2">
+<h2>Raw data description</h2>
+<p>The raw data consists of all the mentions of democracy in constitutional documents I was able to extract from the texts gathered by the Comparative Constitutions Project as of 2015.</p>
+<div id="loading-and-cleanup" class="section level3">
+<h3>Loading and cleanup</h3>
+<pre class="r"><code>library(tidyverse)
+library(stringr)
+library(knitr)
+
+democracy_mentions &lt;- read_csv(&quot;../../../../Data/Democracy mentions/democracy.mentions.csv&quot;,
+                               col_types = cols(YEAR = col_number(),
+                                                earliest.dem = col_number(),
+                                                first.constitution.in.force = col_number())) %&gt;%
+  select(COUNTRY, YEAR, Name, EVENTTYPE, mentions) 
+
+# Some years have a decimal, which we eliminate
+democracy_mentions$YEAR &lt;- as.integer(democracy_mentions$YEAR) 
+
+# This is what the mentions look like
+
+democracy_mentions %&gt;%
+  select(COUNTRY,YEAR,Name,mentions) %&gt;%
+  filter(!is.na(YEAR)) %&gt;%
+  head() %&gt;%
+  kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">COUNTRY</th>
+<th align="right">YEAR</th>
+<th align="left">Name</th>
+<th align="left">mentions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">1923</td>
+<td align="left">Afghanistan’s Constitution of 1923</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="right">1925</td>
+<td align="left">Afghanistan’s Constitution of 1923 with Amendments through 1925</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">1931</td>
+<td align="left">Afghanistan’s Constitution of 1931</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="right">1933</td>
+<td align="left">Afghanistan’s Constitution of 1931 with Amendments through 1933</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">1964</td>
+<td align="left">Afghanistan’s Constitution of 1964</td>
+<td align="left">In the Name of God, the Almighty and the Just. To re-organize the national life of Afghanistan according to the requirements of the time and on the basis of the realities of national history and culture; To achieve justice and equality; To establish political, economic and social democracy; To organize the functions of the state and its branches to ensure liberty and welfare of the individual and the maintenance of the general order; To achieve a balanced development of all phases of life in Afghanistan; and To form, ultimately, a prosperous and progressive society based on social co-operation and preservation of human dignity; We, the people of Afghanistan, conscious of the historical changes which have occurred in our life as a nation and as a part of human society, while considering the above-mentioned values to be the right of all human societies, have, under the leadership of His Majesty Mohammed Zahir Shah, the King of Afghanistan and the leader of its national life, framed this constitution for ourselves and the generations to come.</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="right">1964</td>
+<td align="left">Afghanistan’s Constitution of 1964</td>
+<td align="left">In the name of God, the Almighty and the Just to reorganize the national life of Afghanistan according to the requirements of the times and on the basis of the realities of national history and culture; to achieve justice and equality; to establish political, economic and social democracy; to organize the functions of the state and its branches to ensure liberty and welfare of the individual and the maintenance of the general order; to achieve a balanced development of all phases of life in Afghanistan; and to form, ultimately, a prosperous and progressive society based on social cooperation and preservation of human dignity; we, the people of Afghanistan, conscious of the historical changes which have occurred in our life as a nation and as a part of human society, while considering the above mentioned values to be the right of all human societies, have, under the leadership of his majesty Mohammed Zahir Shah, the king of Afghanistan and the leader of its national life, framed this constitution for ourselves and the generations to come.</td>
+</tr>
+</tbody>
+</table>
+<p>Once the data is loaded, we need to standardize the country names and make sure they correspond to the right country-names in the standard “international system”:</p>
+<pre class="r"><code>library(lubridate)
+
+countries &lt;- democracy_mentions %&gt;% 
+  distinct(COUNTRY, YEAR) %&gt;%
+  PoliticalDatasets::to_gw_system(country_col = &quot;COUNTRY&quot;,
+                                  date_col = &quot;YEAR&quot;,
+                                  match_condition = c(&quot;!(COUNTRY == &#39;Vietnam (Annam/Cochin China/Tonkin)&#39; &amp; country_name ==&#39;China&#39; )&quot;,
+                                              &quot;!(COUNTRY == &#39;Yugoslavia (Serbia)&#39; &amp; country_name ==&#39;Yugoslavia&#39; &amp; (YEAR &lt; 1900 | YEAR == 2006))&quot;,
+                                              &quot;(match_score == max(match_score))&quot;))</code></pre>
+<pre><code>## [1] &quot;The following countries were not matched:&quot;
+## # A tibble: 14 × 3
+##                                                                        COUNTRY
+##                                                                          &lt;chr&gt;
+## 1                                 African Charter on Human and People&#39;s Rights
+## 2                                          American Convention on Human Rights
+## 3                                                   Convention Against Torture
+## 4   Convention on the Elimination of All Forms of Discrimination against Women
+## 5                        Convention on the Rights of Persons with Disabilities
+## 6                                        Convention on the Rights of the Child
+## 7                                                               European Union
+## 8                   French Declaration of the Rights of Man and of the Citizen
+## 9  International Convention on the Elimination of All Forms of Racial Discrimi
+## 10                        International Covenant on Civil and Political Rights
+## 11             International Covenant on Economic, Social, and Cultural rights
+## 12                                                                    Scotland
+## 13                                         Vietnam (Annam/Cochin China/Tonkin)
+## 14                                                                        &lt;NA&gt;
+## # ... with 2 more variables: min &lt;int&gt;, max &lt;int&gt;</code></pre>
+<p>The country names for some documents not matched, simply because the documents do not refer to independent countries, or the document does not contain a proper country name:</p>
+<pre class="r"><code>anti_join(democracy_mentions,countries) %&gt;% 
+  group_by(COUNTRY, Name) %&gt;% 
+  summarise(min(YEAR),max(YEAR),n()) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">COUNTRY</th>
+<th align="left">Name</th>
+<th align="right">min(YEAR)</th>
+<th align="right">max(YEAR)</th>
+<th align="right">n()</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">African Charter on Human and People’s Rights</td>
+<td align="left">African Charter on Human and People’s Rights 1981</td>
+<td align="right">1981</td>
+<td align="right">1981</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">American Convention on Human Rights</td>
+<td align="left">American Convention on Human Rights_1969</td>
+<td align="right">1969</td>
+<td align="right">1969</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="left">Convention Against Torture</td>
+<td align="left">Convention Against Torture</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Convention on the Elimination of All Forms of Discrimination against Women</td>
+<td align="left">Convention on the Elimination of All Forms of Discrimination against Women</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Convention on the Rights of Persons with Disabilities</td>
+<td align="left">Convention on the Rights of Persons with Disabilities</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Convention on the Rights of the Child</td>
+<td align="left">Convention on the Rights of the Child</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">European Union</td>
+<td align="left">European Union’s Constitution of 2004</td>
+<td align="right">2004</td>
+<td align="right">2004</td>
+<td align="right">26</td>
+</tr>
+<tr class="even">
+<td align="left">French Declaration of the Rights of Man and of the Citizen</td>
+<td align="left">French Declaration of the Rights of Man and of the Citizen 1789</td>
+<td align="right">1789</td>
+<td align="right">1789</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">International Convention on the Elimination of All Forms of Racial Discrimination</td>
+<td align="left">International Convention on the Elimination of All Forms of Racial Discrimination</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">International Covenant on Civil and Political Rights</td>
+<td align="left">International Covenant on Civil and Political Rights 1966</td>
+<td align="right">1966</td>
+<td align="right">1966</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">International Covenant on Economic, Social, and Cultural rights</td>
+<td align="left">International Covenant on Economic, Social, and Cultural Rights</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Scotland</td>
+<td align="left">Scotland’s Draft Constitution of 2014</td>
+<td align="right">2014</td>
+<td align="right">2014</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Vietnam (Annam/Cochin China/Tonkin)</td>
+<td align="left">Vietnam (Annam/Cochin China/Tonkin)’s Constitution of 1946</td>
+<td align="right">1946</td>
+<td align="right">1946</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="left">European Convention of Human Rights</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">9</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="left">Universal Declaration of Human Rights 1948</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>We also need to clean up column names, trim whitespace, and eliminate duplicates:</p>
+<pre class="r"><code>democracy_mentions &lt;- countries %&gt;%
+  left_join(democracy_mentions) %&gt;% 
+  rename(year = YEAR, constitutional.event = EVENTTYPE, ccp_country = COUNTRY) %&gt;% 
+  mutate(Name = str_trim(Name), 
+         Name = str_replace(Name,&quot;\\.[0-9]$&quot;,&quot;&quot;),
+         constitutional.event = factor(constitutional.event)) %&gt;%
+  select(country_name, 
+         GWn, 
+         year,
+         Name,
+         constitutional.event,
+         mentions,
+         ccp_country,
+         GWc:in_system) 
+
+# We eliminate duplicates
+
+nrow(democracy_mentions)</code></pre>
+<pre><code>## [1] 11219</code></pre>
+<pre class="r"><code>democracy_mentions &lt;- distinct(democracy_mentions)
+
+nrow(democracy_mentions)</code></pre>
+<pre><code>## [1] 10959</code></pre>
+<p>These countries had their names changed:</p>
+<pre class="r"><code>democracy_mentions %&gt;% 
+  filter(country_name != ccp_country) %&gt;% 
+  group_by(country_name, ccp_country) %&gt;%
+  summarise(min(year), max(year), n()) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">ccp_country</th>
+<th align="right">min(year)</th>
+<th align="right">max(year)</th>
+<th align="right">n()</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Antigua &amp; Barbuda</td>
+<td align="left">Antigua And Barbuda</td>
+<td align="right">1981</td>
+<td align="right">1981</td>
+<td align="right">18</td>
+</tr>
+<tr class="even">
+<td align="left">Congo, Democratic Republic of (Zaire)</td>
+<td align="left">Congo, Democratic Republic Of (Zaire)</td>
+<td align="right">1964</td>
+<td align="right">2011</td>
+<td align="right">166</td>
+</tr>
+<tr class="odd">
+<td align="left">Federated States of Micronesia</td>
+<td align="left">Micronesia, Fed. Sts.</td>
+<td align="right">1990</td>
+<td align="right">1990</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Korea, People’s Republic of</td>
+<td align="left">North Korea</td>
+<td align="right">1948</td>
+<td align="right">2009</td>
+<td align="right">170</td>
+</tr>
+<tr class="odd">
+<td align="left">Korea, Republic of</td>
+<td align="left">South Korea</td>
+<td align="right">1948</td>
+<td align="right">1987</td>
+<td align="right">24</td>
+</tr>
+<tr class="even">
+<td align="left">Macedonia (Former Yugoslav Republic of)</td>
+<td align="left">Macedonia (Former Yugoslav Republic Of)</td>
+<td align="right">1991</td>
+<td align="right">2011</td>
+<td align="right">36</td>
+</tr>
+<tr class="odd">
+<td align="left">Papal States</td>
+<td align="left">Vatican City</td>
+<td align="right">1929</td>
+<td align="right">2000</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Rumania</td>
+<td align="left">Romania</td>
+<td align="right">1866</td>
+<td align="right">2003</td>
+<td align="right">81</td>
+</tr>
+<tr class="odd">
+<td align="left">Saint Kitts and Nevis</td>
+<td align="left">St. Kitts And Nevis</td>
+<td align="right">1983</td>
+<td align="right">1983</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">Saint Lucia</td>
+<td align="left">St. Lucia</td>
+<td align="right">1978</td>
+<td align="right">1978</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">Saint Vincent and the Grenadines</td>
+<td align="left">St. Vincent And The Grenadines</td>
+<td align="right">1979</td>
+<td align="right">1979</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Samoa/Western Samoa</td>
+<td align="left">Samoa</td>
+<td align="right">1962</td>
+<td align="right">2010</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="left">Sao Tome and Principe</td>
+<td align="left">Sao Tome And Principe</td>
+<td align="right">1975</td>
+<td align="right">2003</td>
+<td align="right">94</td>
+</tr>
+<tr class="even">
+<td align="left">Serbia</td>
+<td align="left">Yugoslavia (Serbia)</td>
+<td align="right">1869</td>
+<td align="right">2006</td>
+<td align="right">23</td>
+</tr>
+<tr class="odd">
+<td align="left">Trinidad and Tobago</td>
+<td align="left">Trinidad And Tobago</td>
+<td align="right">1962</td>
+<td align="right">2007</td>
+<td align="right">34</td>
+</tr>
+<tr class="even">
+<td align="left">Turkey (Ottoman Empire)</td>
+<td align="left">Turkey/Ottoman Empire</td>
+<td align="right">1876</td>
+<td align="right">2011</td>
+<td align="right">172</td>
+</tr>
+<tr class="odd">
+<td align="left">United Provinces of Central America</td>
+<td align="left">United Provinces Of Central America</td>
+<td align="right">1824</td>
+<td align="right">1835</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">United States of America</td>
+<td align="left">United States Of America</td>
+<td align="right">1781</td>
+<td align="right">1992</td>
+<td align="right">18</td>
+</tr>
+<tr class="odd">
+<td align="left">Vietnam, Democratic Republic of</td>
+<td align="left">Vietnam, Democratic Republic Of</td>
+<td align="right">1960</td>
+<td align="right">2001</td>
+<td align="right">105</td>
+</tr>
+<tr class="even">
+<td align="left">Vietnam, Republic of</td>
+<td align="left">Vietnam, Republic Of</td>
+<td align="right">1956</td>
+<td align="right">1967</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Yemen (Arab Republic of Yemen)</td>
+<td align="left">Yemen (Arab Republic Of Yemen)</td>
+<td align="right">1962</td>
+<td align="right">2001</td>
+<td align="right">14</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen, People’s Republic of</td>
+<td align="left">People’s Republic of Yemen</td>
+<td align="right">1978</td>
+<td align="right">1978</td>
+<td align="right">53</td>
+</tr>
+<tr class="odd">
+<td align="left">Yugoslavia</td>
+<td align="left">Yugoslavia (Serbia)</td>
+<td align="right">1921</td>
+<td align="right">2003</td>
+<td align="right">136</td>
+</tr>
+</tbody>
+</table>
+<p>And here’s what the data looks like, per country:</p>
+<pre class="r"><code>library(forcats)
+
+ggplot(data = democracy_mentions) +
+  geom_count(aes(x=fct_rev(reorder(country_name,year,FUN = min)), y = year, color = fct_infreq(constitutional.event))) +
+  coord_flip() +
+  labs(x = &quot;&quot;, color = &quot;Constitutional\nevent&quot;, size = &quot;Number of \ntext snippets&quot;) +
+  theme_bw() </code></pre>
+<p><img src="democracy_mentions_data_files/figure-html/country_plot-1.png" /><!-- --></p>
+<p>These are the countries where the first mention is not “new” or “interim” constitution:</p>
+<pre class="r"><code>democracy_mentions %&gt;% 
+  group_by(country_name) %&gt;%
+  filter(!(first(constitutional.event) %in% c(&quot;new&quot;,&quot;interim&quot;))) %&gt;% 
+  summarise(year = first(year), Name = first(Name), constitutional.event = first(constitutional.event)) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="right">year</th>
+<th align="left">Name</th>
+<th align="left">constitutional.event</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Brunei</td>
+<td align="right">1983</td>
+<td align="left">1983 Amendment to Brunei’s Constitution of 1959</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="even">
+<td align="left">Central African Republic</td>
+<td align="right">1962</td>
+<td align="left">Central African Republic’s Constitution of 1959 with Amendments through 1962</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="odd">
+<td align="left">China</td>
+<td align="right">1908</td>
+<td align="left">China_1908</td>
+<td align="left">non-event</td>
+</tr>
+<tr class="even">
+<td align="left">Federated States of Micronesia</td>
+<td align="right">1990</td>
+<td align="left">Micronesia, Fed. Sts.’s Constitution of 1981 with Amendments through 1990</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="odd">
+<td align="left">Israel</td>
+<td align="right">1948</td>
+<td align="left">Israel’s Constitution of 1948</td>
+<td align="left">non-event</td>
+</tr>
+<tr class="even">
+<td align="left">Malaysia</td>
+<td align="right">1977</td>
+<td align="left">Malaysia’s Constitution of 1957 with Amendments through 1977</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="odd">
+<td align="left">Maldives</td>
+<td align="right">1975</td>
+<td align="left">Maldives’s Constitution of 1968 with Amendments through 1975</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="even">
+<td align="left">Moldova</td>
+<td align="right">1991</td>
+<td align="left">1991 Amendment to Moldova’s Constitution of 1978</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="odd">
+<td align="left">Singapore</td>
+<td align="right">1966</td>
+<td align="left">Singapore’s Constitution of 1959 with Amendments through 1966</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="even">
+<td align="left">Tonga</td>
+<td align="right">1967</td>
+<td align="left">Tonga’s Constitution of 1875 with Amendments through 1967</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="odd">
+<td align="left">Uganda</td>
+<td align="right">1963</td>
+<td align="left">Uganda’s Constitution of 1962 with Amendments through 1963</td>
+<td align="left">amendment</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen, People’s Republic of</td>
+<td align="right">1978</td>
+<td align="left">Yemen, People’S Republic Of’s Constitution of 1970 with Amendments through 1978</td>
+<td align="left">amendment</td>
+</tr>
+</tbody>
+</table>
+<p>These countries need to be fixed:</p>
+<pre class="r"><code>fixed_countries &lt;- democracy_mentions %&gt;% 
+  group_by(country_name) %&gt;%
+  filter(!(first(constitutional.event) %in% c(&quot;new&quot;,&quot;interim&quot;))) %&gt;% 
+  summarise_all(funs(first(.))) %&gt;%
+  mutate(year = c(1959, 1959, 1908, 1981, 1948, 1957, 
+                  1968, 1978, 1959, 1875, 1962, 1970),
+         constitutional.event = c(&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,
+                                  &quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;,&quot;new&quot;))
+
+democracy_mentions &lt;- bind_rows(democracy_mentions, fixed_countries) %&gt;%
+  arrange(country_name, year, Name) %&gt;%
+  mutate(has_mention = !is.na(mentions))</code></pre>
+<p>These constitutions have the wrong names or the wrong events:</p>
+<pre class="r"><code>democracy_mentions %&gt;%
+  ungroup() %&gt;%
+  filter(!(constitutional.event %in% c(&quot;amendment&quot;))) %&gt;%
+  distinct(country_name, year, Name, constitutional.event, .keep_all = FALSE) %&gt;%
+  group_by(country_name, year) %&gt;%
+  filter(n() &gt; 1) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="right">year</th>
+<th align="left">Name</th>
+<th align="left">constitutional.event</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">China</td>
+<td align="right">1908</td>
+<td align="left">China_1908</td>
+<td align="left">non-event</td>
+</tr>
+<tr class="even">
+<td align="left">China</td>
+<td align="right">1908</td>
+<td align="left">China_1908</td>
+<td align="left">new</td>
+</tr>
+<tr class="odd">
+<td align="left">France</td>
+<td align="right">1815</td>
+<td align="left">France’s Constitution of 1815</td>
+<td align="left">new</td>
+</tr>
+<tr class="even">
+<td align="left">France</td>
+<td align="right">1815</td>
+<td align="left">France’s Constitution of 1815</td>
+<td align="left">reinstated</td>
+</tr>
+<tr class="odd">
+<td align="left">Israel</td>
+<td align="right">1948</td>
+<td align="left">Israel’s Constitution of 1948</td>
+<td align="left">non-event</td>
+</tr>
+<tr class="even">
+<td align="left">Israel</td>
+<td align="right">1948</td>
+<td align="left">Israel’s Constitution of 1948</td>
+<td align="left">new</td>
+</tr>
+<tr class="odd">
+<td align="left">Myanmar (Burma)</td>
+<td align="right">2008</td>
+<td align="left">Myanmar (Burma)’s Constitution of 2008</td>
+<td align="left">new</td>
+</tr>
+<tr class="even">
+<td align="left">Myanmar (Burma)</td>
+<td align="right">2008</td>
+<td align="left">Myanmar (Burma)’s Constitution of 2008</td>
+<td align="left">new</td>
+</tr>
+<tr class="odd">
+<td align="left">Serbia</td>
+<td align="right">2006</td>
+<td align="left">Yugoslavia (Serbia)’s Constitution 2006</td>
+<td align="left">new</td>
+</tr>
+<tr class="even">
+<td align="left">Serbia</td>
+<td align="right">2006</td>
+<td align="left">Yugoslavia (Serbia)’s Constitution of 2006</td>
+<td align="left">new</td>
+</tr>
+</tbody>
+</table>
+<p>So we need to fix them:</p>
+<pre class="r"><code>democracy_mentions &lt;- democracy_mentions %&gt;%
+  filter(!(country_name == &quot;China&quot; &amp;
+             year == 1908 &amp;
+             Name == &quot;China_1908&quot; &amp;
+             constitutional.event == &quot;non-event&quot;),
+         !(country_name == &quot;France&quot; &amp;
+             year == 1815 &amp;
+             Name == &quot;France&#39;s Constitution of 1815&quot; &amp;
+             constitutional.event == &quot;new&quot;),
+         !(country_name == &quot;Israel&quot; &amp;
+             year == 1948 &amp;
+             Name == &quot;Israel&#39;s Constitution of 1948&quot; &amp;
+             constitutional.event == &quot;non-event&quot;),
+         !(country_name == &quot;Myanmar (Burma)&quot; &amp;
+             year == 2008 &amp;
+             Name == &quot;Myanmar (Burma)&#39;s Constitution of  2008&quot; &amp;
+             constitutional.event == &quot;new&quot;),
+         !(country_name == &quot;Serbia&quot; &amp;
+             year == 2006 &amp;
+             Name == &quot;Yugoslavia (Serbia)&#39;s Constitution 2006&quot; &amp;
+             constitutional.event == &quot;new&quot;))</code></pre>
+</div>
+</div>
+<div id="creation-of-the-country-year-dataset" class="section level2">
+<h2>Creation of the country-year dataset</h2>
+<p>Now we need to create the country-year dataset. We use the <code>tidyr</code> package; I assume that amendments never delete mentions of democracy.</p>
+<pre class="r"><code>democracy_mentions_shell &lt;- democracy_mentions %&gt;% 
+  ungroup() %&gt;%
+  distinct(country_name, 
+           GWn, 
+           year,
+           GW_startdate, 
+           GW_enddate) %&gt;%
+  group_by(country_name, 
+           GWn,
+           GW_startdate,
+           GW_enddate) %&gt;%
+  do(data.frame(year = min(.$year, year(.$GW_startdate[1])):ifelse(is.na(.$GW_enddate[1]), 2013, year(.$GW_enddate[1])))) %&gt;%
+  ungroup() %&gt;%
+  distinct() %&gt;%
+  select(-GW_startdate, -GW_enddate)
+
+new_or_interim &lt;- democracy_mentions  %&gt;%
+  filter(constitutional.event %in% c(&quot;new&quot;,&quot;interim&quot;,&quot;reinstated&quot;)) %&gt;% 
+  distinct(country_name, GWn, year, Name, constitutional.event) %&gt;%
+  right_join(democracy_mentions_shell) %&gt;%
+  arrange(country_name, year) %&gt;%
+  mutate(const_num = ifelse(!is.na(constitutional.event), 1, 0)) %&gt;%
+  group_by(country_name) %&gt;%
+  fill(Name) %&gt;%
+  mutate(const_num = cumsum(const_num)) %&gt;%
+  select(-constitutional.event) %&gt;%
+  rename(constitution_name = Name)
+
+constitutional_events &lt;- democracy_mentions %&gt;%
+  distinct(country_name, year, constitutional.event) 
+
+democracy_mentions_summary &lt;- democracy_mentions %&gt;%
+  group_by(country_name, year) %&gt;%
+  summarise(mentions = paste(unique(na.omit(mentions)), collapse = &quot;, &quot;)) %&gt;%
+  mutate(mentions = stringr::str_conv(mentions, &quot;ASCII&quot;),
+         mentions = stringr::str_trunc(mentions, 500, &quot;right&quot;),
+         mentions = ifelse(mentions == &quot;&quot;, NA, mentions)) %&gt;%
+  ungroup()  
+
+democracy_mentions_yearly &lt;- democracy_mentions_shell %&gt;%
+  left_join(new_or_interim) %&gt;%
+  left_join(constitutional_events) %&gt;%
+  left_join(democracy_mentions_summary) %&gt;%
+  group_by(country_name, const_num, constitution_name) %&gt;%
+  arrange(year) %&gt;%
+  fill(mentions) %&gt;%
+  mutate(has_mention = !is.na(mentions)) %&gt;%
+  ungroup()
+
+rm(new_or_interim,
+   democracy_mentions_summary,
+   democracy_mentions_shell,
+   constitutional_events,
+   fixed_countries,
+   countries)</code></pre>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<p>These are Venezuela’s mentions, for example:</p>
+<pre class="r"><code>democracy_mentions_yearly %&gt;% 
+  filter(country_name == &quot;Venezuela&quot;) %&gt;% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %&gt;%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %&gt;%
+  arrange(const_num, min_year) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">constitution_name</th>
+<th align="right">const_num</th>
+<th align="left">has_mention</th>
+<th align="left">mentions</th>
+<th align="left">constitutional.event</th>
+<th align="right">min_year</th>
+<th align="right">max_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1811</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1811</td>
+<td align="right">1818</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1819</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1819</td>
+<td align="right">1820</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1821</td>
+<td align="right">3</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1821</td>
+<td align="right">1829</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1830</td>
+<td align="right">4</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1830</td>
+<td align="right">1856</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1857</td>
+<td align="right">5</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 5.El Gobierno de Venezuela es y sera siempre republicano, democratico, bajo la forma representativa, con responsabilidad y alternacion de todos los funcionarios publicos.</td>
+<td align="left">new</td>
+<td align="right">1857</td>
+<td align="right">1857</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1858</td>
+<td align="right">6</td>
+<td align="left">TRUE</td>
+<td align="left">Las formas esenciales del Gobierno democratico sobresalen en relieve y se ostentan con pureza en la division, el deslinde e independencia de los poderes; en el sufragio universal y directo para la eleccion de los principales funcionarios, y en las supremas atribuciones del Poder Legislativo, representante inmediato del pueblo y organo genuino de la opinion nacional.</td>
+<td align="left">new</td>
+<td align="right">1858</td>
+<td align="right">1863</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1864</td>
+<td align="right">7</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1864</td>
+<td align="right">1873</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1874</td>
+<td align="right">8</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1874</td>
+<td align="right">1880</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1881</td>
+<td align="right">9</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1881</td>
+<td align="right">1890</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1891</td>
+<td align="right">10</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1891</td>
+<td align="right">1892</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1893</td>
+<td align="right">11</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1893</td>
+<td align="right">1900</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1901</td>
+<td align="right">12</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 26. El Gobierno de la Union es y sera siempre republicano, democratico, electivo, federal, representativo, alternativo y responsable.</td>
+<td align="left">new</td>
+<td align="right">1901</td>
+<td align="right">1903</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1904</td>
+<td align="right">13</td>
+<td align="left">TRUE</td>
+<td align="left">AR T. 25. Toda decisien acordada por vequisicien directa 6 indirecta de la fuerza, 6 de reunien de pueblo en actitud subversiva, es nula de derechoy carece de eticacia. A R T. 26. El Gobierno de la Unien es y sera siempre republicano, federal, democratico, electivo, representative, alternative y responsable., r e a c h ed through direct or indirect use of force, or dictated by a mass of people in subversive attitude, are null dejure and p…</td>
+<td align="left">new</td>
+<td align="right">1904</td>
+<td align="right">1908</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1909</td>
+<td align="right">14</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 2. La Nacion venezolana es para siempre e irrevocablemente libre e independiente de toda potencia o denominacion extranjera; y en ningun caso y por ningun acto podra autoridad, Congreso o poder alguno, cambiar la forma de Gobierno, que es y sera siempre republicano, federal, democratico, electivo, representativo, alternativo y responsable.</td>
+<td align="left">new</td>
+<td align="right">1909</td>
+<td align="right">1913</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1914</td>
+<td align="right">15</td>
+<td align="left">TRUE</td>
+<td align="left">9. the Venezuelan nation is for always and irrevocably free and independent of every foreign power or domination, and in no case and by no act can an authority, Congress, or l ’ower change the form of government, which is and shall be republican, federal, democratic, e lec t ive, rep resen ta t ive, responsible, and a l te rna t ive.</td>
+<td align="left">new</td>
+<td align="right">1914</td>
+<td align="right">1921</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1922</td>
+<td align="right">16</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 9. La Nacion venezolana es para siempre e irrevocablemente libre e independiente de toda potencia o dominacion extranjera, y en ningun caso y por ningun acto podra Autoridad, Congreso o Poder alguno cambiar la forma de Gobierno, que es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alternativo.</td>
+<td align="left">new</td>
+<td align="right">1922</td>
+<td align="right">1924</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1925</td>
+<td align="right">17</td>
+<td align="left">TRUE</td>
+<td align="left">13. the form of government of the Un i ted S t a t es of Venezue la and t h at of the S t a t es of the Un ion i s, a nd shall ever be, republic an, federal, : democratic, e lec t ive, r e p r e s en t a t iv e, responsible and a l t e r n a t i v e., Art<U+FFFD><U+FFFD>culo 13. El Gobierno de los Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alter…</td>
+<td align="left">new</td>
+<td align="right">1925</td>
+<td align="right">1927</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1928</td>
+<td align="right">18</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 13. El Gobierno de la Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratica, electivo, representativo, responsable y alternativo.</td>
+<td align="left">new</td>
+<td align="right">1928</td>
+<td align="right">1928</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1929</td>
+<td align="right">19</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 13. El Gobierno de los Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alternativo.</td>
+<td align="left">new</td>
+<td align="right">1929</td>
+<td align="right">1930</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1931</td>
+<td align="right">20</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 13. El Gobierno de los Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alternativo.</td>
+<td align="left">new</td>
+<td align="right">1931</td>
+<td align="right">1935</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1936</td>
+<td align="right">21</td>
+<td align="left">TRUE</td>
+<td align="left">is and shall be always republican, federal, democratic,, Art<U+FFFD><U+FFFD>culo 13. El Gobierno de los Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alternativo.</td>
+<td align="left">new</td>
+<td align="right">1936</td>
+<td align="right">1944</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1936</td>
+<td align="right">21</td>
+<td align="left">TRUE</td>
+<td align="left">Art<U+FFFD><U+FFFD>culo 13. El Gobierno de los Estados Unidos de Venezuela y el de cada uno de los Estados de la Union es y sera siempre republicano, federal, democratico, electivo, representativo, responsable y alternativo.</td>
+<td align="left">amendment</td>
+<td align="right">1945</td>
+<td align="right">1946</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1947</td>
+<td align="right">22</td>
+<td align="left">TRUE</td>
+<td align="left">the support of democracy as the sole and indispensable system of conducting its internal affairs, and pacific collabora tion in the design of promoting that same system in the government and relations of all peoples of the earth., national education will be organised as an integral process, correlated in its several parts, and will be oriented to attain the harmonious development of the human personality, to develop citizens prepared for life and f…</td>
+<td align="left">new</td>
+<td align="right">1947</td>
+<td align="right">1947</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1948</td>
+<td align="right">23</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">reinstated</td>
+<td align="right">1948</td>
+<td align="right">1951</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1948</td>
+<td align="right">23</td>
+<td align="left">TRUE</td>
+<td align="left">P a ra el cump l im ien to de esos f ines, las Fu e r z as A rm a d as Nac iona les so l ic i ta ron la co laborac ion de o t ros venezo lanos que a t r a v es de lar, con s ignas de su ag rupac ion po l <U+FFFD><U+FFFD> t ica h a b <U+FFFD><U+FFFD> an exp re sado deseos de s e r v ir al p a <U+FFFD><U+FFFD> s. Es imp e r a t ivo reco rdar s i emp re cual fue la ac t i tud y como co r respond ie ron aquellos venezo lanos en tan e x t r a o r d i n a r ia o p o r t u n i d a d. Pocas …</td>
+<td align="left">amendment</td>
+<td align="right">1952</td>
+<td align="right">1952</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1953</td>
+<td align="right">24</td>
+<td align="left">TRUE</td>
+<td align="left">Declaracion preliminar Art<U+FFFD><U+FFFD>culo 1. La Nacion venezolana es la asociacion de los venezolanos en un pacto de organizacion pol<U+FFFD><U+FFFD>tica con el nombre de Republica de Venezuela, que se rige por los principios de Gobierno federal, democratico, electivo, representativo, responsable y alternativo y que es independiente y libre de toda dominacion o proteccion extranjera.</td>
+<td align="left">new</td>
+<td align="right">1953</td>
+<td align="right">1960</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1961</td>
+<td align="right">25</td>
+<td align="left">TRUE</td>
+<td align="left">supporting the democratic order as the soul and irrenouncable means of ensuring the rights and dignity of citizens and favoring the peaceful extension to all the peoples of the earth;, article 3. the government of the republic of Venezuela is and always shall be democratic, representative, responsible, and alternating., article 27. the law may establish different systems for the organization, government, and administration of Municipalities, based on population, economic development, geogr…</td>
+<td align="left">new</td>
+<td align="right">1961</td>
+<td align="right">1982</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1961</td>
+<td align="right">25</td>
+<td align="left">TRUE</td>
+<td align="left">En representacion del pueblo venezolano, para quien invoca la proteccion de Dios Todopoderoso; Con el proposito de mantener la independencia y la integridad territorial de la Nacion, fortalecer su unidad, asegurar la libertad, la paz y la estabilidad de las instituciones; Proteger y enaltecer el trabajo, amparar la dignidad humana, promover el bienestar general y al seguridad social; lograr la participacion equitativa de todos en el disfrute de la riqueza, segun los principios de la justi…</td>
+<td align="left">amendment</td>
+<td align="right">1983</td>
+<td align="right">1998</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1999</td>
+<td align="right">26</td>
+<td align="left">TRUE</td>
+<td align="left">Title I Fundamental principles article 1. the Bolivarian republic of Venezuela is irrevocably free and independent, basing its moral property and values of freedom, equality, justice and international peace on the doctrine of Simon Bol<U+FFFD><U+FFFD>var, the Liberator. Independence, liberty, sovereignty, immunity, territorial integrity and national self-determination are unrenounceable rights of the Nation. article 2. Venezuela constitutes itself as a democratic and Social state of Law and Justic…</td>
+<td align="left">new</td>
+<td align="right">1999</td>
+<td align="right">2008</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="left">Venezuela’s Constitution of 1999</td>
+<td align="right">26</td>
+<td align="left">TRUE</td>
+<td align="left">the people of Venezuela, exercising their powers of creation and invoking the protection of God, the historic example of our Liberator Simon Bolivar and the heroism and sacrifice of our aboriginal ancestors and the forerunners and founders of a free and sovereign nation; to the supreme end of reshaping the republic to establish a democratic, participatory and self-reliant, multiethnic and multicultural society in a just, federal and decentralized state …</td>
+<td align="left">amendment</td>
+<td align="right">2009</td>
+<td align="right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>And these are Malaysia’s mentions:</p>
+<pre class="r"><code>democracy_mentions_yearly %&gt;% 
+  filter(country_name == &quot;Malaysia&quot;) %&gt;% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %&gt;%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %&gt;%
+  arrange(const_num, min_year) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">constitution_name</th>
+<th align="right">const_num</th>
+<th align="left">has_mention</th>
+<th align="left">mentions</th>
+<th align="left">constitutional.event</th>
+<th align="right">min_year</th>
+<th align="right">max_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Malaysia</td>
+<td align="left">Malaysia’s Constitution of 1957 with Amendments through 1977</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1957</td>
+<td align="right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>And these are New Zealand’s mentions:</p>
+<pre class="r"><code>democracy_mentions_yearly %&gt;% 
+  filter(country_name == &quot;New Zealand&quot;) %&gt;% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %&gt;%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %&gt;%
+  arrange(const_num, min_year) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">constitution_name</th>
+<th align="right">const_num</th>
+<th align="left">has_mention</th>
+<th align="left">mentions</th>
+<th align="left">constitutional.event</th>
+<th align="right">min_year</th>
+<th align="right">max_year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">New Zealand</td>
+<td align="left">New Zealand’s Constitution of 1852</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">NA</td>
+<td align="left">new</td>
+<td align="right">1852</td>
+<td align="right">1989</td>
+</tr>
+<tr class="even">
+<td align="left">New Zealand</td>
+<td align="left">New Zealand’s Constitution of 1852</td>
+<td align="right">1</td>
+<td align="left">TRUE</td>
+<td align="left">democratic and Civil rights, Subject to section 4 of this Bill of rights, the rights and freedoms contained in this Bill of rights may be subject only to such reasonable limits prescribed by law as can be demonstrably justified in a free and democratic society.</td>
+<td align="left">amendment</td>
+<td align="right">1990</td>
+<td align="right">1992</td>
+</tr>
+<tr class="odd">
+<td align="left">New Zealand</td>
+<td align="left">New Zealand’s Constitution of 1852</td>
+<td align="right">1</td>
+<td align="left">TRUE</td>
+<td align="left">democratic and civil rights, Justified limitations Subject to section 4 ofthis Bill of rights, the rights and freedoms contained in this Bill of rights may be subject only to such reasonable limits prescribed by law as can be demonstrably justified in a free and democratic society., Democratie and civil rights</td>
+<td align="left">amendment</td>
+<td align="right">1993</td>
+<td align="right">2013</td>
+</tr>
+</tbody>
+</table>
+<p>And we can visualize the mentions:</p>
+<pre class="r"><code>data &lt;- democracy_mentions_yearly %&gt;%
+  mutate(constitutional.event = fct_lump(constitutional.event, 2))
+
+ggplot(data = data, 
+       aes(x=fct_rev(reorder(country_name,year,FUN = min)), 
+           y = year)) +
+  geom_tile(aes(fill = has_mention)) +
+  geom_point(aes(shape = constitutional.event)) +
+  coord_flip() +
+  labs(x = &quot;&quot;, shape = &quot;Constitutional\nevent&quot;, fill = &quot;Does it mention democracy?&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;),
+         shape = guide_legend(title.position = &quot;top&quot;))</code></pre>
+<p><img src="democracy_mentions_data_files/figure-html/democracy_plot-1.png" /><!-- --></p>
+</div>
+<div id="final-setup" class="section level2">
+<h2>Final setup</h2>
+<p>We add back the info on system membership, and make sure that when constitutions do not exist, we indicate that.</p>
+<pre class="r"><code>countries &lt;- democracy_mentions_yearly %&gt;% 
+  distinct(country_name, GWn, year) %&gt;%
+  PoliticalDatasets::to_gw_system(country_col = &quot;country_name&quot;, 
+                                  code_col = &quot;GWn&quot;, 
+                                  code_type = &quot;GWn&quot;) %&gt;%
+  select(-country_name.x, -country_name.y) 
+
+democracy_mentions_yearly &lt;- countries %&gt;%
+  full_join(democracy_mentions_yearly) %&gt;%
+  mutate(has_constitution = !is.na(constitution_name)) %&gt;%
+  select(country_name, 
+         GWn, 
+         year, 
+         constitution_name,
+         const_num,
+         has_constitution,
+         constitutional.event,
+         has_mention,
+         mentions,
+         GWc:in_system) 
+
+devtools::use_data(democracy_mentions_yearly, overwrite = TRUE)
+rm(countries)</code></pre>
+<div id="refs" class="references">
+
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

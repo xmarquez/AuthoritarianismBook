@@ -1,0 +1,1454 @@
+---
+title: "Data Sources for Non-democratic Politics Book"
+author: "Xavier Marquez"
+date: "`r Sys.Date()`"
+bibliography: source_refs.bib
+output: 
+  html_document: 
+    keep_md: yes
+    self_contained: no
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE,
+                      cache.rebuild = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+## Democracy scores
+
+### Unified Democracy Scores
+
+Several datasets of democracy scores are used in this book. The most commonly used scores are the Unified Democracy Scores of Pemstein, Meserve, and Melton [@Pemstein2010], as extended by me [@Marquez2016]. A package to generate these scores, along with documentation, is available here: https://github.com/xmarquez/QuickUDS. 
+
+```{r extended_uds, include = FALSE}
+
+library(tidyverse)
+
+extended_uds <- QuickUDS::extended_uds %>%
+  select(country_name,
+         GWn,
+         year,
+         starts_with("index"),
+         starts_with("adj"),
+         starts_with("z1"),
+         se.z1,
+         starts_with("pct"),
+         measures_per_cy,
+         GWc:in_cow)
+
+democracy <- QuickUDS::democracy %>%
+  select(-lied_accountable,
+         -lied_electoral,
+         -lied_inclusive,
+         -mainwaring_pmm,
+         -freedomhouse_pmm,
+         -exrec,
+         -exconst,
+         -blm_pmm,
+         -pacl_pmm,
+         -polcomp,
+         -przeworski,
+         -polity,
+         -polity2,
+         -polity_pmm,
+         -Polity3,
+         -polyarchy_pmm,
+         -polyarchy_reversed,
+         -prc_pmm,
+         -vanhanen_pmm) %>%
+  as_tibble()
+
+devtools::use_data(extended_uds, overwrite = TRUE)
+devtools::use_data(democracy, overwrite = TRUE)
+
+```
+
+These extended unified democracy scores are available as `extended_uds`. (Simply type `extended_uds` to load the data). The main score used in the book to measure democracy is the variable `index` in this dataset. This is a 0-1 index of democracy that can be interpreted as a probability scale: values close to one mean that the country is almost certainly a democracy by current scholarly standards. This is available for a large number of country-years, including periods where the country may not have been considered a member of the system of states (indicated below by black dots):
+
+```{r uds_basic_characteristics, fig.height=30}
+
+library(tidyverse)
+
+ggplot(data = extended_uds, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = index)) +
+  geom_point(data = extended_uds %>% filter(!in_system), show.legend = FALSE) +
+  scale_fill_gradient2(midpoint = 0.5) +
+  coord_flip() +
+  labs(x = "", fill = "UD Score") +
+  theme(legend.position = "bottom")
+  
+```
+
+For more information about all the variables in this dataset, use `?extended_uds`. 
+
+The UD scores are the result of a latent variable analysis of a large number of other democracy measures gathered by many different people. These democracy measures are also included in this package for convenience as the dataset `democracy`. For more information about all the variables in this dataset, use `?democracy`. The variable `index` in `extended_uds` is, by construction, highly but not perfectly correlated with all the other measures of democracy:
+
+```{r uds_correlations, fig.height = 10, fig.width = 10}
+
+library(GGally)
+
+data <- full_join(extended_uds, democracy)
+
+ggcorr(data %>% 
+         select(index, arat_pmm:wahman_teorell_hadenius))
+
+```
+
+For further discussion of the correlations between the index of democracy and other measures of democracy, see my paper [@Marquez2016].
+
+### V-Dem (Varieties of Democracy) Dataset
+
+I also use in the book a selection of variables from the Varieties of Democracy (V-Dem) project dataset [@vdem2015]. The full dataset can be downloaded [here](https://www.v-dem.net/en/). The variables included in this package are the main democracy indexes, as well as indexes of civil society, executive constraints, and corruption. Use `?vdem` for documentation on the included variables.
+
+```{r Vdem, include = FALSE}
+library(PoliticalDatasets)
+
+vdem <- PoliticalDatasets::vdem %>% 
+  select(country_name, 
+         GWn,
+         year,
+         v2x_polyarchy, v2x_polyarchy_codehigh, v2x_polyarchy_codelow, 
+         v2x_api, v2x_api_codehigh, v2x_api_codelow, 
+         v2x_mpi, v2x_mpi_codehigh, v2x_mpi_codelow, 
+         v2x_EDcomp_thick, v2x_EDcomp_thick_codehigh, v2x_EDcomp_thick_codelow, 
+         v2x_libdem, v2x_libdem_codehigh, v2x_libdem_codelow, 
+         v2x_partipdem, v2x_partipdem_codehigh, v2x_partipdem_codelow, 
+         v2x_delibdem, v2x_delibdem_codehigh, v2x_delibdem_codelow, 
+         v2x_egaldem, v2x_egaldem_codehigh, v2x_egaldem_codelow,
+         v2xcs_ccsi, v2xcs_ccsi_codelow, v2xcs_ccsi_codehigh,
+         v2xlg_legcon, v2xlg_legcon_codehigh, v2xlg_legcon_codelow,
+         v2x_jucon, v2x_jucon_codehigh, v2x_jucon_codelow,
+         v2x_execorr, v2x_execorr_codehigh, v2x_execorr_codelow,
+         vdem_country,
+         GWc,
+         cown:in_system)
+
+
+devtools::use_data(vdem, overwrite = TRUE)
+
+```
+
+## Population data
+
+Several graphs in the book make use of world population data going back to the 19th century for all members of the state system compiled by Kristian Gleditsch [@Gleditsch2010] and extended by me to the present day with the help of the population data available through the [World Development Indicators](http://data.worldbank.org/). I also use a dataset of world population compiled by Esteban Ortiz-Espina and Max Roser [@OrtizRoser2016] to calculate the proportion of the world's population represented by each country. Gleditsch's original data is available [here](http://privatewww.essex.ac.uk/~ksg/exppop.html); Ortiz-Espina and Roser's dataset is available [here](https://ourworldindata.org/world-population-growth/), including an extensive discussion of their sources.
+
+```{r population_data, include = FALSE}
+
+population_data <- PoliticalDatasets::population_data
+
+devtools::use_data(population_data, overwrite = TRUE)
+
+```
+
+For more info on included variables, use `?population_data`. This data is available for a large number of countries, but it excludes periods when Gleditsch considers the country was not independent (indicated below by a lighter bar):
+
+```{r basic_characteristics, fig.height=38}
+
+ggplot(data = population_data, 
+       aes(x = year)) +
+  geom_bar(aes(alpha = in_system, weight = pop), 
+           show.legend = FALSE,
+           width = 1) +
+  labs(x= "", 
+       y = "Country population (millions)",
+       alpha = "In Gleditsch and Ward's \nsystem of states") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  facet_grid(country_name ~ ., switch = "y") +
+  scale_y_continuous(labels = NULL, breaks = NULL) +
+  theme(strip.text.y = element_text(angle = 180),
+        strip.background = element_rect(fill = NA, color = NA),
+        panel.margin = unit(0, "lines"),
+        panel.border = element_rect(fill = NA))
+  
+```
+
+The majority of the populations are too small to be visible in this graph; try the graph with `scale_y_log10(labels = NULL, breaks = NULL)` instead.
+
+## Regime Classifications
+
+This book uses data from several political regime datasets. These do not use the same criteria to classify political regimes, and they do not always agree on given classifications.
+
+### Magaloni, Chu, and Min
+
+Some of the graphs in the book use the "Autocracies of the World" dataset by Magaloni, Chu, and Min  [@MagaloniChuMin2013]. The original data is available [here](http://cddrl.fsi.stanford.edu/research/autocracies_of_the_world_dataset). A selection of the variables in this dataset is available as `magaloni`. Use `?magaloni` for more detail about the included variables. 
+
+```{r magaloni, include = FALSE}
+
+magaloni <- PoliticalDatasets::magaloni %>%
+  select(country_name,
+         GWn,
+         year,
+         regime_nr,
+         lindex,
+         duration_nr,
+         magaloni_country,
+         GWc,
+         cown:in_system)
+
+magaloni_extended <- PoliticalDatasets::magaloni_extended %>%
+  select(country_name,
+         GWn,
+         year,
+         regime_nr,
+         magaloni_country,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(magaloni, overwrite = TRUE)
+devtools::use_data(magaloni_extended, overwrite = TRUE)
+
+```
+
+The original dataset is available for the following countries:
+
+```{r magaloni_plot_1, fig.height=30}
+
+ggplot(data = magaloni, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = regime_nr, alpha = in_system)) +
+  labs(x = "", alpha = "In Gleditsch and Ward's \nsystem of states", fill = "Regime type")  +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_fill_brewer(type = "qual") +
+  scale_y_continuous(breaks = unique(c(magaloni$year[ magaloni$year %% 12 == 0], 
+                                max(magaloni$year), 
+                                min(magaloni$year)))) +
+  coord_flip()  
+
+```
+
+I have extended some of their classifications backwards in time with the help of the `duration_nr` variable in the original dataset; this "extended" version of the data is available as `magaloni_extended`:
+
+```{r magaloni_plot_2, fig.height=30}
+
+ggplot(data = magaloni_extended, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = regime_nr, alpha = in_system)) +
+  labs(x = "", alpha = "In Gleditsch and Ward's \nsystem of states", fill = "Regime type")  +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_fill_brewer(type = "qual") +
+  scale_y_continuous(breaks = unique(c(magaloni_extended$year[ magaloni_extended$year %% 25 == 0], 
+                                max(magaloni_extended$year), 
+                                min(magaloni_extended$year)))) +
+  coord_flip()  
+
+```
+
+### Wahman, Teorell, Hadenius
+
+The personal power index makes use of the "Authoritarian Regimes Data Set", version 5.0, by Axel Hadenius, Jan Teorell, & Michael Wahman [@WahmanTeorellHadenius2013]. The original dataset can be downloaded [here](https://sites.google.com/site/authoritarianregimedataset/data). A selection of variables from this dataset is included as `wahman_teorell`; use `?wahman_teorell` for more detail on included variables. 
+
+```{r wahmann_teorell, include = FALSE}
+
+wahman_teorell <- PoliticalDatasets::wahman_teorell %>%
+  select(country_name,
+         GWn,
+         year,
+         regime1ny,
+         regimeny,
+         persagg1ny,
+         persaggny2,
+         tenure1ny,
+         tenureny2,
+         country,
+         GWc,
+         cown:in_system) %>%
+  rename(wahman_teorell_country = country) %>%
+  filter(!is.na(regime1ny))
+
+devtools::use_data(wahman_teorell, overwrite = TRUE)
+
+```
+
+This dataset contains two different measures of regime type, and a couple of measures of personalism:
+
+```{r wahmann_teorell_plot_1, fig.height=30}
+
+ggplot(data = wahman_teorell, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)), 
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(regime1ny, "Democracy"), alpha = in_system)) +
+  labs(x = "", alpha = "In Gleditsch and Ward's \nsystem of states", fill = "Regime type") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_fill_brewer(type = "qual") +
+  scale_y_continuous(breaks = unique(c(wahman_teorell$year[ wahman_teorell$year %% 10 == 0], 
+                                max(wahman_teorell$year), 
+                                min(wahman_teorell$year)))) +
+  coord_flip()  
+
+ggplot(data = wahman_teorell, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(regimeny, "Democracy"), alpha = in_system)) +
+  labs(x = "", alpha = "In Gleditsch and Ward's \nsystem of states", fill = "Regime type") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(wahman_teorell$year[ wahman_teorell$year %% 10 == 0], 
+                                max(wahman_teorell$year), 
+                                min(wahman_teorell$year)))) +
+  coord_flip()  
+
+```
+
+
+### Kailitz
+
+I also make use in several graphs and in the development of the personal power index of a measure of regime type developed by Steffen Kailitz [@Kailitz2013]. This dataset in particular contains an indicator of whether the regime was communist that is particularly useful. For more info on the included variables, use `?kailitz_yearly`. 
+
+```{r kailitz, include=FALSE}
+
+kailitz_yearly <- PoliticalDatasets::kailitz.yearly %>%
+  select(country_name,
+         GWn,
+         year,
+         combined_regime:transition,
+         kailitz_country,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(kailitz_yearly, overwrite = TRUE)
+
+```
+
+The measure is available for the following countries:
+
+```{r kailitz_yearly_plot_1, fig.height=30}
+
+ggplot(data = kailitz_yearly, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = combined_regime, alpha = in_system)) +
+  labs(x = "", 
+       alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Regime type") +
+  coord_flip()  +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(kailitz_yearly$year[ kailitz_yearly$year %% 10 == 0], 
+                                max(kailitz_yearly$year), 
+                                min(kailitz_yearly$year)))) +
+  coord_flip()  
+
+```
+
+### Geddes, Wright, and Frantz
+
+The most important measure of regime type used in the book was developed by Geddes, Wright, and Frantz [@GeddesWrightFrantz2014]. The original data is available [here](http://sites.psu.edu/dictators/). This dataset comes in three versions: two country-year versions (`all_gwf` and `all_gwf_extended_yearly`) and a case version with (`all_gwf_periods`). `all_gwf_extended_yearly` extends Geddes, Wright, and Frantz's regime classifications backwards using the information encoded in the start dates and end dates of the cases in the original dataset (`all_gwf_periods`). For details on the variables included in these datasets, use `?all_gwf`, `?all_gwf_extended_yearly`, and `?all_gwf_periods`.
+
+```{r gwf, include = FALSE}
+all_gwf <- PoliticalDatasets::all_gwf %>%
+  select(country_name,
+         GWn,
+         year,
+         gwf_full_regimetype,
+         gwf_casename,
+         gwf_country,
+         GWc,
+         cown:in_system)
+
+all_gwf_extended_yearly <- PoliticalDatasets::all_gwf_extended_yearly %>%
+  select(country_name,
+         GWn,
+         year,
+         gwf_full_regimetype,
+         gwf_casename,
+         gwf_startdate,
+         gwf_enddate,
+         gwf_country,
+         GWc,
+         cown:in_system)
+
+all_gwf_periods <- PoliticalDatasets::all_gwf_periods %>%
+  select(country_name,
+         GWn,
+         gwf_casename,
+         gwf_full_regimetype,
+         gwf_startdate,
+         gwf_enddate,
+         gwf_howend,
+         gwf_violent,
+         gwf_country,
+         cown:in_system)
+
+devtools::use_data(all_gwf, overwrite = TRUE)
+devtools::use_data(all_gwf_extended_yearly, overwrite = TRUE)
+devtools::use_data(all_gwf_periods, overwrite = TRUE)
+
+```
+
+This contains one measure of regime type:
+
+```{r gwf_plot_1, fig.height=30}
+
+ggplot(data = all_gwf_extended_yearly, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = gwf_full_regimetype, alpha = in_system)) +
+  labs(x = "", alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Regime type") +
+  coord_flip()  +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(all_gwf_extended_yearly$year[ all_gwf_extended_yearly$year %% 50 == 0], 
+                                max(all_gwf_extended_yearly$year), 
+                                min(all_gwf_extended_yearly$year)))) +
+  coord_flip()  
+
+```
+
+## Regime Characteristics
+
+The book uses several measures of regime characteristics to create various graphs.
+
+### Polity
+
+Several graphs in the book use the Polity IV dataset [@Marshall2010] for its measures of regime characteristics rather than for its democracy measure. For details of the variables included, use 
+
+```{r polity, include=FALSE}
+
+polity_annual <- PoliticalDatasets::polity_annual %>%
+  select(country_name,
+         GWn,
+         year,
+         polity,
+         polity2,
+         exrec,
+         exconst,
+         polcomp,
+         polity_country,
+         GWc,
+         cown,
+         polity_ccode,
+         region:in_system) %>%
+  mutate(exrec = factor(exrec, 
+                        labels = levels(polity_cases$exrec),
+                        ordered = TRUE),
+         exconst = factor(exconst, 
+                          labels = levels(polity_cases$exconst),
+                          ordered = TRUE),
+         polcomp = factor(polcomp, 
+                          labels = levels(polity_cases$polcomp),
+                          ordered = TRUE))
+
+devtools::use_data(polity_annual, overwrite = TRUE)
+
+```
+
+It contains several measures of regime characteristics for a large number of countries (all states with populations greater than 500,000 people). Here I plot the executive recruitment score:
+
+```{r polity_plot_1, fig.height=30}
+
+ggplot(data = polity_annual, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = exrec, alpha = in_system)) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "", 
+       alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Executive recruitment type") +  
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(polity_annual$year[ polity_annual$year %% 50 == 0], 
+                                max(polity_annual$year), 
+                                min(polity_annual$year)))) +
+  coord_flip() 
+
+```
+
+### Svolik institutions data
+
+Some of the graphs in the book make use of data on institutions in non-democratic regimes collected by Milan Svolik [@Svolik2012].  The original data can be found [here](http://campuspress.yale.edu/svolik/the-politics-of-authoritarian-rule/). For more information on the included variables, use `?svolik_institutions`.
+
+```{r svolik_institutions, include = FALSE}
+
+svolik_institutions <- PoliticalDatasets::SvolikInstitutions %>%
+  select(country_name,
+         GWn,
+         year,
+         military:party,
+         svolik_country,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(svolik_institutions, overwrite = TRUE)
+
+```
+
+This dataset includes information about military, party, and executive and legislative control in non-democratic regimes:
+
+```{r svolik_graphs, fig.height=25}
+
+ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(party, 
+                                            "banned", 
+                                            "single"), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "", 
+       alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Party restrictions") +  
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() 
+
+ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(military, 
+                                            "personal", 
+                                            "corporate", 
+                                            "indirect"), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "", 
+       alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Type of military control") +  
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() 
+
+ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(legislative, 
+                                            "none", 
+                                            "unelected or appointed", 
+                                            "one party or candidate per seat",
+                                            "nonpartisan",
+                                            "largest party controls more than 75% of seats"), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "", 
+       alpha = "In Gleditsch and Ward's \nsystem of states", 
+       fill = "Type of legislative control") +  
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() 
+
+```
+
+### PIPE
+
+In a few graphs I use some variables from the Political Institutions and Political Events dataset compiled by Adam Przeworski [@Przeworski2013]. The original data is available [here](https://sites.google.com/a/nyu.edu/adam-przeworski/home/data). This contains information about suffrage and elections in a large number of countries; for details on the included variables, type `?PIPE`.
+
+```{r PIPE, include = FALSE}
+
+PIPE <- PoliticalDatasets::PIPE %>%
+  select(country_name,
+         GWn,
+         year,
+         f,
+         f_simple,
+         oth_exclusions,
+         legelec,
+         preselec,
+         eligible_pr,
+         participation_f,
+         turnout_leg, 
+         turnout_pres,
+         leg_composition,
+         leg_composition_simple,
+         coups,
+         countryn,
+         GWc,
+         cown:in_system) %>%
+  rename(przeworski_country = countryn) %>%
+  mutate_at(funs(ifelse(. == -1, NA, .)), 
+            .cols = c("f", 
+                      "f_simple",
+                      "oth_exclusions",
+                      "legelec",
+                      "preselec",
+                      "eligible_pr",
+                      "participation_f",
+                      "turnout_leg",
+                      "turnout_pres",
+                      "leg_composition",
+                      "leg_composition_simple",
+                      "coups")) %>%
+  reshape2::melt(measure.vars = c("f",
+                                  "oth_exclusions",
+                                  "legelec",
+                                  "preselec",
+                                  "eligible_pr",
+                                  "participation_f",
+                                  "turnout_leg",
+                                  "turnout_pres",
+                                  "leg_composition",
+                                  "coups"), 
+                 na.rm = TRUE) %>%
+  reshape2::dcast(... ~ variable) %>%
+  select(country_name,
+         GWn,
+         year,
+         f,
+         f_simple,
+         oth_exclusions,
+         legelec,
+         preselec,
+         eligible_pr,
+         participation_f,
+         turnout_leg, 
+         turnout_pres,
+         leg_composition,
+         leg_composition_simple,
+         coups,
+         przeworski_country,
+         GWc,
+         cown:in_system) %>% 
+  as_tibble() 
+
+devtools::use_data(PIPE, overwrite = TRUE)
+
+```
+
+This has measure has some errors and problems, but it's still quite interesting. Here's a plot of the restrictions on the franchise:
+
+```{r PIPE_plot, fig.height = 30, dependson=-1}
+
+data <- PIPE %>%
+  group_by(country_name) %>%
+  arrange(year) %>%
+  mutate(total_elections = preselec + legelec,
+         total_elections = ifelse(is.na(total_elections) & !is.na(f),
+                                  0,
+                                  total_elections)) %>%
+  filter(!is.na(total_elections)) %>%
+  mutate(cumulative_elections = cumsum(total_elections),
+         f = ifelse(max(cumulative_elections) == 0 & is.na(f),
+                    0,
+                    f)) %>%
+  ungroup() %>%
+  mutate(f_male = ifelse(f < 10, 
+                           f,
+                           round(f/10)),
+         f_female = ifelse(f < 10, 
+                           0,
+                           f %% 10),
+         f_male = ifelse(f_male %in% c(0,1), f_male, f_male + 1),
+         f_male = ifelse(is.na(f_male) & (cumulative_elections >= 1), 
+                         2, 
+                         f_male),
+         f_female = ifelse(f_male == 2, 0, f_female),
+         f_female = factor(f_female, labels = c("0-No inclusion / not indicated",
+                                                "1-Narrower than men",
+                                                "2-Equal to men")),
+         f_male = factor(f_male,
+                         labels = c("0-No suffrage",
+                                    "1-Estate",
+                                    "2-Subnational",
+                                    "3-Property only",
+                                    "4-(Property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles) 
+                                    AND literacy",
+                                    "5-Property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles",
+                                    "6-Literacy only
+                                    OR (Literacy 
+                                    OR property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles)",
+                                    "7-All the economically independent",
+                                    "8-All"),
+         ordered = TRUE)
+)
+
+
+ggplot(data = data,
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = f_male,
+                alpha = f_female)) +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  labs(x = "",
+       alpha = "Female inclusion",
+       fill = "Type of franchise") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 1),
+         alpha = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(PIPE$year[ PIPE$year %% 25 == 0],
+                                max(PIPE$year),
+                                min(PIPE$year)))) +
+  scale_alpha_discrete(range = c(0.3,1)) +
+  coord_flip()
+
+```
+
+### LIED
+
+The Lexical Index of Democracy and Autocracy [@SkaaningGerring2015] extends and corrects the PIPE dataset, and it provides an independent measure of male and female suffrage, as well as measures of whether the executive is elected, there is an elected assembly, and a few other variables. For details on included variables, type `?lied`. The original dat and codebook are available [here](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/29106)
+
+```{r LIED, include = FALSE}
+
+lied <- PoliticalDatasets::lied %>%
+  select(country_name, 
+         year, 
+         GWn,
+         male_suffrage:lexical_index,
+         regime,
+         lied_country,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(lied, overwrite = TRUE)
+
+```
+
+Here's the suffrage picture using LIED data:
+
+```{r lied_suffrage, fig.height = 30}
+
+data <- lied
+
+ggplot(data = data %>%
+         mutate(male_suffrage = (male_suffrage > 0),
+                female_suffrage = (female_suffrage > 0)),
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = male_suffrage,
+                alpha = female_suffrage)) +
+  labs(x = "",
+       alpha = "Female inclusion?",
+       fill = "Full male suffrage?") +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_legend(title.position = "top", ncol = 1),
+         alpha = guide_legend(title.position = "top", ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(lied$year[ lied$year %% 25 == 0],
+                                max(lied$year),
+                                min(lied$year)))) +
+  scale_alpha_discrete(range = c(0.3,1)) +
+  coord_flip()
+```
+
+The LIED data and the PIPE data differ subtly, due to coding differences:
+
+```{r comparison}
+
+data <- full_join(PIPE %>% 
+                    select(country_name,GWn,year,f_simple,f),
+                  lied %>%
+                    select(country_name,GWn,year,male_suffrage,female_suffrage)) %>%
+  mutate(inconsistent = (male_suffrage == 1 & female_suffrage == 1 & f != 72) |
+           (male_suffrage == 1 & female_suffrage == 0 & !(f %in% c(7,71,NA))))
+
+data %>%
+  filter(inconsistent) %>%
+  group_by(country_name, f_simple, f, male_suffrage, female_suffrage) %>%
+  summarise(min_year = min(year), max_year = max(year), num_years = n()) %>%
+  knitr::kable(col.names = c("Country", 
+                             "PIPE franchise (simplified)", 
+                             "PIPE franchise (full)",
+                             "LIED male suffrage",
+                             "LIED female suffrage",
+                             "Min year",
+                             "Max year",
+                             "Num. years"))
+  
+```
+
+## Leader data
+
+A number of graphs in the book use data on leaders.
+
+### Archigos
+
+The main leader data used is the Archigos dataset of Gleditsch, Goemans, and Chiozza [@GoemansGleditschChiozza2009]. The original data is available [here](http://www.rochester.edu/college/faculty/hgoemans/data.htm); type `?archigos` for more info.
+
+```{r archigos, include = FALSE}
+archigos <- PoliticalDatasets::archigos2014 %>%
+  select(country_name, 
+         GWn, 
+         leader, 
+         obsid, 
+         leadid,
+         startdate:deathdate,
+         GWc,
+         region:lat) %>%
+  as_tibble() %>%
+  mutate(leader = stringr::str_conv(leader, "ASCII"))
+
+devtools::use_data(archigos, overwrite = TRUE)
+
+```
+
+We can plot the leaders in each country:
+
+```{r archigos_plot_1, fig.height=30}
+
+ggplot(data = archigos, 
+       aes(x = forcats::fct_rev(reorder(country_name, startdate, FUN = min)),
+           y = startdate)) +
+  geom_point(alpha = 0.2, color = "red") +
+  geom_text(aes(label = leader), check_overlap = TRUE, size = 2) +
+  labs(x = "") +
+  theme_bw() +
+  coord_flip() 
+
+```
+
+### Svolik
+
+We also have leader data from Svolik [@Svolik2012], which is only available for those regimes Svolik codes as non-democratic. Svolik bases his data on an earlier version of Archigos, but he also codes the political affiliations of earlier and later leaders; type `?svolik_leader` for more info. 
+
+```{r svolik_leader, include = FALSE}
+svolik_leader <- PoliticalDatasets::SvolikLeader %>%
+  select(country_name, 
+         GWn,
+         leader,
+         startdate,
+         enddate,
+         leadid, 
+         entry:death,
+         entry_summary,
+         exit_summary,
+         censoring:consecutive,
+         svolik_country,
+         GWc,
+         cown:in_system) %>%
+  as_tibble() 
+
+devtools::use_data(svolik_leader, overwrite = TRUE)
+```
+
+Here's what the aggregate data looks like:
+
+```{r, svolik_plot_1, fig.height=25}
+
+ggplot(data = svolik_leader, 
+       aes(x = forcats::fct_rev(reorder(country_name, startdate, FUN = min)),
+           y = startdate)) +
+  geom_point(alpha = 0.4, aes(color = pol_aff, shape = entry_summary)) +
+  geom_text(aes(label = leader, color = pol_aff), 
+            check_overlap = TRUE, size = 2) +
+  labs(x = "",
+       color = "Political affiliation",
+       shape = "Mode of entry into office") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(color = guide_legend(title.position = "top", ncol = 2),
+         shape = guide_legend(title.position = "top", ncol = 2)) +
+  coord_flip() 
+
+```
+
+## Coup data
+
+There are two sources for coup data we can use. The first is from Powell and Thyne [@PowellThyne2011]. This data is continuously updated; the original source is available [here](http://www.uky.edu/~clthyn2/coup_data/powell_thyne_coups_final.txt).
+
+```{r powell_thyne, include = FALSE}
+
+powell_thyne <- PoliticalDatasets::PowellThyne %>%
+  select(country_name,
+         GWn,
+         year,
+         date,
+         coup,
+         attempt_type,
+         powell_country,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(powell_thyne, overwrite = TRUE)
+
+```
+
+Here is what the data looks like:
+
+```{r coups_plot, fig.height=25}
+
+ggplot(data = powell_thyne, 
+       aes(x = forcats::fct_rev(country_name),
+           y = date)) +
+  geom_point(aes(color = attempt_type)) +
+  labs(x = "",
+       color = "Attempt type") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_flip() 
+
+```
+
+Though this dataset contains info on all recent coups, it does not show coups earlier than 1950. The PIPE dataset contains rougher info on successful coups before then:
+
+```{r coups_plot_2, fig.height=25}
+
+
+ggplot(data = PIPE %>%
+         filter(coups > 0) ,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = as.factor(coups))) +
+  labs(x = "",
+       color = "Number of coups") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_flip()
+
+```
+
+This data is not correlated with Powell and Thyne's data, though:
+
+```{r coup_correlations, fig.height=30}
+
+data <- full_join(PIPE %>%
+                    filter(coups > 0) %>%
+                    select(country_name, 
+                           GWn,
+                           year,
+                           coups),
+                  powell_thyne %>%
+                    filter(coup == 2) %>%
+                    group_by(country_name, 
+                             GWn,
+                             year) %>%
+                    summarise(n = n())) %>%
+  mutate_at(funs(ifelse(is.na(.),0,.)), .cols = c("coups","n")) %>%
+  rename(pipe_coups = coups, powell_coups = n) 
+
+cor(data$pipe_coups, data$powell_coups, use = "pairwise")
+
+data %>%
+  filter(year >= 1950, 
+         year <= 2008,
+         pipe_coups != powell_coups) %>%
+  count(pipe_coups, powell_coups)  %>%
+  knitr::kable(col.names = c("Number of coups in PIPE", 
+                             "Number of coups in Powell-Thyne", 
+                             "Number of country-years with discrepancies"),
+               caption = "Country-years where PIPE disagrees with Powell-Thyne in the 1950-2008 period")
+
+data %>%
+  filter(year >= 1950, 
+         year <= 2008,
+         pipe_coups == powell_coups) %>%
+  count(pipe_coups, powell_coups) %>%
+  knitr::kable(col.names = c("Number of coups in PIPE", 
+                             "Number of coups in Powell-Thyne", 
+                             "Number of country-years where they agree"),
+               caption = "Country-years where PIPE agrees with Powell-Thyne in the 1950-2008 period")
+  
+data %>%
+  filter(year >= 1950, 
+         year <= 2008,
+         pipe_coups != powell_coups) %>%
+  knitr::kable(col.names = c("Country","GWn","year", "Number of coups in PIPE", "Number of coups in Powell-Thyne"))
+
+data <- bind_rows(PIPE %>% 
+                    filter(coups > 0) %>%
+                    select(country_name, 
+                           GWn,
+                           year,
+                           coups) %>%
+                    mutate(source = "PIPE"),
+                  powell_thyne %>%
+                    filter(coup == 2) %>%
+                    group_by(country_name, 
+                             GWn,
+                             year) %>%
+                    summarise(coups = n()) %>%
+                    mutate(source = "Powell-Thyne"))
+                  
+
+ggplot(data = data %>%
+         filter(coups > 0) ,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = source), alpha = 0.3) +
+  labs(x = "",
+       color = "Source") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_flip()
+
+```
+
+
+## Elections data
+
+There are two sources of election data. The first is from the National Elections in Democracy and Autocracy (NELDA) dataset [@Hyde2011]. We use only a minimal selection of columns indicating the dates and types of elections; for details of the included variables, type `?nelda`. The original data is available [here]().
+
+```{r nelda, include=FALSE}
+
+nelda <- PoliticalDatasets::nelda %>% 
+  select(country_name, 
+         GWn, 
+         year, 
+         electionid, 
+         types,
+         GWc,
+         cown:in_system)
+
+devtools::use_data(nelda, overwrite = TRUE)
+
+```
+
+This data is available for the following countries:
+
+```{r nelda_plot, fig.height=25}
+
+ggplot(data = nelda,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = types), 
+             alpha = 0.3) +
+  labs(x = "",
+       color = "Election type") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(color = guide_legend(title.position = "top")) +
+  coord_flip()
+
+```
+
+There is also election data in PIPE:
+
+```{r pipe_election, fig.height = 30}
+
+data <- PIPE %>%
+  select(country_name,
+         year,
+         preselec,
+         legelec) %>%
+  reshape2::melt(measure.vars = c("preselec",
+                                  "legelec")) %>%
+  filter(value > 0) %>%
+  rename(types = variable,
+         num_elections = value) %>%
+  mutate(types = plyr::mapvalues(types,
+                                 from = c("preselec",
+                                          "legelec"),
+                                 to = c("Executive",
+                                 "Legislative/Parliamentary")),
+         source = "PIPE") %>% 
+  bind_rows(nelda %>%
+              group_by(country_name,
+                       year,
+                       types) %>%
+              summarise(num_elections = n()) %>%
+              mutate(source = "NELDA"))
+
+ggplot(data = data,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = source, shape = types), 
+             alpha = 0.3) +
+  labs(x = "",
+       shape = "Election type",
+       color = "Dataset") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(color = guide_legend(title.position = "top")) +
+  coord_flip()
+  
+```
+
+This data is highly but not perfectly correlated with NELDA; mostly it is a matter of NELDA picking up more elections than PIPE.
+
+```{r pipe_nelda_correlations}
+
+data2 <- data %>% 
+  reshape2::dcast(country_name + year ~ source, 
+                  fun.aggregate = sum, 
+                  value.var = "num_elections")
+
+nelda_shell <- nelda %>% 
+  group_by(country_name) %>%
+  do(data.frame(year = min(.$year):max(.$year))) %>%
+  ungroup()
+     
+data2 <- inner_join(nelda_shell, data2) %>%
+  filter(year <= 2008)
+
+cor(data2$NELDA, data2$PIPE)
+
+data2 %>% 
+  count(NELDA, PIPE, NELDA < PIPE, NELDA > PIPE) %>%
+  ungroup() %>%
+  mutate(total = sum(n), prop = n/total) %>%
+  group_by(`NELDA > PIPE`, `NELDA < PIPE`) %>%
+  mutate(prop_2 = sum(prop),
+         prop = scales::percent(prop),
+         prop_2 = scales::percent(prop_2)) %>%
+  arrange(`NELDA > PIPE`,`NELDA < PIPE`) %>% 
+  knitr::kable(col.names = c("NELDA count of elections in country-year", 
+                             "PIPE count of electios in country-year",
+                             "NELDA > PIPE",
+                             "NELDA < PIPE",
+                             "Number of elections in group",
+                             "Total elections",
+                             "Proportion of total",
+                             "Proportion of group")) 
+
+```
+
+The book thus provides the dataset `all_elections` as a convenience; for more info, type `?all_elections`
+
+```{r all_elections, include=FALSE}
+
+all_elections <- data %>%
+  as_tibble()
+
+devtools::use_data(all_elections, overwrite = TRUE)
+rm(all_elections)
+
+```
+
+## Economic data
+
+### GDP per capita
+
+Economic data on GDP per capita comes from several sources: the Maddison project [@Maddison2013], the Penn World Tables versions 8 and 8.1 [@Feenstra2013], the World Bank's  [Development Indicators](http://data.worldbank.org/), and a dataset of extended GDP values by Kristian Gleditsch [@Gleditsch2002GDP]. The original data for the Maddison project is available [here](http://www.ggdc.net/maddison/maddison-project/home.htm); the Penn World Tables (all versions) is available [here](www.ggdc.net/pwt); and the Gleditsch dataset is available [here](http://privatewww.essex.ac.uk/~ksg/exptradegdp.html). These are bundled into a single dataset with information about the source and the type of GDP estimate; it is worth noting that these estimates [sometimes differ substantially](http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html), and they must be used with some care. (For a quick guide to the different types of measures, see the helpful chart at the [Penn World Table website](www.ggdc.net/pwt)). Nevertheless, for this books purposes, a simple median of these different measures works fine.
+
+```{r economic_data, include = FALSE}
+
+economic_data <- PoliticalDatasets::economic.data
+
+devtools::use_data(economic_data, overwrite = TRUE)
+
+```
+
+Here's what they look like, per country:
+
+```{r economic_data_super_plot, fig.height = 40, fig.width=20}
+
+ggplot(data = economic_data %>% 
+         filter(in_system) %>%
+         mutate(variable_trunc = stringr::str_trunc(as.character(variable), 40, "right")), 
+       aes(x = year,
+           y = reorder(country_name, per_capita))) +
+  geom_tile(aes(alpha = per_capita)) +
+  labs(x= "", 
+       y = "",
+       alpha = "Per capita income") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  scale_alpha_continuous(trans = "log", labels = scales::dollar) +
+  facet_wrap(~variable_trunc, ncol = 5) 
+
+```
+
+### Inequality data
+
+The inequality data is a summary of the Standardized World Income Inequality Database [@Solt2009; @Solt2016], version 5.0. The original data is available [here](http://fsolt.org/swiid/). For more info, type `?swiid_summary_5`.
+
+```{r inequality_data, include=FALSE}
+
+swiid_summary_5 <- swiid.summary.5.0 %>%
+  select(country_name,
+         GWn,
+         year,
+         variable,
+         mean_value:pct975,
+         swiid_country,
+         GWc:in_system)
+
+devtools::use_data(swiid_summary_5, overwrite = TRUE)
+
+```
+
+These come with measures of uncertainty, and are available for the following country-years:
+
+```{r inequality_plot, fig.height=25}
+
+ggplot(data = swiid_summary_5 %>% 
+         filter(in_system, 
+                variable %in% c("gini_net", "gini_market")), 
+       aes(x = year,
+           y = reorder(country_name, mean_value))) +
+  geom_tile(aes(alpha = mean_value)) +
+  labs(x= "", 
+       y = "",
+       alpha = "Gini") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  scale_alpha_continuous() +
+  facet_wrap(~variable, ncol = 2) +
+  scale_x_continuous(breaks = unique(c(swiid_summary_5$year[ swiid_summary_5$year %% 10 == 0], 
+                                max(swiid_summary_5$year), 
+                                min(swiid_summary_5$year))))
+
+```
+
+## Violence data
+
+### Repression data
+
+The data on repression comes from a latent variable index of repression (or, more precisely, of violations of physical integrity rights) created by Christopher Fariss [@Fariss2014]. The data also includes a variety of additional measures of repression from other sources; type `?fariss` for more info.
+
+```{r fariss, include = FALSE}
+
+
+fariss <- PoliticalDatasets::fariss %>% 
+  select(country_name,
+         GWn,
+         year,
+         starts_with("latent"),
+         NAME,
+         -CIRI:-killing,
+         GWc,
+         cown:in_system) %>%
+  rename(fariss_country = NAME)
+  
+devtools::use_data(fariss, overwrite = TRUE)
+
+```
+
+Here's what the index looks like (more repressive periods in red):
+
+```{r fariss_plot, fig.height = 30}
+
+ggplot(data = fariss, 
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_tile(aes(fill = latentmean)) +
+  scale_fill_gradient2() +
+  labs(x = "",
+       fill = "Degree of repression \nviolations of physical integrity
+       (lower is more repressive)") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_flip() 
+```
+
+### War data
+
+For a number of graphs, I use version 2 of a list of wars compiled by Gleditsch [@Gleditsch2004], and available [here](http://privatewww.essex.ac.uk/~ksg/expwar.html). This comes in two forms: as a list of warring states, per year (`all_war_participants_yearly`, includingboth civil and interstate wars), and as a list of dyads (`interstate_dyads_yearly`, interstate wars only).
+
+```{r war_data, include = FALSE}
+
+interstate_dyads_yearly <- PoliticalDatasets::interstate_dyads_yearly %>%
+  ungroup() %>%
+  select(-starts_with("intnl"),
+         -starts_with("side"))
+
+all_war_participants_yearly <- PoliticalDatasets::all_war_participants_yearly %>%
+  ungroup()
+
+devtools::use_data(interstate_dyads_yearly, overwrite = TRUE)
+devtools::use_data(all_war_participants_yearly, overwrite = TRUE)
+
+```
+
+These data are available for the following countries:
+
+```{r war_data_plot, fig.height=25}
+
+ggplot(data = all_war_participants_yearly, 
+       aes(x = year,
+           y = forcats::fct_rev(forcats::fct_infreq(country_name)))) +
+  geom_tile(aes(alpha = deaths+1, fill = type)) +
+  labs(x= "", 
+       y = "",
+       alpha = "Total deaths",
+       fill = "War type") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  scale_alpha_continuous(trans = "log", labels = round) +
+  scale_x_continuous(breaks = unique(c(all_war_participants_yearly$year[ all_war_participants_yearly$year %% 10 == 0], 
+                                max(all_war_participants_yearly$year), 
+                                min(all_war_participants_yearly$year))))
+
+```
+
+
+### Violent and Non-violent campaigns
+
+The data on violent and non-violent campaigns comes from the NAVCO dataset version 2.0 [@ChenowethLewis2013]. The original data is avialable [here](http://www.du.edu/korbel/sie/research/chenow_navco_data.html). Only a small selection of the variables in the original dataset are included; type `?navco_2` for more info. 
+
+```{r campaign_data, include = FALSE}
+
+navco_2 <- PoliticalDatasets::navco2.0 %>%
+  select(country_name,
+         location,
+         target,
+         GWn,
+         year,
+         id, 
+         campaign, 
+         navco1designation,
+         prim_method,
+         camp_goals,
+         success,
+         camp_size,
+         GWc:in_system)
+
+
+devtools::use_data(navco_2, overwrite = TRUE)
+
+```
+
+These data ara available as for the following countries and campaigns:
+
+```{r campaign_data_plot, fig.height = 40}
+
+ggplot(data = navco_2 %>%
+         mutate(campaign = stringr::str_trunc(paste0(country_name, ": ", campaign), 40, "right"),
+                camp_size = ifelse(camp_size < 0, NA, camp_size)), 
+       aes(x = year,
+           y = forcats::fct_rev(campaign),
+           fill = factor(prim_method, 
+                              labels = c("Primarily violent","Primarily nonviolent")),
+           alpha = factor(success,
+                               labels = c("Unsuccessful","Successful"),
+                               ordered = TRUE))) +
+  geom_tile() +
+  geom_point(aes(size = camp_size,
+                 color = factor(prim_method, 
+                              labels = c("Primarily violent","Primarily nonviolent")))) +
+  labs(x= "", 
+       y = "",
+       alpha = "Success?",
+       fill = "Primary method of campaign",
+       color = "Primary method of campaign",
+       size = "Size of campaign") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top")) 
+
+```
+
+## Map data
+
+Some of the graphs in the text make use of map data. You can access this data by typing `world`. This map data represent country borders as of 2015; for historical country borders, you would need to use a package like `cshapes`.
+
+```{r world, include = FALSE}
+
+world <- PoliticalDatasets::world
+
+devtools::use_data(world, overwrite = TRUE)
+
+```
+
+Here's an example of how to use the map data, plotting repression in 2013 throughout the world:
+
+```{r repression_map }
+
+world <- world %>% 
+  filter(id != "Antarctica")
+
+data <- fariss %>% 
+  filter(year == 2013)
+
+library(ggalt)
+
+ggplot() + geom_map(aes(fill = latentmean,
+                        map_id = country_name),
+                    map = world,
+                    data = data) + 
+  geom_path(data = world,
+            aes(y = lat, x = long, group = group)) +
+  scale_fill_gradient2(mid = "lightgrey") +
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Degree of repression
+       or violations of personal integrity
+       (lower is worse)",
+       x = "",
+       y = "") + 
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_proj("+proj=wintri") +
+  scale_y_continuous(breaks=NULL) + 
+  scale_x_continuous(breaks=NULL) +
+  theme(legend.position = "bottom")
+
+
+```
+
+We can also use the package `cshapes` to plot earlier years, though this makes things more complicated. Here's repression in 1967, the height of repression during the cultural revolution in CHina and the civil rights movement in the USA:
+
+```{r repression_cshapes}
+
+library(maptools)
+library(rgeos)
+
+world_1967 <- cshapes::cshp(as.Date("1967-1-1")) %>%
+  fortify(region = "GWCODE") %>%
+  mutate(GWn = id)
+
+ggplot() + 
+  geom_path(data = world,
+            aes(y = lat, x = long, group = group)) +
+  geom_map(aes(fill = latentmean,
+               map_id = GWn),
+           map = world_1967,
+           data = fariss %>% filter(year == 1967)) + 
+  geom_path(data = world_1967,
+            aes(y = lat, x = long, group = group)) +
+  scale_fill_gradient2(mid = "lightgrey") +
+  theme_minimal() + 
+  theme(legend.position = "bottom") + 
+  labs(fill = "Degree of repression
+       or violations of personal integrity
+       (lower is worse)",
+       x = "",
+       y = "") + 
+  guides(fill = guide_legend(title.position = "top")) +
+  coord_proj("+proj=wintri") +
+  scale_y_continuous(breaks=NULL) + 
+  scale_x_continuous(breaks=NULL) +
+  theme(legend.position = "bottom")
+
+```
+
+## Data documentation
+
+Finally, we document all the data:
+
+```{r document_all, cache.rebuild=TRUE}
+
+label_data <- readr::read_csv("data_labels.csv")
+
+library(documenteR)
+
+doc_skeleton(find_all_datasets("AuthoritarianismBook"), label_data = label_data)
+
+devtools::document()
+```
+
+## References

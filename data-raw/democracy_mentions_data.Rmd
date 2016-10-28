@@ -1,0 +1,362 @@
+---
+title: "Clean Up and Test Democracy Mentions Data"
+author: "Xavier Marquez"
+date: "`r Sys.Date()`"
+bibliography: source_refs.bib
+output: 
+  html_document: 
+    keep_md: yes
+    self_contained: no
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE,
+                      cache.rebuild = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+
+```
+
+## Raw data description
+
+The raw data consists of all the mentions of democracy in constitutional documents I was able to extract from the texts gathered by the Comparative Constitutions Project as of 2015. 
+
+### Loading and cleanup
+
+```{r loading}
+library(tidyverse)
+library(stringr)
+library(knitr)
+
+democracy_mentions <- read_csv("../../../../Data/Democracy mentions/democracy.mentions.csv",
+                               col_types = cols(YEAR = col_number(),
+                                                earliest.dem = col_number(),
+                                                first.constitution.in.force = col_number())) %>%
+  select(COUNTRY, YEAR, Name, EVENTTYPE, mentions) 
+
+# Some years have a decimal, which we eliminate
+democracy_mentions$YEAR <- as.integer(democracy_mentions$YEAR) 
+
+# This is what the mentions look like
+
+democracy_mentions %>%
+  select(COUNTRY,YEAR,Name,mentions) %>%
+  filter(!is.na(YEAR)) %>%
+  head() %>%
+  kable()
+
+```
+
+Once the data is loaded, we need to standardize the country names and make sure they correspond to the right country-names in the standard "international system":
+
+```{r convert_to_gw}
+
+library(lubridate)
+
+countries <- democracy_mentions %>% 
+  distinct(COUNTRY, YEAR) %>%
+  PoliticalDatasets::to_gw_system(country_col = "COUNTRY",
+                                  date_col = "YEAR",
+                                  match_condition = c("!(COUNTRY == 'Vietnam (Annam/Cochin China/Tonkin)' & country_name =='China' )",
+                                              "!(COUNTRY == 'Yugoslavia (Serbia)' & country_name =='Yugoslavia' & (YEAR < 1900 | YEAR == 2006))",
+                                              "(match_score == max(match_score))"))
+
+```
+
+The country names for some documents not matched, simply because the documents do not refer to independent countries, or the document does not contain a proper country name: 
+
+```{r not_matched}
+
+anti_join(democracy_mentions,countries) %>% 
+  group_by(COUNTRY, Name) %>% 
+  summarise(min(YEAR),max(YEAR),n()) %>%
+  knitr::kable()
+
+```
+
+We also need to clean up column names, trim whitespace, and eliminate duplicates:
+
+```{r further_cleanup}
+
+democracy_mentions <- countries %>%
+  left_join(democracy_mentions) %>% 
+  rename(year = YEAR, constitutional.event = EVENTTYPE, ccp_country = COUNTRY) %>% 
+  mutate(Name = str_trim(Name), 
+         Name = str_replace(Name,"\\.[0-9]$",""),
+         constitutional.event = factor(constitutional.event)) %>%
+  select(country_name, 
+         GWn, 
+         year,
+         Name,
+         constitutional.event,
+         mentions,
+         ccp_country,
+         GWc:in_system) 
+
+# We eliminate duplicates
+
+nrow(democracy_mentions)
+
+democracy_mentions <- distinct(democracy_mentions)
+
+nrow(democracy_mentions)
+
+```
+
+These countries had their names changed:
+
+```{r names_changed}
+
+democracy_mentions %>% 
+  filter(country_name != ccp_country) %>% 
+  group_by(country_name, ccp_country) %>%
+  summarise(min(year), max(year), n()) %>%
+  knitr::kable()
+  
+```
+
+And here's what the data looks like, per country:
+
+```{r country_plot, fig.height=25}
+
+library(forcats)
+
+ggplot(data = democracy_mentions) +
+  geom_count(aes(x=fct_rev(reorder(country_name,year,FUN = min)), y = year, color = fct_infreq(constitutional.event))) +
+  coord_flip() +
+  labs(x = "", color = "Constitutional\nevent", size = "Number of \ntext snippets") +
+  theme_bw() 
+
+```
+
+These are the countries where the first mention is not "new" or "interim" constitution:
+
+```{r not_new}
+
+democracy_mentions %>% 
+  group_by(country_name) %>%
+  filter(!(first(constitutional.event) %in% c("new","interim"))) %>% 
+  summarise(year = first(year), Name = first(Name), constitutional.event = first(constitutional.event)) %>%
+  knitr::kable()
+
+```
+
+These countries need to be fixed:
+
+```{r fixing_countries}
+
+fixed_countries <- democracy_mentions %>% 
+  group_by(country_name) %>%
+  filter(!(first(constitutional.event) %in% c("new","interim"))) %>% 
+  summarise_all(funs(first(.))) %>%
+  mutate(year = c(1959, 1959, 1908, 1981, 1948, 1957, 
+                  1968, 1978, 1959, 1875, 1962, 1970),
+         constitutional.event = c("new","new","new","new","new","new",
+                                  "new","new","new","new","new","new"))
+
+democracy_mentions <- bind_rows(democracy_mentions, fixed_countries) %>%
+  arrange(country_name, year, Name) %>%
+  mutate(has_mention = !is.na(mentions))
+  
+```
+
+These constitutions have the wrong names or the wrong events:
+
+```{r constitution_names}
+
+democracy_mentions %>%
+  ungroup() %>%
+  filter(!(constitutional.event %in% c("amendment"))) %>%
+  distinct(country_name, year, Name, constitutional.event, .keep_all = FALSE) %>%
+  group_by(country_name, year) %>%
+  filter(n() > 1) %>%
+  knitr::kable()
+
+```
+
+So we need to fix them:
+
+```{r constitution_names_fix}
+
+democracy_mentions <- democracy_mentions %>%
+  filter(!(country_name == "China" &
+             year == 1908 &
+             Name == "China_1908" &
+             constitutional.event == "non-event"),
+         !(country_name == "France" &
+             year == 1815 &
+             Name == "France's Constitution of 1815" &
+             constitutional.event == "new"),
+         !(country_name == "Israel" &
+             year == 1948 &
+             Name == "Israel's Constitution of 1948" &
+             constitutional.event == "non-event"),
+         !(country_name == "Myanmar (Burma)" &
+             year == 2008 &
+             Name == "Myanmar (Burma)'s Constitution of  2008" &
+             constitutional.event == "new"),
+         !(country_name == "Serbia" &
+             year == 2006 &
+             Name == "Yugoslavia (Serbia)'s Constitution 2006" &
+             constitutional.event == "new"))
+  
+
+```
+
+## Creation of the country-year dataset
+
+Now we need to create the country-year dataset. We use the `tidyr` package; I assume that amendments never delete mentions of democracy.
+
+```{r fill_in_missing}
+
+democracy_mentions_shell <- democracy_mentions %>% 
+  ungroup() %>%
+  distinct(country_name, 
+           GWn, 
+           year,
+           GW_startdate, 
+           GW_enddate) %>%
+  group_by(country_name, 
+           GWn,
+           GW_startdate,
+           GW_enddate) %>%
+  do(data.frame(year = min(.$year, year(.$GW_startdate[1])):ifelse(is.na(.$GW_enddate[1]), 2013, year(.$GW_enddate[1])))) %>%
+  ungroup() %>%
+  distinct() %>%
+  select(-GW_startdate, -GW_enddate)
+
+new_or_interim <- democracy_mentions  %>%
+  filter(constitutional.event %in% c("new","interim","reinstated")) %>% 
+  distinct(country_name, GWn, year, Name, constitutional.event) %>%
+  right_join(democracy_mentions_shell) %>%
+  arrange(country_name, year) %>%
+  mutate(const_num = ifelse(!is.na(constitutional.event), 1, 0)) %>%
+  group_by(country_name) %>%
+  fill(Name) %>%
+  mutate(const_num = cumsum(const_num)) %>%
+  select(-constitutional.event) %>%
+  rename(constitution_name = Name)
+
+constitutional_events <- democracy_mentions %>%
+  distinct(country_name, year, constitutional.event) 
+
+democracy_mentions_summary <- democracy_mentions %>%
+  group_by(country_name, year) %>%
+  summarise(mentions = paste(unique(na.omit(mentions)), collapse = ", ")) %>%
+  mutate(mentions = stringr::str_conv(mentions, "ASCII"),
+         mentions = stringr::str_trunc(mentions, 500, "right"),
+         mentions = ifelse(mentions == "", NA, mentions)) %>%
+  ungroup()  
+
+democracy_mentions_yearly <- democracy_mentions_shell %>%
+  left_join(new_or_interim) %>%
+  left_join(constitutional_events) %>%
+  left_join(democracy_mentions_summary) %>%
+  group_by(country_name, const_num, constitution_name) %>%
+  arrange(year) %>%
+  fill(mentions) %>%
+  mutate(has_mention = !is.na(mentions)) %>%
+  ungroup()
+
+rm(new_or_interim,
+   democracy_mentions_summary,
+   democracy_mentions_shell,
+   constitutional_events,
+   fixed_countries,
+   countries)
+
+```
+
+## Tests
+
+These are Venezuela's mentions, for example:
+
+```{r venezuela_mentions}
+
+democracy_mentions_yearly %>% 
+  filter(country_name == "Venezuela") %>% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %>%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %>%
+  arrange(const_num, min_year) %>%
+  knitr::kable()
+
+```
+
+And these are Malaysia's mentions:
+
+```{r malaysia_mentions}
+democracy_mentions_yearly %>% 
+  filter(country_name == "Malaysia") %>% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %>%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %>%
+  arrange(const_num, min_year) %>%
+  knitr::kable()
+
+```
+
+And these are New Zealand's mentions:
+
+```{r new_zealand_mentions}
+democracy_mentions_yearly %>% 
+  filter(country_name == "New Zealand") %>% 
+  group_by(country_name, constitution_name, const_num, has_mention, mentions) %>%
+  summarise(constitutional.event = first(constitutional.event), min_year = min(year), max_year = max(year)) %>%
+  arrange(const_num, min_year) %>%
+  knitr::kable()
+
+```
+
+And we can visualize the mentions:
+
+```{r democracy_plot, fig.height=25}
+
+data <- democracy_mentions_yearly %>%
+  mutate(constitutional.event = fct_lump(constitutional.event, 2))
+
+ggplot(data = data, 
+       aes(x=fct_rev(reorder(country_name,year,FUN = min)), 
+           y = year)) +
+  geom_tile(aes(fill = has_mention)) +
+  geom_point(aes(shape = constitutional.event)) +
+  coord_flip() +
+  labs(x = "", shape = "Constitutional\nevent", fill = "Does it mention democracy?") +
+  theme_bw() +
+  theme(legend.position = "top") +
+  guides(fill = guide_legend(title.position = "top"),
+         shape = guide_legend(title.position = "top"))
+
+```
+
+## Final setup
+
+We add back the info on system membership, and make sure that when constitutions do not exist, we indicate that.
+
+```{r final_setup}
+
+countries <- democracy_mentions_yearly %>% 
+  distinct(country_name, GWn, year) %>%
+  PoliticalDatasets::to_gw_system(country_col = "country_name", 
+                                  code_col = "GWn", 
+                                  code_type = "GWn") %>%
+  select(-country_name.x, -country_name.y) 
+
+democracy_mentions_yearly <- countries %>%
+  full_join(democracy_mentions_yearly) %>%
+  mutate(has_constitution = !is.na(constitution_name)) %>%
+  select(country_name, 
+         GWn, 
+         year, 
+         constitution_name,
+         const_num,
+         has_constitution,
+         constitutional.event,
+         has_mention,
+         mentions,
+         GWc:in_system) 
+
+devtools::use_data(democracy_mentions_yearly, overwrite = TRUE)
+rm(countries)
+```
+

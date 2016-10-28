@@ -1,0 +1,94 @@
+navbar:
+  title: ~
+  type: default
+  left:
+  - text: Datasets in this package
+    href: reference/index.html
+  - text: Vignettes
+    href: articles/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/xmarquez/AuthoritarianismBook
+
+articles:
+- title: Replication code and instructions for all figures
+  desc: Code and instructions to build and extend all the figures in the book
+  contents:
+  - ends_with("Chapter_1")
+  - Chapter_2
+  - Chapter_3
+  - Chapter_4
+  - Chapter_5
+  - Chapter_6
+  - Chapter_7
+  - Chapter_8
+  - Chapter_9
+  - ends_with("Chapter_10")
+  - ends_with("Chapter_11")
+- title: Additional material
+  desc: Code and instructions for building additional data or figures
+  contents:
+  - An_index_of_personal_power
+
+reference:
+- title: Democracy scores or indexes
+  desc: Numerical measures of the degree of democracy in particular countries.
+  contents:
+  - extended_uds
+  - democracy
+  - lied
+  - polity_annual
+  - vdem
+- title: Regime type datasets
+  desc: Qualitative judgments about the type of regime in particular countries.
+  contents:
+  - magaloni
+  - magaloni_extended
+  - kailitz_yearly
+  - all_gwf
+  - all_gwf_extended_yearly
+  - all_gwf_periods
+  - wahman_teorell
+- title: Regime institutions data
+  desc: Information about particular regime institutions in different countries.
+  contents:
+  - lied
+  - PIPE
+  - polity_annual
+  - svolik_institutions
+- title: Elections data
+  desc: Information about elections in most countries of the world throughout their history.
+  contents:
+  - all_elections
+  - nelda
+  - PIPE
+- title: Constitutional data
+  desc: Data about features of the constitutions of different countries throughout their history.
+  contents:
+  - democracy_mentions_yearly
+- title: Leader data
+  desc: Information about the effective leaders of different regimes since the last century.
+  contents:
+  - archigos
+  - svolik_leader
+- title: Personal power data
+  desc: Measures of the degree of personal power of particular leaders in different regimes since the last century.
+  contents:
+  - personal_scores
+- title: Violence and repression data
+  desc: Data about war, state violence, and anti-regime campaigns in different regimes.
+  contents:
+  - all_war_participants_yearly
+  - interstate_dyads_yearly
+  - fariss
+  - navco_2
+  - powell_thyne
+- title: Economic and demographic data
+  contents:
+  - economic_data
+  - population_data
+  - swiid_summary_5
+- title: Geographic data
+  desc: Map data, useful for plotting.
+  contents:
+  - world

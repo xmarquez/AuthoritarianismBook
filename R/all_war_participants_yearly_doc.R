@@ -1,0 +1,121 @@
+#' List of War Participants by Gleditsch.
+#'
+#' List of War Participants by Gleditsch, extended until 2004. Described fully in
+#' Gleditsch, Kristian. 2004. "A Revised List of Wars Between and Within
+#' Independent States, 1816-2002." International Interactions 30 (3): 231-62.
+#' \url{http://privatewww.essex.ac.uk/~ksg/expwar.html}.
+#'
+#' @section Variable descriptions:
+#'
+#' \describe{ \item{warid}{War ID. Character with 605 distinct values. Most
+#' common: ECW2.1-2480 (73), EIW2.1-535-IW-139 (108), EIW2.1-600-IW-163 (69). NAs
+#' = 0.}
+#'
+#'
+#' \item{GWn}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
+#' Numeric. Max = 920, min = 2, distinct = 141, mean = 437.239, sd = 259.251, NAs
+#' = 0.}
+#'
+#'
+#' \item{sdate}{Start date of the war. Date. Max = 2009-01-28, min = 1816-08-26,
+#' distinct = 760, NAs = 0.}
+#'
+#'
+#' \item{edate}{End date of the war. Date. Max = 2010-12-31, min = 1816-08-30,
+#' distinct = 686, NAs = 0.}
+#'
+#'
+#' \item{year}{Year. Numeric. Max = 2010, min = 1816, distinct = 195, mean =
+#' 1930.42, sd = 57.523, NAs = 0.}
+#'
+#'
+#' \item{warname}{Name of the war. Character with 604 distinct values. Most
+#' common: Iraqi Resistance (73), Vietnam War, Phase 2 (69), World War II (108).
+#' NAs = 0.}
+#'
+#'
+#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
+#' Character with 141 distinct values. Most common: CHN (191), FRN (179), UKG
+#' (205). NAs = 0.}
+#'
+#'
+#' \item{newcow}{newcow Character with 602 distinct values. Most common: ES-482
+#' (73), IW-139 (108), IW-163 (69). NAs = 12.}
+#'
+#'
+#' \item{cow94}{cow94 Character with 330 distinct values. Most common: IW-106
+#' (61), IW-139 (108), IW-163 (69). NAs = 1009.}
+#'
+#'
+#' \item{cow00}{cow00 Character with 371 distinct values. Most common: IS-106
+#' (61), IS-139 (108), IS-163 (69). NAs = 809.}
+#'
+#'
+#' \item{oldwid}{Old war ID. Numeric. Max = 5400, min = 105, distinct = 387, mean
+#' = 1664.508, sd = 1479.417, NAs = 717.}
+#'
+#'
+#' \item{deaths}{Estimated number of deaths. Numeric. Max = 7500000, min = 0,
+#' distinct = 346, mean = 104040.798, sd = 456824.181, NAs = 404.}
+#'
+#'
+#' \item{intnl}{Whether the war is internationalized (applies only to "intrstate"
+#' or "civil" wars). 0 = no, 1 = yes. Numeric. Max = 1, min = 0, distinct = 3,
+#' mean = 0.421, sd = 0.494, NAs = 1636.}
+#'
+#'
+#' \item{outcome}{Outcome of war: 1 = on winning side, 2 = on losing side, 3 =
+#' compromise/tie, 4 = war transformed into another type, 5 = ongoing at end of
+#' period, 6 = stalemate, 7 = conflict continues below war level, 8 = party
+#' changed sides. Numeric. Max = 8, min = 1, distinct = 9, mean = 2.319, sd =
+#' 1.692, NAs = 1.}
+#'
+#'
+#' \item{outcome_chr}{Character version of outcome. Character with 9 distinct
+#' values. Most common: 1 = on winning side (1394), 2 = on losing side (726), 3 =
+#' compromise/tie (270). NAs = 1.}
+#'
+#'
+#' \item{intnl_chr}{Character version of intnl. Character with 3 distinct values.
+#' Most common: Internationalized (598), Not internationalized (821). NAs = 1636.}
+#'
+#'
+#' \item{country_name}{Standardized country name. This is the same across all
+#' datasets in this package, so you can always join them by country_name and year.
+#' Character with 141 distinct values. Most common: China (191), France (179),
+#' United Kingdom (205). NAs = 0.}
+#'
+#'
+#' \item{type}{War type: civil (intrastate) or interstate. Character with 2
+#' distinct values. Most common: Civil (2013), Interstate (1042). NAs = 0.}
+#'
+#'
+#' \item{side}{Which side of the war was this state on? Numeric. Max = 2, min = 1,
+#' distinct = 2, mean = 1.158, sd = 0.365, NAs = 0.}
+#'
+#'
+#' \item{initiate}{Did this country initiate the war? 1 = initiated war, 2 = did
+#' not initiate war. Numeric. Max = 2, min = 1, distinct = 3, mean = 1.656, sd =
+#' 0.475, NAs = 2013.}
+#'
+#'
+#' \item{initiate_chr}{Character version of initiate. Character with 3 distinct
+#' values. Most common: Did not initiate war (684), Initiated war (358). NAs =
+#' 2013.}
+#'
+#'
+#' }
+#'
+#'
+#'
+#' @references
+#'
+#' Gleditsch, Kristian S. & Michael D. Ward. 1999. "Interstate System Membership:
+#' A Revised List of the Independent States since 1816." International
+#' Interactions 25: 393-413. The list can be found at
+#' \url{http://privatewww.essex.ac.uk/~ksg/statelist.html}
+#'
+#' Gleditsch, Kristian. 2004. "A Revised List of Wars Between and Within
+#' Independent States, 1816-2002." International Interactions 30 (3): 231-62.
+#' \url{http://privatewww.essex.ac.uk/~ksg/expwar.html}.
+"all_war_participants_yearly"

@@ -1,0 +1,13 @@
+base
+AuthoritarianismBook
+dplyr
+stringr
+tidyr
+readr
+knitr
+forcats
+ggplot2
+lubridate
+tidyverse
+tibble
+purrr

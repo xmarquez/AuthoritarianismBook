@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Xavier Marquez" />
+
+<meta name="date" content="2016-10-28" />
+
+<title>Data Sources for Non-democratic Politics Book</title>
+
+<script src="all_other_data_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="all_other_data_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="all_other_data_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="all_other_data_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="all_other_data_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="all_other_data_files/navigation-1.1/tabsets.js"></script>
+<link href="all_other_data_files/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="all_other_data_files/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Data Sources for Non-democratic Politics Book</h1>
+<h4 class="author"><em>Xavier Marquez</em></h4>
+<h4 class="date"><em>2016-10-28</em></h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#democracy-scores">Democracy scores</a><ul>
+<li><a href="#unified-democracy-scores">Unified Democracy Scores</a></li>
+<li><a href="#v-dem-varieties-of-democracy-dataset">V-Dem (Varieties of Democracy) Dataset</a></li>
+</ul></li>
+<li><a href="#population-data">Population data</a></li>
+<li><a href="#regime-classifications">Regime Classifications</a><ul>
+<li><a href="#magaloni-chu-and-min">Magaloni, Chu, and Min</a></li>
+<li><a href="#wahman-teorell-hadenius">Wahman, Teorell, Hadenius</a></li>
+<li><a href="#kailitz">Kailitz</a></li>
+<li><a href="#geddes-wright-and-frantz">Geddes, Wright, and Frantz</a></li>
+</ul></li>
+<li><a href="#regime-characteristics">Regime Characteristics</a><ul>
+<li><a href="#polity">Polity</a></li>
+<li><a href="#svolik-institutions-data">Svolik institutions data</a></li>
+<li><a href="#pipe">PIPE</a></li>
+<li><a href="#lied">LIED</a></li>
+</ul></li>
+<li><a href="#leader-data">Leader data</a><ul>
+<li><a href="#archigos">Archigos</a></li>
+<li><a href="#svolik">Svolik</a></li>
+</ul></li>
+<li><a href="#coup-data">Coup data</a></li>
+<li><a href="#elections-data">Elections data</a></li>
+<li><a href="#economic-data">Economic data</a><ul>
+<li><a href="#gdp-per-capita">GDP per capita</a></li>
+<li><a href="#inequality-data">Inequality data</a></li>
+</ul></li>
+<li><a href="#violence-data">Violence data</a><ul>
+<li><a href="#repression-data">Repression data</a></li>
+<li><a href="#war-data">War data</a></li>
+<li><a href="#violent-and-non-violent-campaigns">Violent and Non-violent campaigns</a></li>
+</ul></li>
+<li><a href="#map-data">Map data</a></li>
+<li><a href="#data-documentation">Data documentation</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="democracy-scores" class="section level2">
+<h2>Democracy scores</h2>
+<div id="unified-democracy-scores" class="section level3">
+<h3>Unified Democracy Scores</h3>
+<p>Several datasets of democracy scores are used in this book. The most commonly used scores are the Unified Democracy Scores of Pemstein, Meserve, and Melton <span class="citation">(Pemstein, Meserve, and Melton 2010)</span>, as extended by me <span class="citation">(Márquez 2016)</span>. A package to generate these scores, along with documentation, is available here: <a href="https://github.com/xmarquez/QuickUDS" class="uri">https://github.com/xmarquez/QuickUDS</a>.</p>
+<p>These extended unified democracy scores are available as <code>extended_uds</code>. (Simply type <code>extended_uds</code> to load the data). The main score used in the book to measure democracy is the variable <code>index</code> in this dataset. This is a 0-1 index of democracy that can be interpreted as a probability scale: values close to one mean that the country is almost certainly a democracy by current scholarly standards. This is available for a large number of country-years, including periods where the country may not have been considered a member of the system of states (indicated below by black dots):</p>
+<pre class="r"><code>library(tidyverse)
+
+ggplot(data = extended_uds, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = index)) +
+  geom_point(data = extended_uds %&gt;% filter(!in_system), show.legend = FALSE) +
+  scale_fill_gradient2(midpoint = 0.5) +
+  coord_flip() +
+  labs(x = &quot;&quot;, fill = &quot;UD Score&quot;) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="all_other_data_files/figure-html/uds_basic_characteristics-1.png" /><!-- --></p>
+<p>For more information about all the variables in this dataset, use <code>?extended_uds</code>.</p>
+<p>The UD scores are the result of a latent variable analysis of a large number of other democracy measures gathered by many different people. These democracy measures are also included in this package for convenience as the dataset <code>democracy</code>. For more information about all the variables in this dataset, use <code>?democracy</code>. The variable <code>index</code> in <code>extended_uds</code> is, by construction, highly but not perfectly correlated with all the other measures of democracy:</p>
+<pre class="r"><code>library(GGally)
+
+data &lt;- full_join(extended_uds, democracy)
+
+ggcorr(data %&gt;% 
+         select(index, arat_pmm:wahman_teorell_hadenius))</code></pre>
+<p><img src="all_other_data_files/figure-html/uds_correlations-1.png" /><!-- --></p>
+<p>For further discussion of the correlations between the index of democracy and other measures of democracy, see my paper <span class="citation">(Márquez 2016)</span>.</p>
+</div>
+<div id="v-dem-varieties-of-democracy-dataset" class="section level3">
+<h3>V-Dem (Varieties of Democracy) Dataset</h3>
+<p>I also use in the book a selection of variables from the Varieties of Democracy (V-Dem) project dataset <span class="citation">(Coppedge et al. 2015)</span>. The full dataset can be downloaded <a href="https://www.v-dem.net/en/">here</a>. The variables included in this package are the main democracy indexes, as well as indexes of civil society, executive constraints, and corruption. Use <code>?vdem</code> for documentation on the included variables.</p>
+</div>
+</div>
+<div id="population-data" class="section level2">
+<h2>Population data</h2>
+<p>Several graphs in the book make use of world population data going back to the 19th century for all members of the state system compiled by Kristian Gleditsch <span class="citation">(K. Gleditsch 2010)</span> and extended by me to the present day with the help of the population data available through the <a href="http://data.worldbank.org/">World Development Indicators</a>. I also use a dataset of world population compiled by Esteban Ortiz-Espina and Max Roser <span class="citation">(Ortiz-Ospina and Roser 2016)</span> to calculate the proportion of the world’s population represented by each country. Gleditsch’s original data is available <a href="http://privatewww.essex.ac.uk/~ksg/exppop.html">here</a>; Ortiz-Espina and Roser’s dataset is available <a href="https://ourworldindata.org/world-population-growth/">here</a>, including an extensive discussion of their sources.</p>
+<p>For more info on included variables, use <code>?population_data</code>. This data is available for a large number of countries, but it excludes periods when Gleditsch considers the country was not independent (indicated below by a lighter bar):</p>
+<pre class="r"><code>ggplot(data = population_data, 
+       aes(x = year)) +
+  geom_bar(aes(alpha = in_system, weight = pop), 
+           show.legend = FALSE,
+           width = 1) +
+  labs(x= &quot;&quot;, 
+       y = &quot;Country population (millions)&quot;,
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  facet_grid(country_name ~ ., switch = &quot;y&quot;) +
+  scale_y_continuous(labels = NULL, breaks = NULL) +
+  theme(strip.text.y = element_text(angle = 180),
+        strip.background = element_rect(fill = NA, color = NA),
+        panel.margin = unit(0, &quot;lines&quot;),
+        panel.border = element_rect(fill = NA))</code></pre>
+<p><img src="all_other_data_files/figure-html/basic_characteristics-1.png" /><!-- --></p>
+<p>The majority of the populations are too small to be visible in this graph; try the graph with <code>scale_y_log10(labels = NULL, breaks = NULL)</code> instead.</p>
+</div>
+<div id="regime-classifications" class="section level2">
+<h2>Regime Classifications</h2>
+<p>This book uses data from several political regime datasets. These do not use the same criteria to classify political regimes, and they do not always agree on given classifications.</p>
+<div id="magaloni-chu-and-min" class="section level3">
+<h3>Magaloni, Chu, and Min</h3>
+<p>Some of the graphs in the book use the “Autocracies of the World” dataset by Magaloni, Chu, and Min <span class="citation">(Magaloni, Chu, and Min 2013)</span>. The original data is available <a href="http://cddrl.fsi.stanford.edu/research/autocracies_of_the_world_dataset">here</a>. A selection of the variables in this dataset is available as <code>magaloni</code>. Use <code>?magaloni</code> for more detail about the included variables.</p>
+<p>The original dataset is available for the following countries:</p>
+<pre class="r"><code>ggplot(data = magaloni, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = regime_nr, alpha = in_system)) +
+  labs(x = &quot;&quot;, alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, fill = &quot;Regime type&quot;)  +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_fill_brewer(type = &quot;qual&quot;) +
+  scale_y_continuous(breaks = unique(c(magaloni$year[ magaloni$year %% 12 == 0], 
+                                max(magaloni$year), 
+                                min(magaloni$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/magaloni_plot_1-1.png" /><!-- --></p>
+<p>I have extended some of their classifications backwards in time with the help of the <code>duration_nr</code> variable in the original dataset; this “extended” version of the data is available as <code>magaloni_extended</code>:</p>
+<pre class="r"><code>ggplot(data = magaloni_extended, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = regime_nr, alpha = in_system)) +
+  labs(x = &quot;&quot;, alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, fill = &quot;Regime type&quot;)  +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_fill_brewer(type = &quot;qual&quot;) +
+  scale_y_continuous(breaks = unique(c(magaloni_extended$year[ magaloni_extended$year %% 25 == 0], 
+                                max(magaloni_extended$year), 
+                                min(magaloni_extended$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/magaloni_plot_2-1.png" /><!-- --></p>
+</div>
+<div id="wahman-teorell-hadenius" class="section level3">
+<h3>Wahman, Teorell, Hadenius</h3>
+<p>The personal power index makes use of the “Authoritarian Regimes Data Set”, version 5.0, by Axel Hadenius, Jan Teorell, &amp; Michael Wahman <span class="citation">(Wahman, Teorell, and Hadenius 2013)</span>. The original dataset can be downloaded <a href="https://sites.google.com/site/authoritarianregimedataset/data">here</a>. A selection of variables from this dataset is included as <code>wahman_teorell</code>; use <code>?wahman_teorell</code> for more detail on included variables.</p>
+<p>This dataset contains two different measures of regime type, and a couple of measures of personalism:</p>
+<pre class="r"><code>ggplot(data = wahman_teorell, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)), 
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(regime1ny, &quot;Democracy&quot;), alpha = in_system)) +
+  labs(x = &quot;&quot;, alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, fill = &quot;Regime type&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_fill_brewer(type = &quot;qual&quot;) +
+  scale_y_continuous(breaks = unique(c(wahman_teorell$year[ wahman_teorell$year %% 10 == 0], 
+                                max(wahman_teorell$year), 
+                                min(wahman_teorell$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/wahmann_teorell_plot_1-1.png" /><!-- --></p>
+<pre class="r"><code>ggplot(data = wahman_teorell, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(regimeny, &quot;Democracy&quot;), alpha = in_system)) +
+  labs(x = &quot;&quot;, alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, fill = &quot;Regime type&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(wahman_teorell$year[ wahman_teorell$year %% 10 == 0], 
+                                max(wahman_teorell$year), 
+                                min(wahman_teorell$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/wahmann_teorell_plot_1-2.png" /><!-- --></p>
+</div>
+<div id="kailitz" class="section level3">
+<h3>Kailitz</h3>
+<p>I also make use in several graphs and in the development of the personal power index of a measure of regime type developed by Steffen Kailitz <span class="citation">(Kailitz 2013)</span>. This dataset in particular contains an indicator of whether the regime was communist that is particularly useful. For more info on the included variables, use <code>?kailitz_yearly</code>.</p>
+<p>The measure is available for the following countries:</p>
+<pre class="r"><code>ggplot(data = kailitz_yearly, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = combined_regime, alpha = in_system)) +
+  labs(x = &quot;&quot;, 
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Regime type&quot;) +
+  coord_flip()  +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(kailitz_yearly$year[ kailitz_yearly$year %% 10 == 0], 
+                                max(kailitz_yearly$year), 
+                                min(kailitz_yearly$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/kailitz_yearly_plot_1-1.png" /><!-- --></p>
+</div>
+<div id="geddes-wright-and-frantz" class="section level3">
+<h3>Geddes, Wright, and Frantz</h3>
+<p>The most important measure of regime type used in the book was developed by Geddes, Wright, and Frantz <span class="citation">(Geddes, Wright, and Frantz 2014)</span>. The original data is available <a href="http://sites.psu.edu/dictators/">here</a>. This dataset comes in three versions: two country-year versions (<code>all_gwf</code> and <code>all_gwf_extended_yearly</code>) and a case version with (<code>all_gwf_periods</code>). <code>all_gwf_extended_yearly</code> extends Geddes, Wright, and Frantz’s regime classifications backwards using the information encoded in the start dates and end dates of the cases in the original dataset (<code>all_gwf_periods</code>). For details on the variables included in these datasets, use <code>?all_gwf</code>, <code>?all_gwf_extended_yearly</code>, and <code>?all_gwf_periods</code>.</p>
+<p>This contains one measure of regime type:</p>
+<pre class="r"><code>ggplot(data = all_gwf_extended_yearly, 
+       aes(x = forcats::fct_rev(reorder(country_name,year,FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = gwf_full_regimetype, alpha = in_system)) +
+  labs(x = &quot;&quot;, alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Regime type&quot;) +
+  coord_flip()  +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(all_gwf_extended_yearly$year[ all_gwf_extended_yearly$year %% 50 == 0], 
+                                max(all_gwf_extended_yearly$year), 
+                                min(all_gwf_extended_yearly$year)))) +
+  coord_flip()  </code></pre>
+<p><img src="all_other_data_files/figure-html/gwf_plot_1-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="regime-characteristics" class="section level2">
+<h2>Regime Characteristics</h2>
+<p>The book uses several measures of regime characteristics to create various graphs.</p>
+<div id="polity" class="section level3">
+<h3>Polity</h3>
+<p>Several graphs in the book use the Polity IV dataset <span class="citation">(Marshall, Gurr, and Jaggers 2010)</span> for its measures of regime characteristics rather than for its democracy measure. For details of the variables included, use</p>
+<p>It contains several measures of regime characteristics for a large number of countries (all states with populations greater than 500,000 people). Here I plot the executive recruitment score:</p>
+<pre class="r"><code>ggplot(data = polity_annual, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = exrec, alpha = in_system)) +
+  scale_fill_brewer(type = &quot;div&quot;, palette = &quot;RdBu&quot;) +
+  labs(x = &quot;&quot;, 
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Executive recruitment type&quot;) +  
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(polity_annual$year[ polity_annual$year %% 50 == 0], 
+                                max(polity_annual$year), 
+                                min(polity_annual$year)))) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/polity_plot_1-1.png" /><!-- --></p>
+</div>
+<div id="svolik-institutions-data" class="section level3">
+<h3>Svolik institutions data</h3>
+<p>Some of the graphs in the book make use of data on institutions in non-democratic regimes collected by Milan Svolik <span class="citation">(Svolik 2012)</span>. The original data can be found <a href="http://campuspress.yale.edu/svolik/the-politics-of-authoritarian-rule/">here</a>. For more information on the included variables, use <code>?svolik_institutions</code>.</p>
+<p>This dataset includes information about military, party, and executive and legislative control in non-democratic regimes:</p>
+<pre class="r"><code>ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(party, 
+                                            &quot;banned&quot;, 
+                                            &quot;single&quot;), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = &quot;div&quot;, palette = &quot;RdBu&quot;) +
+  labs(x = &quot;&quot;, 
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Party restrictions&quot;) +  
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/svolik_graphs-1.png" /><!-- --></p>
+<pre class="r"><code>ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(military, 
+                                            &quot;personal&quot;, 
+                                            &quot;corporate&quot;, 
+                                            &quot;indirect&quot;), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = &quot;div&quot;, palette = &quot;RdBu&quot;) +
+  labs(x = &quot;&quot;, 
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Type of military control&quot;) +  
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/svolik_graphs-2.png" /><!-- --></p>
+<pre class="r"><code>ggplot(data = svolik_institutions, 
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = forcats::fct_relevel(legislative, 
+                                            &quot;none&quot;, 
+                                            &quot;unelected or appointed&quot;, 
+                                            &quot;one party or candidate per seat&quot;,
+                                            &quot;nonpartisan&quot;,
+                                            &quot;largest party controls more than 75% of seats&quot;), 
+                alpha = in_system)) +
+  scale_fill_brewer(type = &quot;div&quot;, palette = &quot;RdBu&quot;) +
+  labs(x = &quot;&quot;, 
+       alpha = &quot;In Gleditsch and Ward&#39;s \nsystem of states&quot;, 
+       fill = &quot;Type of legislative control&quot;) +  
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(svolik_institutions$year[ svolik_institutions$year %% 10 == 0], 
+                                max(svolik_institutions$year), 
+                                min(svolik_institutions$year)))) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/svolik_graphs-3.png" /><!-- --></p>
+</div>
+<div id="pipe" class="section level3">
+<h3>PIPE</h3>
+<p>In a few graphs I use some variables from the Political Institutions and Political Events dataset compiled by Adam Przeworski <span class="citation">(Przeworski 2013)</span>. The original data is available <a href="https://sites.google.com/a/nyu.edu/adam-przeworski/home/data">here</a>. This contains information about suffrage and elections in a large number of countries; for details on the included variables, type <code>?PIPE</code>.</p>
+<p>This has measure has some errors and problems, but it’s still quite interesting. Here’s a plot of the restrictions on the franchise:</p>
+<pre class="r"><code>data &lt;- PIPE %&gt;%
+  group_by(country_name) %&gt;%
+  arrange(year) %&gt;%
+  mutate(total_elections = preselec + legelec,
+         total_elections = ifelse(is.na(total_elections) &amp; !is.na(f),
+                                  0,
+                                  total_elections)) %&gt;%
+  filter(!is.na(total_elections)) %&gt;%
+  mutate(cumulative_elections = cumsum(total_elections),
+         f = ifelse(max(cumulative_elections) == 0 &amp; is.na(f),
+                    0,
+                    f)) %&gt;%
+  ungroup() %&gt;%
+  mutate(f_male = ifelse(f &lt; 10, 
+                           f,
+                           round(f/10)),
+         f_female = ifelse(f &lt; 10, 
+                           0,
+                           f %% 10),
+         f_male = ifelse(f_male %in% c(0,1), f_male, f_male + 1),
+         f_male = ifelse(is.na(f_male) &amp; (cumulative_elections &gt;= 1), 
+                         2, 
+                         f_male),
+         f_female = ifelse(f_male == 2, 0, f_female),
+         f_female = factor(f_female, labels = c(&quot;0-No inclusion / not indicated&quot;,
+                                                &quot;1-Narrower than men&quot;,
+                                                &quot;2-Equal to men&quot;)),
+         f_male = factor(f_male,
+                         labels = c(&quot;0-No suffrage&quot;,
+                                    &quot;1-Estate&quot;,
+                                    &quot;2-Subnational&quot;,
+                                    &quot;3-Property only&quot;,
+                                    &quot;4-(Property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles) 
+                                    AND literacy&quot;,
+                                    &quot;5-Property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles&quot;,
+                                    &quot;6-Literacy only
+                                    OR (Literacy 
+                                    OR property OR 
+                                    income OR 
+                                    taxes OR 
+                                    exercise of profession OR 
+                                    educational titles)&quot;,
+                                    &quot;7-All the economically independent&quot;,
+                                    &quot;8-All&quot;),
+         ordered = TRUE)
+)
+
+
+ggplot(data = data,
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = f_male,
+                alpha = f_female)) +
+  scale_fill_brewer(type = &quot;div&quot;, palette = &quot;RdBu&quot;) +
+  labs(x = &quot;&quot;,
+       alpha = &quot;Female inclusion&quot;,
+       fill = &quot;Type of franchise&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 1),
+         alpha = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(PIPE$year[ PIPE$year %% 25 == 0],
+                                max(PIPE$year),
+                                min(PIPE$year)))) +
+  scale_alpha_discrete(range = c(0.3,1)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/PIPE_plot-1.png" /><!-- --></p>
+</div>
+<div id="lied" class="section level3">
+<h3>LIED</h3>
+<p>The Lexical Index of Democracy and Autocracy <span class="citation">(Skaaning, Gerring, and Bartusevičius 2015)</span> extends and corrects the PIPE dataset, and it provides an independent measure of male and female suffrage, as well as measures of whether the executive is elected, there is an elected assembly, and a few other variables. For details on included variables, type <code>?lied</code>. The original dat and codebook are available <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/29106">here</a></p>
+<p>Here’s the suffrage picture using LIED data:</p>
+<pre class="r"><code>data &lt;- lied
+
+ggplot(data = data %&gt;%
+         mutate(male_suffrage = (male_suffrage &gt; 0),
+                female_suffrage = (female_suffrage &gt; 0)),
+       aes(x = forcats::fct_rev(reorder(country_name, year, FUN = min)),
+           y = year)) +
+  geom_tile(aes(fill = male_suffrage,
+                alpha = female_suffrage)) +
+  labs(x = &quot;&quot;,
+       alpha = &quot;Female inclusion?&quot;,
+       fill = &quot;Full male suffrage?&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;bottom&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;, ncol = 1),
+         alpha = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  scale_y_continuous(breaks = unique(c(lied$year[ lied$year %% 25 == 0],
+                                max(lied$year),
+                                min(lied$year)))) +
+  scale_alpha_discrete(range = c(0.3,1)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/lied_suffrage-1.png" /><!-- --></p>
+<p>The LIED data and the PIPE data differ subtly, due to coding differences:</p>
+<pre class="r"><code>data &lt;- full_join(PIPE %&gt;% 
+                    select(country_name,GWn,year,f_simple,f),
+                  lied %&gt;%
+                    select(country_name,GWn,year,male_suffrage,female_suffrage)) %&gt;%
+  mutate(inconsistent = (male_suffrage == 1 &amp; female_suffrage == 1 &amp; f != 72) |
+           (male_suffrage == 1 &amp; female_suffrage == 0 &amp; !(f %in% c(7,71,NA))))
+
+data %&gt;%
+  filter(inconsistent) %&gt;%
+  group_by(country_name, f_simple, f, male_suffrage, female_suffrage) %&gt;%
+  summarise(min_year = min(year), max_year = max(year), num_years = n()) %&gt;%
+  knitr::kable(col.names = c(&quot;Country&quot;, 
+                             &quot;PIPE franchise (simplified)&quot;, 
+                             &quot;PIPE franchise (full)&quot;,
+                             &quot;LIED male suffrage&quot;,
+                             &quot;LIED female suffrage&quot;,
+                             &quot;Min year&quot;,
+                             &quot;Max year&quot;,
+                             &quot;Num. years&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Country</th>
+<th align="left">PIPE franchise (simplified)</th>
+<th align="right">PIPE franchise (full)</th>
+<th align="right">LIED male suffrage</th>
+<th align="right">LIED female suffrage</th>
+<th align="right">Min year</th>
+<th align="right">Max year</th>
+<th align="right">Num. years</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Australia</td>
+<td align="left">4- All male</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1901</td>
+<td align="right">1901</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Austria-Hungary</td>
+<td align="left">1 - Class restricted, male only</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1896</td>
+<td align="right">1917</td>
+<td align="right">22</td>
+</tr>
+<tr class="odd">
+<td align="left">Belgium</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1948</td>
+<td align="right">1948</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Canada</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1918</td>
+<td align="right">1920</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Germany (Prussia)</td>
+<td align="left">1 - Class restricted, male only</td>
+<td align="right">6</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1871</td>
+<td align="right">1917</td>
+<td align="right">47</td>
+</tr>
+<tr class="even">
+<td align="left">Germany (Prussia)</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1918</td>
+<td align="right">1918</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Greece</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1953</td>
+<td align="right">1955</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Guatemala</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1965</td>
+<td align="right">1965</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Iraq</td>
+<td align="left">4- All male</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1958</td>
+<td align="right">1979</td>
+<td align="right">22</td>
+</tr>
+<tr class="even">
+<td align="left">Italy/Sardinia</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1945</td>
+<td align="right">1945</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Lebanon</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1944</td>
+<td align="right">1951</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">Netherlands</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1919</td>
+<td align="right">1921</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Nicaragua</td>
+<td align="left">6 - Universal</td>
+<td align="right">72</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1955</td>
+<td align="right">1956</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Palau</td>
+<td align="left">4- All male</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1994</td>
+<td align="right">2008</td>
+<td align="right">15</td>
+</tr>
+<tr class="odd">
+<td align="left">Qatar</td>
+<td align="left">0 - No suffrage</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2003</td>
+<td align="right">2008</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="left">Rumania</td>
+<td align="left">1 - Class restricted, male only</td>
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1938</td>
+<td align="right">1945</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">Somalia</td>
+<td align="left">0 - No suffrage</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1991</td>
+<td align="right">2003</td>
+<td align="right">13</td>
+</tr>
+<tr class="even">
+<td align="left">Syria</td>
+<td align="left">5 - All male, some female</td>
+<td align="right">71</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1954</td>
+<td align="right">1972</td>
+<td align="right">19</td>
+</tr>
+<tr class="odd">
+<td align="left">Tuvalu</td>
+<td align="left">4- All male</td>
+<td align="right">7</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1978</td>
+<td align="right">2008</td>
+<td align="right">31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="leader-data" class="section level2">
+<h2>Leader data</h2>
+<p>A number of graphs in the book use data on leaders.</p>
+<div id="archigos" class="section level3">
+<h3>Archigos</h3>
+<p>The main leader data used is the Archigos dataset of Gleditsch, Goemans, and Chiozza <span class="citation">(Goemans, Gleditsch, and Chiozza 2009)</span>. The original data is available <a href="http://www.rochester.edu/college/faculty/hgoemans/data.htm">here</a>; type <code>?archigos</code> for more info.</p>
+<p>We can plot the leaders in each country:</p>
+<pre class="r"><code>ggplot(data = archigos, 
+       aes(x = forcats::fct_rev(reorder(country_name, startdate, FUN = min)),
+           y = startdate)) +
+  geom_point(alpha = 0.2, color = &quot;red&quot;) +
+  geom_text(aes(label = leader), check_overlap = TRUE, size = 2) +
+  labs(x = &quot;&quot;) +
+  theme_bw() +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/archigos_plot_1-1.png" /><!-- --></p>
+</div>
+<div id="svolik" class="section level3">
+<h3>Svolik</h3>
+<p>We also have leader data from Svolik <span class="citation">(Svolik 2012)</span>, which is only available for those regimes Svolik codes as non-democratic. Svolik bases his data on an earlier version of Archigos, but he also codes the political affiliations of earlier and later leaders; type <code>?svolik_leader</code> for more info.</p>
+<p>Here’s what the aggregate data looks like:</p>
+<pre class="r"><code>ggplot(data = svolik_leader, 
+       aes(x = forcats::fct_rev(reorder(country_name, startdate, FUN = min)),
+           y = startdate)) +
+  geom_point(alpha = 0.4, aes(color = pol_aff, shape = entry_summary)) +
+  geom_text(aes(label = leader, color = pol_aff), 
+            check_overlap = TRUE, size = 2) +
+  labs(x = &quot;&quot;,
+       color = &quot;Political affiliation&quot;,
+       shape = &quot;Mode of entry into office&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(color = guide_legend(title.position = &quot;top&quot;, ncol = 2),
+         shape = guide_legend(title.position = &quot;top&quot;, ncol = 2)) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/svolik_plot_1-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="coup-data" class="section level2">
+<h2>Coup data</h2>
+<p>There are two sources for coup data we can use. The first is from Powell and Thyne <span class="citation">(Powell and Thyne 2011)</span>. This data is continuously updated; the original source is available <a href="http://www.uky.edu/~clthyn2/coup_data/powell_thyne_coups_final.txt">here</a>.</p>
+<p>Here is what the data looks like:</p>
+<pre class="r"><code>ggplot(data = powell_thyne, 
+       aes(x = forcats::fct_rev(country_name),
+           y = date)) +
+  geom_point(aes(color = attempt_type)) +
+  labs(x = &quot;&quot;,
+       color = &quot;Attempt type&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/coups_plot-1.png" /><!-- --></p>
+<p>Though this dataset contains info on all recent coups, it does not show coups earlier than 1950. The PIPE dataset contains rougher info on successful coups before then:</p>
+<pre class="r"><code>ggplot(data = PIPE %&gt;%
+         filter(coups &gt; 0) ,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = as.factor(coups))) +
+  labs(x = &quot;&quot;,
+       color = &quot;Number of coups&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/coups_plot_2-1.png" /><!-- --></p>
+<p>This data is not correlated with Powell and Thyne’s data, though:</p>
+<pre class="r"><code>data &lt;- full_join(PIPE %&gt;%
+                    filter(coups &gt; 0) %&gt;%
+                    select(country_name, 
+                           GWn,
+                           year,
+                           coups),
+                  powell_thyne %&gt;%
+                    filter(coup == 2) %&gt;%
+                    group_by(country_name, 
+                             GWn,
+                             year) %&gt;%
+                    summarise(n = n())) %&gt;%
+  mutate_at(funs(ifelse(is.na(.),0,.)), .cols = c(&quot;coups&quot;,&quot;n&quot;)) %&gt;%
+  rename(pipe_coups = coups, powell_coups = n) 
+
+cor(data$pipe_coups, data$powell_coups, use = &quot;pairwise&quot;)</code></pre>
+<pre><code>## [1] -0.092433</code></pre>
+<pre class="r"><code>data %&gt;%
+  filter(year &gt;= 1950, 
+         year &lt;= 2008,
+         pipe_coups != powell_coups) %&gt;%
+  count(pipe_coups, powell_coups)  %&gt;%
+  knitr::kable(col.names = c(&quot;Number of coups in PIPE&quot;, 
+                             &quot;Number of coups in Powell-Thyne&quot;, 
+                             &quot;Number of country-years with discrepancies&quot;),
+               caption = &quot;Country-years where PIPE disagrees with Powell-Thyne in the 1950-2008 period&quot;)</code></pre>
+<table>
+<caption>Country-years where PIPE disagrees with Powell-Thyne in the 1950-2008 period</caption>
+<thead>
+<tr class="header">
+<th align="right">Number of coups in PIPE</th>
+<th align="right">Number of coups in Powell-Thyne</th>
+<th align="right">Number of country-years with discrepancies</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">17</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">59</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;%
+  filter(year &gt;= 1950, 
+         year &lt;= 2008,
+         pipe_coups == powell_coups) %&gt;%
+  count(pipe_coups, powell_coups) %&gt;%
+  knitr::kable(col.names = c(&quot;Number of coups in PIPE&quot;, 
+                             &quot;Number of coups in Powell-Thyne&quot;, 
+                             &quot;Number of country-years where they agree&quot;),
+               caption = &quot;Country-years where PIPE agrees with Powell-Thyne in the 1950-2008 period&quot;)</code></pre>
+<table>
+<caption>Country-years where PIPE agrees with Powell-Thyne in the 1950-2008 period</caption>
+<thead>
+<tr class="header">
+<th align="right">Number of coups in PIPE</th>
+<th align="right">Number of coups in Powell-Thyne</th>
+<th align="right">Number of country-years where they agree</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">175</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data %&gt;%
+  filter(year &gt;= 1950, 
+         year &lt;= 2008,
+         pipe_coups != powell_coups) %&gt;%
+  knitr::kable(col.names = c(&quot;Country&quot;,&quot;GWn&quot;,&quot;year&quot;, &quot;Number of coups in PIPE&quot;, &quot;Number of coups in Powell-Thyne&quot;))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Country</th>
+<th align="right">GWn</th>
+<th align="right">year</th>
+<th align="right">Number of coups in PIPE</th>
+<th align="right">Number of coups in Powell-Thyne</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">700</td>
+<td align="right">1979</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="right">700</td>
+<td align="right">1996</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">700</td>
+<td align="right">2001</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Argentina</td>
+<td align="right">160</td>
+<td align="right">1981</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Bangladesh</td>
+<td align="right">771</td>
+<td align="right">2006</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Bolivia</td>
+<td align="right">145</td>
+<td align="right">1979</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Bolivia</td>
+<td align="right">145</td>
+<td align="right">1982</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Brazil</td>
+<td align="right">140</td>
+<td align="right">1954</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="right">140</td>
+<td align="right">1964</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Cambodia (Kampuchea)</td>
+<td align="right">811</td>
+<td align="right">1975</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Cambodia (Kampuchea)</td>
+<td align="right">811</td>
+<td align="right">1978</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Chad</td>
+<td align="right">483</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Chad</td>
+<td align="right">483</td>
+<td align="right">1982</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Chad</td>
+<td align="right">483</td>
+<td align="right">1990</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Comoros</td>
+<td align="right">581</td>
+<td align="right">1976</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Comoros</td>
+<td align="right">581</td>
+<td align="right">1995</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Congo</td>
+<td align="right">484</td>
+<td align="right">1968</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Congo</td>
+<td align="right">484</td>
+<td align="right">1969</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Congo</td>
+<td align="right">484</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Congo</td>
+<td align="right">484</td>
+<td align="right">1997</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Congo, Democratic Republic of (Zaire)</td>
+<td align="right">490</td>
+<td align="right">1997</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Cote D’Ivoire</td>
+<td align="right">437</td>
+<td align="right">1999</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Cuba</td>
+<td align="right">40</td>
+<td align="right">1959</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Dominican Republic</td>
+<td align="right">42</td>
+<td align="right">1961</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Dominican Republic</td>
+<td align="right">42</td>
+<td align="right">1962</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Ecuador</td>
+<td align="right">130</td>
+<td align="right">2000</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Ethiopia</td>
+<td align="right">530</td>
+<td align="right">1991</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Fiji</td>
+<td align="right">950</td>
+<td align="right">1987</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Gabon</td>
+<td align="right">481</td>
+<td align="right">1964</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Georgia</td>
+<td align="right">372</td>
+<td align="right">1991</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Guatemala</td>
+<td align="right">90</td>
+<td align="right">1993</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Guinea-Bissau</td>
+<td align="right">404</td>
+<td align="right">1998</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Haiti</td>
+<td align="right">41</td>
+<td align="right">1957</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">Haiti</td>
+<td align="right">41</td>
+<td align="right">2004</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hungary</td>
+<td align="right">310</td>
+<td align="right">1956</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">India</td>
+<td align="right">750</td>
+<td align="right">2006</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Iran (Persia)</td>
+<td align="right">630</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Iran (Persia)</td>
+<td align="right">630</td>
+<td align="right">1981</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Korea, Republic of</td>
+<td align="right">732</td>
+<td align="right">1960</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Korea, Republic of</td>
+<td align="right">732</td>
+<td align="right">1980</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Laos</td>
+<td align="right">812</td>
+<td align="right">1959</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Laos</td>
+<td align="right">812</td>
+<td align="right">1975</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Liberia</td>
+<td align="right">450</td>
+<td align="right">1990</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Madagascar (Malagasy)</td>
+<td align="right">580</td>
+<td align="right">1972</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Madagascar (Malagasy)</td>
+<td align="right">580</td>
+<td align="right">1975</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Mauritania</td>
+<td align="right">435</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Myanmar (Burma)</td>
+<td align="right">775</td>
+<td align="right">1997</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Nepal</td>
+<td align="right">790</td>
+<td align="right">1960</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Nicaragua</td>
+<td align="right">93</td>
+<td align="right">1956</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Nicaragua</td>
+<td align="right">93</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Pakistan</td>
+<td align="right">770</td>
+<td align="right">1969</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Panama</td>
+<td align="right">95</td>
+<td align="right">1955</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Panama</td>
+<td align="right">95</td>
+<td align="right">1983</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Panama</td>
+<td align="right">95</td>
+<td align="right">1989</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Rumania</td>
+<td align="right">360</td>
+<td align="right">1989</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Rwanda</td>
+<td align="right">517</td>
+<td align="right">2000</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Sao Tome and Principe</td>
+<td align="right">403</td>
+<td align="right">1995</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Sierra Leone</td>
+<td align="right">451</td>
+<td align="right">1992</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Somalia</td>
+<td align="right">520</td>
+<td align="right">1991</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Sudan</td>
+<td align="right">625</td>
+<td align="right">1971</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Surinam</td>
+<td align="right">115</td>
+<td align="right">1980</td>
+<td align="right">1</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Surinam</td>
+<td align="right">115</td>
+<td align="right">1990</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Syria</td>
+<td align="right">652</td>
+<td align="right">1962</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Thailand</td>
+<td align="right">800</td>
+<td align="right">1973</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Uganda</td>
+<td align="right">500</td>
+<td align="right">1979</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Uganda</td>
+<td align="right">500</td>
+<td align="right">1986</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="right">101</td>
+<td align="right">1952</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Venezuela</td>
+<td align="right">101</td>
+<td align="right">1958</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Yemen (Arab Republic of Yemen)</td>
+<td align="right">678</td>
+<td align="right">1977</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen (Arab Republic of Yemen)</td>
+<td align="right">678</td>
+<td align="right">1978</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Saudi Arabia</td>
+<td align="right">670</td>
+<td align="right">1964</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen, People’s Republic of</td>
+<td align="right">680</td>
+<td align="right">1969</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Bolivia</td>
+<td align="right">145</td>
+<td align="right">1951</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Burkina Faso (Upper Volta)</td>
+<td align="right">439</td>
+<td align="right">1974</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Congo, Democratic Republic of (Zaire)</td>
+<td align="right">490</td>
+<td align="right">1960</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Cote D’Ivoire</td>
+<td align="right">437</td>
+<td align="right">1999</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Egypt</td>
+<td align="right">651</td>
+<td align="right">1954</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Ethiopia</td>
+<td align="right">530</td>
+<td align="right">1977</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Lesotho</td>
+<td align="right">570</td>
+<td align="right">1994</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Mauritania</td>
+<td align="right">435</td>
+<td align="right">2008</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Myanmar (Burma)</td>
+<td align="right">775</td>
+<td align="right">1958</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Pakistan</td>
+<td align="right">770</td>
+<td align="right">1971</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">São Tomé and Principe</td>
+<td align="right">403</td>
+<td align="right">2003</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Swaziland</td>
+<td align="right">572</td>
+<td align="right">1983</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Syria</td>
+<td align="right">652</td>
+<td align="right">1969</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Tunisia</td>
+<td align="right">616</td>
+<td align="right">1987</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vietnam, Republic of</td>
+<td align="right">817</td>
+<td align="right">1963</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Vietnam, Republic of</td>
+<td align="right">817</td>
+<td align="right">1964</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">Vietnam, Republic of</td>
+<td align="right">817</td>
+<td align="right">1965</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Yemen, People’s Republic of</td>
+<td align="right">680</td>
+<td align="right">1978</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>data &lt;- bind_rows(PIPE %&gt;% 
+                    filter(coups &gt; 0) %&gt;%
+                    select(country_name, 
+                           GWn,
+                           year,
+                           coups) %&gt;%
+                    mutate(source = &quot;PIPE&quot;),
+                  powell_thyne %&gt;%
+                    filter(coup == 2) %&gt;%
+                    group_by(country_name, 
+                             GWn,
+                             year) %&gt;%
+                    summarise(coups = n()) %&gt;%
+                    mutate(source = &quot;Powell-Thyne&quot;))
+                  
+
+ggplot(data = data %&gt;%
+         filter(coups &gt; 0) ,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = source), alpha = 0.3) +
+  labs(x = &quot;&quot;,
+       color = &quot;Source&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/coup_correlations-1.png" /><!-- --></p>
+</div>
+<div id="elections-data" class="section level2">
+<h2>Elections data</h2>
+<p>There are two sources of election data. The first is from the National Elections in Democracy and Autocracy (NELDA) dataset <span class="citation">(Hyde and Marinov 2012)</span>. We use only a minimal selection of columns indicating the dates and types of elections; for details of the included variables, type <code>?nelda</code>. The original data is available <a href="">here</a>.</p>
+<p>This data is available for the following countries:</p>
+<pre class="r"><code>ggplot(data = nelda,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = types), 
+             alpha = 0.3) +
+  labs(x = &quot;&quot;,
+       color = &quot;Election type&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(color = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/nelda_plot-1.png" /><!-- --></p>
+<p>There is also election data in PIPE:</p>
+<pre class="r"><code>data &lt;- PIPE %&gt;%
+  select(country_name,
+         year,
+         preselec,
+         legelec) %&gt;%
+  reshape2::melt(measure.vars = c(&quot;preselec&quot;,
+                                  &quot;legelec&quot;)) %&gt;%
+  filter(value &gt; 0) %&gt;%
+  rename(types = variable,
+         num_elections = value) %&gt;%
+  mutate(types = plyr::mapvalues(types,
+                                 from = c(&quot;preselec&quot;,
+                                          &quot;legelec&quot;),
+                                 to = c(&quot;Executive&quot;,
+                                 &quot;Legislative/Parliamentary&quot;)),
+         source = &quot;PIPE&quot;) %&gt;% 
+  bind_rows(nelda %&gt;%
+              group_by(country_name,
+                       year,
+                       types) %&gt;%
+              summarise(num_elections = n()) %&gt;%
+              mutate(source = &quot;NELDA&quot;))
+
+ggplot(data = data,
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_point(aes(color = source, shape = types), 
+             alpha = 0.3) +
+  labs(x = &quot;&quot;,
+       shape = &quot;Election type&quot;,
+       color = &quot;Dataset&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(color = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip()</code></pre>
+<p><img src="all_other_data_files/figure-html/pipe_election-1.png" /><!-- --></p>
+<p>This data is highly but not perfectly correlated with NELDA; mostly it is a matter of NELDA picking up more elections than PIPE.</p>
+<pre class="r"><code>data2 &lt;- data %&gt;% 
+  reshape2::dcast(country_name + year ~ source, 
+                  fun.aggregate = sum, 
+                  value.var = &quot;num_elections&quot;)
+
+nelda_shell &lt;- nelda %&gt;% 
+  group_by(country_name) %&gt;%
+  do(data.frame(year = min(.$year):max(.$year))) %&gt;%
+  ungroup()
+     
+data2 &lt;- inner_join(nelda_shell, data2) %&gt;%
+  filter(year &lt;= 2008)
+
+cor(data2$NELDA, data2$PIPE)</code></pre>
+<pre><code>## [1] 0.5135496</code></pre>
+<pre class="r"><code>data2 %&gt;% 
+  count(NELDA, PIPE, NELDA &lt; PIPE, NELDA &gt; PIPE) %&gt;%
+  ungroup() %&gt;%
+  mutate(total = sum(n), prop = n/total) %&gt;%
+  group_by(`NELDA &gt; PIPE`, `NELDA &lt; PIPE`) %&gt;%
+  mutate(prop_2 = sum(prop),
+         prop = scales::percent(prop),
+         prop_2 = scales::percent(prop_2)) %&gt;%
+  arrange(`NELDA &gt; PIPE`,`NELDA &lt; PIPE`) %&gt;% 
+  knitr::kable(col.names = c(&quot;NELDA count of elections in country-year&quot;, 
+                             &quot;PIPE count of electios in country-year&quot;,
+                             &quot;NELDA &gt; PIPE&quot;,
+                             &quot;NELDA &lt; PIPE&quot;,
+                             &quot;Number of elections in group&quot;,
+                             &quot;Total elections&quot;,
+                             &quot;Proportion of total&quot;,
+                             &quot;Proportion of group&quot;)) </code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">NELDA count of elections in country-year</th>
+<th align="right">PIPE count of electios in country-year</th>
+<th align="left">NELDA &gt; PIPE</th>
+<th align="left">NELDA &lt; PIPE</th>
+<th align="right">Number of elections in group</th>
+<th align="right">Total elections</th>
+<th align="left">Proportion of total</th>
+<th align="left">Proportion of group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="right">1214</td>
+<td align="right">2247</td>
+<td align="left">54.0%</td>
+<td align="left">69.9%</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">FALSE</td>
+<td align="right">356</td>
+<td align="right">2247</td>
+<td align="left">15.8%</td>
+<td align="left">69.9%</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="right">155</td>
+<td align="right">2247</td>
+<td align="left">6.90%</td>
+<td align="left">12.3%</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="right">9</td>
+<td align="right">2247</td>
+<td align="left">0.40%</td>
+<td align="left">12.3%</td>
+</tr>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="right">109</td>
+<td align="right">2247</td>
+<td align="left">4.85%</td>
+<td align="left">12.3%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="right">1</td>
+<td align="right">2247</td>
+<td align="left">0.04%</td>
+<td align="left">12.3%</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="left">TRUE</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="right">2247</td>
+<td align="left">0.09%</td>
+<td align="left">12.3%</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">140</td>
+<td align="right">2247</td>
+<td align="left">6.23%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">12</td>
+<td align="right">2247</td>
+<td align="left">0.53%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">149</td>
+<td align="right">2247</td>
+<td align="left">6.63%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">4</td>
+<td align="right">2247</td>
+<td align="left">0.18%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">8</td>
+<td align="right">2247</td>
+<td align="left">0.36%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">73</td>
+<td align="right">2247</td>
+<td align="left">3.25%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">1</td>
+<td align="right">2247</td>
+<td align="left">0.04%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">11</td>
+<td align="right">2247</td>
+<td align="left">0.49%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">2</td>
+<td align="right">2247</td>
+<td align="left">0.09%</td>
+<td align="left">17.8%</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="left">FALSE</td>
+<td align="left">TRUE</td>
+<td align="right">1</td>
+<td align="right">2247</td>
+<td align="left">0.04%</td>
+<td align="left">17.8%</td>
+</tr>
+</tbody>
+</table>
+<p>The book thus provides the dataset <code>all_elections</code> as a convenience; for more info, type <code>?all_elections</code></p>
+</div>
+<div id="economic-data" class="section level2">
+<h2>Economic data</h2>
+<div id="gdp-per-capita" class="section level3">
+<h3>GDP per capita</h3>
+<p>Economic data on GDP per capita comes from several sources: the Maddison project <span class="citation">(The Maddison Project 2013)</span>, the Penn World Tables versions 8 and 8.1 <span class="citation">(Feenstra and Timmer 2013)</span>, the World Bank’s <a href="http://data.worldbank.org/">Development Indicators</a>, and a dataset of extended GDP values by Kristian Gleditsch <span class="citation">(K. S. Gleditsch 2002)</span>. The original data for the Maddison project is available <a href="http://www.ggdc.net/maddison/maddison-project/home.htm">here</a>; the Penn World Tables (all versions) is available <a href="www.ggdc.net/pwt">here</a>; and the Gleditsch dataset is available <a href="http://privatewww.essex.ac.uk/~ksg/exptradegdp.html">here</a>. These are bundled into a single dataset with information about the source and the type of GDP estimate; it is worth noting that these estimates <a href="http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html">sometimes differ substantially</a>, and they must be used with some care. (For a quick guide to the different types of measures, see the helpful chart at the <a href="www.ggdc.net/pwt">Penn World Table website</a>). Nevertheless, for this books purposes, a simple median of these different measures works fine.</p>
+<p>Here’s what they look like, per country:</p>
+<pre class="r"><code>ggplot(data = economic_data %&gt;% 
+         filter(in_system) %&gt;%
+         mutate(variable_trunc = stringr::str_trunc(as.character(variable), 40, &quot;right&quot;)), 
+       aes(x = year,
+           y = reorder(country_name, per_capita))) +
+  geom_tile(aes(alpha = per_capita)) +
+  labs(x= &quot;&quot;, 
+       y = &quot;&quot;,
+       alpha = &quot;Per capita income&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  scale_alpha_continuous(trans = &quot;log&quot;, labels = scales::dollar) +
+  facet_wrap(~variable_trunc, ncol = 5) </code></pre>
+<p><img src="all_other_data_files/figure-html/economic_data_super_plot-1.png" /><!-- --></p>
+</div>
+<div id="inequality-data" class="section level3">
+<h3>Inequality data</h3>
+<p>The inequality data is a summary of the Standardized World Income Inequality Database <span class="citation">(Solt 2009; Solt 2016)</span>, version 5.0. The original data is available <a href="http://fsolt.org/swiid/">here</a>. For more info, type <code>?swiid_summary_5</code>.</p>
+<p>These come with measures of uncertainty, and are available for the following country-years:</p>
+<pre class="r"><code>ggplot(data = swiid_summary_5 %&gt;% 
+         filter(in_system, 
+                variable %in% c(&quot;gini_net&quot;, &quot;gini_market&quot;)), 
+       aes(x = year,
+           y = reorder(country_name, mean_value))) +
+  geom_tile(aes(alpha = mean_value)) +
+  labs(x= &quot;&quot;, 
+       y = &quot;&quot;,
+       alpha = &quot;Gini&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  scale_alpha_continuous() +
+  facet_wrap(~variable, ncol = 2) +
+  scale_x_continuous(breaks = unique(c(swiid_summary_5$year[ swiid_summary_5$year %% 10 == 0], 
+                                max(swiid_summary_5$year), 
+                                min(swiid_summary_5$year))))</code></pre>
+<p><img src="all_other_data_files/figure-html/inequality_plot-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="violence-data" class="section level2">
+<h2>Violence data</h2>
+<div id="repression-data" class="section level3">
+<h3>Repression data</h3>
+<p>The data on repression comes from a latent variable index of repression (or, more precisely, of violations of physical integrity rights) created by Christopher Fariss <span class="citation">(Fariss 2014)</span>. The data also includes a variety of additional measures of repression from other sources; type <code>?fariss</code> for more info.</p>
+<p>Here’s what the index looks like (more repressive periods in red):</p>
+<pre class="r"><code>ggplot(data = fariss, 
+       aes(x = forcats::fct_rev(country_name),
+           y = year)) +
+  geom_tile(aes(fill = latentmean)) +
+  scale_fill_gradient2() +
+  labs(x = &quot;&quot;,
+       fill = &quot;Degree of repression \nviolations of physical integrity
+       (lower is more repressive)&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_flip() </code></pre>
+<p><img src="all_other_data_files/figure-html/fariss_plot-1.png" /><!-- --></p>
+</div>
+<div id="war-data" class="section level3">
+<h3>War data</h3>
+<p>For a number of graphs, I use version 2 of a list of wars compiled by Gleditsch <span class="citation">(K. Gleditsch 2004)</span>, and available <a href="http://privatewww.essex.ac.uk/~ksg/expwar.html">here</a>. This comes in two forms: as a list of warring states, per year (<code>all_war_participants_yearly</code>, includingboth civil and interstate wars), and as a list of dyads (<code>interstate_dyads_yearly</code>, interstate wars only).</p>
+<p>These data are available for the following countries:</p>
+<pre class="r"><code>ggplot(data = all_war_participants_yearly, 
+       aes(x = year,
+           y = forcats::fct_rev(forcats::fct_infreq(country_name)))) +
+  geom_tile(aes(alpha = deaths+1, fill = type)) +
+  labs(x= &quot;&quot;, 
+       y = &quot;&quot;,
+       alpha = &quot;Total deaths&quot;,
+       fill = &quot;War type&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  scale_alpha_continuous(trans = &quot;log&quot;, labels = round) +
+  scale_x_continuous(breaks = unique(c(all_war_participants_yearly$year[ all_war_participants_yearly$year %% 10 == 0], 
+                                max(all_war_participants_yearly$year), 
+                                min(all_war_participants_yearly$year))))</code></pre>
+<p><img src="all_other_data_files/figure-html/war_data_plot-1.png" /><!-- --></p>
+</div>
+<div id="violent-and-non-violent-campaigns" class="section level3">
+<h3>Violent and Non-violent campaigns</h3>
+<p>The data on violent and non-violent campaigns comes from the NAVCO dataset version 2.0 <span class="citation">(Chenoweth and Lewis 2013)</span>. The original data is avialable <a href="http://www.du.edu/korbel/sie/research/chenow_navco_data.html">here</a>. Only a small selection of the variables in the original dataset are included; type <code>?navco_2</code> for more info.</p>
+<p>These data ara available as for the following countries and campaigns:</p>
+<pre class="r"><code>ggplot(data = navco_2 %&gt;%
+         mutate(campaign = stringr::str_trunc(paste0(country_name, &quot;: &quot;, campaign), 40, &quot;right&quot;),
+                camp_size = ifelse(camp_size &lt; 0, NA, camp_size)), 
+       aes(x = year,
+           y = forcats::fct_rev(campaign),
+           fill = factor(prim_method, 
+                              labels = c(&quot;Primarily violent&quot;,&quot;Primarily nonviolent&quot;)),
+           alpha = factor(success,
+                               labels = c(&quot;Unsuccessful&quot;,&quot;Successful&quot;),
+                               ordered = TRUE))) +
+  geom_tile() +
+  geom_point(aes(size = camp_size,
+                 color = factor(prim_method, 
+                              labels = c(&quot;Primarily violent&quot;,&quot;Primarily nonviolent&quot;)))) +
+  labs(x= &quot;&quot;, 
+       y = &quot;&quot;,
+       alpha = &quot;Success?&quot;,
+       fill = &quot;Primary method of campaign&quot;,
+       color = &quot;Primary method of campaign&quot;,
+       size = &quot;Size of campaign&quot;) +
+  theme_bw() +
+  theme(legend.position = &quot;top&quot;) +
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) </code></pre>
+<p><img src="all_other_data_files/figure-html/campaign_data_plot-1.png" /><!-- --></p>
+</div>
+</div>
+<div id="map-data" class="section level2">
+<h2>Map data</h2>
+<p>Some of the graphs in the text make use of map data. You can access this data by typing <code>world</code>. This map data represent country borders as of 2015; for historical country borders, you would need to use a package like <code>cshapes</code>.</p>
+<p>Here’s an example of how to use the map data, plotting repression in 2013 throughout the world:</p>
+<pre class="r"><code>world &lt;- world %&gt;% 
+  filter(id != &quot;Antarctica&quot;)
+
+data &lt;- fariss %&gt;% 
+  filter(year == 2013)
+
+library(ggalt)
+
+ggplot() + geom_map(aes(fill = latentmean,
+                        map_id = country_name),
+                    map = world,
+                    data = data) + 
+  geom_path(data = world,
+            aes(y = lat, x = long, group = group)) +
+  scale_fill_gradient2(mid = &quot;lightgrey&quot;) +
+  theme_minimal() + 
+  theme(legend.position = &quot;bottom&quot;) + 
+  labs(fill = &quot;Degree of repression
+       or violations of personal integrity
+       (lower is worse)&quot;,
+       x = &quot;&quot;,
+       y = &quot;&quot;) + 
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_proj(&quot;+proj=wintri&quot;) +
+  scale_y_continuous(breaks=NULL) + 
+  scale_x_continuous(breaks=NULL) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="all_other_data_files/figure-html/repression_map-1.png" /><!-- --></p>
+<p>We can also use the package <code>cshapes</code> to plot earlier years, though this makes things more complicated. Here’s repression in 1967, the height of repression during the cultural revolution in CHina and the civil rights movement in the USA:</p>
+<pre class="r"><code>library(maptools)
+library(rgeos)
+
+world_1967 &lt;- cshapes::cshp(as.Date(&quot;1967-1-1&quot;)) %&gt;%
+  fortify(region = &quot;GWCODE&quot;) %&gt;%
+  mutate(GWn = id)
+
+ggplot() + 
+  geom_path(data = world,
+            aes(y = lat, x = long, group = group)) +
+  geom_map(aes(fill = latentmean,
+               map_id = GWn),
+           map = world_1967,
+           data = fariss %&gt;% filter(year == 1967)) + 
+  geom_path(data = world_1967,
+            aes(y = lat, x = long, group = group)) +
+  scale_fill_gradient2(mid = &quot;lightgrey&quot;) +
+  theme_minimal() + 
+  theme(legend.position = &quot;bottom&quot;) + 
+  labs(fill = &quot;Degree of repression
+       or violations of personal integrity
+       (lower is worse)&quot;,
+       x = &quot;&quot;,
+       y = &quot;&quot;) + 
+  guides(fill = guide_legend(title.position = &quot;top&quot;)) +
+  coord_proj(&quot;+proj=wintri&quot;) +
+  scale_y_continuous(breaks=NULL) + 
+  scale_x_continuous(breaks=NULL) +
+  theme(legend.position = &quot;bottom&quot;)</code></pre>
+<p><img src="all_other_data_files/figure-html/repression_cshapes-1.png" /><!-- --></p>
+</div>
+<div id="data-documentation" class="section level2">
+<h2>Data documentation</h2>
+<p>Finally, we document all the data:</p>
+<pre class="r"><code>label_data &lt;- readr::read_csv(&quot;data_labels.csv&quot;)
+
+library(documenteR)
+
+doc_skeleton(find_all_datasets(&quot;AuthoritarianismBook&quot;), label_data = label_data)
+
+devtools::document()</code></pre>
+<pre><code>## Writing NAMESPACE
+## Writing AuthoritarianismBook.Rd
+## Writing PIPE.Rd
+## Writing all_elections.Rd
+## Writing all_gwf.Rd
+## Writing all_gwf_extended_yearly.Rd
+## Writing all_gwf_periods.Rd
+## Writing all_war_participants_yearly.Rd
+## Writing archigos.Rd
+## Writing democracy.Rd
+## Writing democracy_mentions_yearly.Rd
+## Writing economic_data.Rd
+## Writing extended_uds.Rd
+## Writing fariss.Rd
+## Writing interstate_dyads_yearly.Rd
+## Writing kailitz_yearly.Rd
+## Writing lied.Rd
+## Writing magaloni.Rd
+## Writing magaloni_extended.Rd
+## Writing navco_2.Rd
+## Writing nelda.Rd
+## Writing personal_scores.Rd
+## Writing polity_annual.Rd
+## Writing population_data.Rd
+## Writing powell_thyne.Rd
+## Writing svolik_institutions.Rd
+## Writing svolik_leader.Rd
+## Writing swiid_summary_5.Rd
+## Writing vdem.Rd
+## Writing wahman_teorell.Rd
+## Writing world.Rd</code></pre>
+</div>
+<div id="references" class="section level2 unnumbered">
+<h2>References</h2>
+<div id="refs" class="references">
+<div id="ref-ChenowethLewis2013">
+<p>Chenoweth, Erica, and Orion A Lewis. 2013. “Unpacking Nonviolent Campaigns: Introducing the NAVCO 2.0 Dataset.” <em>Journal of Peace Research</em> 50 (3): 415–23. doi:<a href="https://doi.org/10.1177/0022343312471551">10.1177/0022343312471551</a>.</p>
+</div>
+<div id="ref-vdem2015">
+<p>Coppedge, Michael, John Gerring, Staffan I. Lindberg, Svend-Erik Skaaning, Jan Teorell with David Altman, Michael Bernhard, M. Steven Fish, et al. 2015. “V-Dem Codebook V5.” Varieties of Democracy (V-Dem) Project.</p>
+</div>
+<div id="ref-Fariss2014">
+<p>Fariss, Christopher J. 2014. “Respect for Human Rights Has Improved over Time: Modeling the Changing Standard of Accountability.” <em>American Political Science Review</em> 108 (02): 297–318. doi:<a href="https://doi.org/doi:10.1017/S0003055414000070">doi:10.1017/S0003055414000070</a>.</p>
+</div>
+<div id="ref-Feenstra2013">
+<p>Feenstra, Robert Inklaar, Robert C., and Marcel P. Timmer. 2013. “The Next Generation of the Penn World Table.” Dataset. <a href="www.ggdc.net/pwt" class="uri">www.ggdc.net/pwt</a>.</p>
+</div>
+<div id="ref-GeddesWrightFrantz2014">
+<p>Geddes, Barbara, Joseph Wright, and Erica Frantz. 2014. “Autocratic Breakdown and Regime Transitions: A New Data Set.” <em>Perspectives on Politics</em> 12 (1): 313–31. doi:<a href="https://doi.org/10.1017/S1537592714000851">10.1017/S1537592714000851</a>.</p>
+</div>
+<div id="ref-Gleditsch2004">
+<p>Gleditsch, Kristian. 2004. “A Revised List of Wars Between and Within Independent States, 1816-2002.” <em>International Interactions</em> 30 (3): 231–62. <a href="http://privatewww.essex.ac.uk/~ksg/expwar.html" class="uri">http://privatewww.essex.ac.uk/~ksg/expwar.html</a>.</p>
+</div>
+<div id="ref-Gleditsch2010">
+<p>———. 2010. “Expanded Population Data.” <a href="http://privatewww.essex.ac.uk/~ksg/exppop.html" class="uri">http://privatewww.essex.ac.uk/~ksg/exppop.html</a>.</p>
+</div>
+<div id="ref-Gleditsch2002GDP">
+<p>Gleditsch, Kristian Skrede. 2002. “Expanded Trade and GDP Data.” <em>Journal of Conflict Resolution</em> 46 (5): 712–24. doi:<a href="https://doi.org/10.1177/0022002702046005006">10.1177/0022002702046005006</a>.</p>
+</div>
+<div id="ref-GoemansGleditschChiozza2009">
+<p>Goemans, Henk, Kristian Gleditsch, and Giacomo Chiozza. 2009. “Introducing Archigos: A Dataset of Political Leaders.” <em>Journal of Peace Research</em> 46 (2): 269–83.</p>
+</div>
+<div id="ref-Hyde2011">
+<p>Hyde, Susan D., and Nikolay Marinov. 2012. “Which Elections Can Be Lost?” <em>Political Analysis</em> 20 (2): 191–210. doi:<a href="https://doi.org/10.1093/pan/mpr040">10.1093/pan/mpr040</a>.</p>
+</div>
+<div id="ref-Kailitz2013">
+<p>Kailitz, Steffen. 2013. “Classifying Political Regimes Revisited: Legitimation and Durability.” <em>Democratization</em> 20 (1): 39–60. doi:<a href="https://doi.org/10.1080/13510347.2013.738861">10.1080/13510347.2013.738861</a>.</p>
+</div>
+<div id="ref-MagaloniChuMin2013">
+<p>Magaloni, Beatriz, Jonathan Chu, and Eric Min. 2013. “Autocracies of the World, 1950-2012 (Version 1.0).” Dataset. <a href="http://cddrl.fsi.stanford.edu/research/autocracies_of_the_world_dataset" class="uri">http://cddrl.fsi.stanford.edu/research/autocracies_of_the_world_dataset</a>.</p>
+</div>
+<div id="ref-Marshall2010">
+<p>Marshall, Monty G., Ted Robert Gurr, and Keith Jaggers. 2010. “Polity IV Project: Political Regime Characteristics and Transitions, 1800-2009.” Data set. Center for Systemic Peace. <a href="http://www.systemicpeace.org/inscr/inscr.htm" class="uri">http://www.systemicpeace.org/inscr/inscr.htm</a>.</p>
+</div>
+<div id="ref-Marquez2016">
+<p>Márquez, Xavier. 2016. “A Quick Method for Extending the Unified Democracy Scores.” <em>Available at SSRN 2753830</em>. doi:<a href="https://doi.org/10.2139/ssrn.2753830">10.2139/ssrn.2753830</a>.</p>
+</div>
+<div id="ref-OrtizRoser2016">
+<p>Ortiz-Ospina, Esteban, and Max Roser. 2016. “World Population Growth.” Our World in Data. <a href="https://ourworldindata.org/world-population-growth/" class="uri">https://ourworldindata.org/world-population-growth/</a>.</p>
+</div>
+<div id="ref-Pemstein2010">
+<p>Pemstein, Daniel, Stephen Meserve, and James Melton. 2010. “Democratic Compromise: A Latent Variable Analysis of Ten Measures of Regime Type.” <em>Political Analysis</em> 18 (4): 426–49. doi:<a href="https://doi.org/10.1093/pan/mpq020">10.1093/pan/mpq020</a>.</p>
+</div>
+<div id="ref-PowellThyne2011">
+<p>Powell, Jonathan M., and Clayton L. Thyne. 2011. “Global Instances of Coups from 1950 to 2010: A New Dataset.” <em>Journal of Peace Research</em> 48 (2): 249–59.</p>
+</div>
+<div id="ref-Przeworski2013">
+<p>Przeworski, Adam. 2013. “Political Institutions and Political Events (PIPE) Data Set.” Data set. Department of Politics, New York University. <a href="https://sites.google.com/a/nyu.edu/adam-przeworski/home/data" class="uri">https://sites.google.com/a/nyu.edu/adam-przeworski/home/data</a>.</p>
+</div>
+<div id="ref-SkaaningGerring2015">
+<p>Skaaning, Svend-Erik, John Gerring, and Henrikas Bartusevičius. 2015. “A Lexical Index of Electoral Democracy.” <em>Comparative Political Studies</em> 48 (12): 1491–1525. doi:<a href="https://doi.org/10.1177/0010414015581050">10.1177/0010414015581050</a>.</p>
+</div>
+<div id="ref-Solt2009">
+<p>Solt, Frederick. 2009. “Standardizing the World Income Inequality Database.” <em>Social Science Quarterly</em> 90 (2): 231–42. <a href="http://fsolt.org/swiid/" class="uri">http://fsolt.org/swiid/</a>.</p>
+</div>
+<div id="ref-Solt2016">
+<p>———. 2016. “The Standardized World Income Inequality Database.” <em>Social Science Quarterly</em>, n/a–n/a. doi:<a href="https://doi.org/10.1111/ssqu.12295">10.1111/ssqu.12295</a>.</p>
+</div>
+<div id="ref-Svolik2012">
+<p>Svolik, Milan. 2012. <em>The Politics of Authoritarian Rule</em>. Book. Cambridge; New York: Cambridge University Press.</p>
+</div>
+<div id="ref-Maddison2013">
+<p>The Maddison Project. 2013. “The Maddison Project.” Dataset. <a href="http://www.ggdc.net/maddison/maddison-project/home.htm" class="uri">http://www.ggdc.net/maddison/maddison-project/home.htm</a>.</p>
+</div>
+<div id="ref-WahmanTeorellHadenius2013">
+<p>Wahman, Michael, Jan Teorell, and Axel Hadenius. 2013. “Authoritarian Regime Types Revisited: Updated Data in Comparative Perspective.” <em>Contemporary Politics</em> 19 (1): 19–34. <a href="https://sites.google.com/site/authoritarianregimedataset/data" class="uri">https://sites.google.com/site/authoritarianregimedataset/data</a>.</p>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

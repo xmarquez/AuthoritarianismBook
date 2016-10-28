@@ -1,0 +1,245 @@
+---
+title: "Personal Power"
+author: "Xavier Marquez"
+date: "6 October 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      cache = TRUE,
+                      cache.rebuild = FALSE,
+                      message = FALSE,
+                      warning = FALSE)
+```
+
+## Preparing the data
+
+We first gather the data on personal power and put it in the right form. The first step is to add the VDem variables:
+
+```{r personal_power_data_1}
+library(tidyverse)
+library(PoliticalDatasets)
+library(reshape2)
+
+personalism_data <- vdem %>% 
+  select(country_name,GWn,year,in_system,v2xlg_legcon,v2x_jucon,v2x_execorr) %>%
+  melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)
+
+```
+
+Then we add the magaloni personalism measure `lindex`:
+
+```{r personal_power_data_2}
+
+personalism_data <- bind_rows(personalism_data, magaloni %>%
+                                select(country_name,GWn,year,in_system,lindex) %>%
+                                melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)) 
+```
+
+And Wahman, Teorell, and Hadenius's `persnagg1ny` measure:
+
+```{r personal_power_data_3}
+
+personalism_data <- bind_rows(personalism_data, wahman_teorell %>%
+                                select(country_name,GWn,year,in_system,persagg1ny) %>%
+                                melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)) 
+
+```
+
+And Kailitz's measure of whether the regime has a "personal" component:
+
+```{r personal_power_data_4}
+
+personalism_data <- bind_rows(personalism_data, kailitz.yearly %>%
+                                select(country_name,GWn,year,in_system,personal) %>%
+                                melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)) 
+```
+
+Then Polity IV's measure of executive constraints, which we need to clean up to eliminate the special codes:
+
+```{r personal_power_data_5}
+
+polity_annual <- polity_annual %>%  mutate(exconst = ifelse(exconst < -10, NA, exconst))
+
+personalism_data <- bind_rows(personalism_data, polity_annual %>%
+                                select(country_name,GWn,year,in_system,exconst) %>%
+                                melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)) 
+
+rm(polity_annual)
+```
+
+Then Geddes, Wright, and Frantz's measure of whether a regime has a personal component:
+
+```{r personal_power_data_6}
+
+all_gwf_extended_yearly <- all_gwf_extended_yearly %>%
+  select(country_name,GWn,year,in_system,gwf_full_regimetype) %>%
+  mutate(gwf_personal_single = grepl("^personal",gwf_full_regimetype),
+         gwf_personal_hybrid  = grepl("personal",gwf_full_regimetype),
+         gwf_personal = gwf_personal_single + gwf_personal_hybrid) %>%
+  select(-gwf_personal_single,-gwf_personal_hybrid)
+
+personalism_data <- bind_rows(personalism_data, all_gwf_extended_yearly %>%
+                                select(-gwf_full_regimetype) %>%
+                                melt(id.vars = c("country_name","GWn","year","in_system"),na.rm=TRUE)) 
+
+rm(all_gwf_extended_yearly)
+```
+
+And we put it in the right shape:
+
+```{r personal_power_data_7}
+
+personalism_data <- dcast(personalism_data, country_name + GWn + year + in_system ~ variable)
+```
+
+This is what the data should look like:
+
+```{r personal_power_data_8}
+
+personalism_data %>%
+  filter(!is.na(personal), !is.na(lindex), !is.na(persagg1ny)) %>%
+  head() %>%
+  knitr::kable()
+
+summary(personalism_data)
+```
+
+We can check the correlations:
+
+```{r correlations_1}
+
+library(GGally)
+
+ggcorr(data= personalism_data %>% select(exconst:v2xlg_legcon), label = TRUE, label_round = 2)
+
+```
+
+We then cut the continuous variables into intervals:
+
+```{r personal_power_data_9}
+
+personalism_data <- personalism_data %>% 
+  mutate_each(funs(unclass(cut(., 
+                               breaks = 20, 
+                               include.lowest = TRUE, 
+                               right = FALSE, 
+                               ordered_result = TRUE))),
+              v2x_execorr:v2xlg_legcon)
+
+personalism_data %>%
+  filter(!is.na(personal), !is.na(lindex), !is.na(persagg1ny)) %>%
+  head() %>%
+  knitr::kable()
+
+personalism_data <- personalism_data %>% 
+  mutate(lindex = unclass(cut(percent_rank(lindex), 
+                              20, 
+                              include.lowest=TRUE, 
+                              ordered_result=TRUE)), 
+         persagg1ny = unclass(cut(percent_rank(persagg1ny),
+                                  20,
+                                  include.lowest=TRUE, 
+                                  ordered_result=TRUE)))
+
+personalism_data %>%
+  filter(!is.na(personal), !is.na(lindex), !is.na(persagg1ny)) %>%
+  head() %>%
+  knitr::kable()
+
+personalism_data <- personalism_data %>% 
+  mutate_each(funs(unclass(factor(., 
+                                  ordered = TRUE))), 
+              v2xlg_legcon:gwf_personal)
+
+personalism_data %>%
+  filter(!is.na(personal), !is.na(lindex), !is.na(persagg1ny)) %>%
+  head() %>%
+  knitr::kable()
+
+personalism_data <- personalism_data %>% 
+  mutate_each(funs(as.numeric(.)), 
+              exconst:v2xlg_legcon)
+
+personalism_data %>%
+  filter(!is.na(personal), !is.na(lindex), !is.na(persagg1ny)) %>%
+  head() %>%
+  knitr::kable()
+```
+
+We can check the correlations again:
+
+```{r correlations_2, dependson=-1}
+
+library(GGally)
+
+ggcorr(data= personalism_data %>% select(exconst:v2xlg_legcon), label = TRUE, label_round = 2)
+
+```
+
+Finally we create the model:
+
+```{r model, cache.rebuild=TRUE}
+library(mirt)
+personal_model <- mirt(personalism_data %>% 
+                         select(exconst:v2xlg_legcon), 
+                       model = 1, 
+                       itemtype = "graded", 
+                       SE = TRUE, 
+                       verbose = FALSE)
+
+personal_model
+
+summary(personal_model)
+
+personal_scores <- fscores(personal_model, full.scores = TRUE, full.scores.SE = TRUE) %>% 
+  data.frame() %>% 
+  dplyr::rename(z1 = F1, se.z1 = SE_F1) %>% 
+  mutate(pct975 = z1 + 1.96 * se.z1, pct025 = z1 - 1.96 * se.z1)
+
+personal_scores <- bind_cols(personalism_data %>% select(country_name,GWn,year,in_system),personal_scores)
+```
+
+And do some visual testing
+
+```{r visual_test, eval = FALSE}
+
+# Visual test
+leader_data <- archigos2014 %>% 
+  group_by(GWn,leader,startdate,enddate) %>%
+  summarise(year = year(startdate))
+
+
+personal_data <- left_join(personal_scores,leader_data)
+
+for(country in unique(personal_data$country_name)) {
+  message(country)
+
+  data <- personal_data %>% filter(country_name %in% country, year > 1900)
+  
+  if(length(data$year[!is.na(data$leader)]) > 0) {
+  p <- ggplot(data = data, aes(x=year,y = -z1, ymin = -pct025, ymax = -pct975, fill = in_system)) +
+    geom_path() +
+    geom_ribbon(alpha=0.2) +
+    theme_bw() +
+    scale_x_continuous(breaks = data$year[!is.na(data$leader)],
+                       labels = paste(data$year[!is.na(data$leader)], data$leader[!is.na(data$leader)])) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+    facet_wrap(~country_name, scales="free")
+  
+  print(p)
+    
+  }
+
+}
+
+
+```
+
+Finally, we save the data for package use:
+
+```{r save_data, cache.rebuild=TRUE}
+devtools::use_data(personal_scores, overwrite = TRUE)
+
+```
