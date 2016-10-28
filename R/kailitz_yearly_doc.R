@@ -85,9 +85,9 @@
 #' (66), New Zealand (66), Spain (66). NAs = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 198 distinct values. Most common: FRN (66), HAI (66), HON (66),
-#' MEX (66), NEW (66), SPN (66). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 198 distinct values. Most common: FRN (66), HAI (66),
+#' HON (66), MEX (66), NEW (66), SPN (66). NAs = 0.}
 #'
 #'
 #' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

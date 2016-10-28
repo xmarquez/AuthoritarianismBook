@@ -2,7 +2,22 @@
 #'
 #' A dataset combining historical estimates of GDP from the three main sources
 #' that publish them: the Maddison Project, the Penn World Tables, and the World
-#' Bank.
+#' Bank. Economic data on GDP per capita comes from several sources: the Maddison
+#' project (Maddison 2013), the Penn World Tables versions 8 and 8.1 (Feenstra and
+#' Timmer 2013), the World Bank's Development Indicators (
+#' \url{http://data.worldbank.org/}), and a dataset of extended GDP values by
+#' Kristian Gleditsch (Gleditsch 2002). The original data for the Maddison project
+#' is available at \url{http://www.ggdc.net/maddison/maddison-project/home.htm};
+#' the Penn World Tables (all versions) are available at
+#' \url{http://www.ggdc.net/pwt}; and the Gleditsch dataset is available at
+#' \url{http://privatewww.essex.ac.uk/~ksg/exptradegdp.html}. These are bundled
+#' into a single dataset with information about the source and the type of GDP
+#' estimate; it is worth noting that these estimates sometimes differ
+#' substantially (see
+#' \url{http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html}),
+#' and they must be used with some care. For a quick guide to the different types
+#' of measures, see the helpful chart at the Penn World Table website:
+#' \url{http://www.ggdc.net/pwt}.
 #'
 #' @section Variable descriptions:
 #'
@@ -45,7 +60,7 @@
 #'
 #'
 #' \item{per_capita}{Per capita estimate of GDP. This sometimes differs from value
-#' If value is a whole economy estimate (not per capita). Numeric. Max =
+#' if value is a whole economy estimate (not per capita). Numeric. Max =
 #' 632239.505, min = 68.567, distinct = 123682, mean = 8018.621, sd = 12785.183,
 #' NAs = 0.}
 #'
@@ -74,10 +89,19 @@
 #'
 #' @references
 #'
+#' Feenstra, Robert Inklaar, Robert C., and Marcel P. Timmer. 2013. "The Next
+#' Generation of the Penn World Table." Dataset.  \url{http://www.ggdc.net/pwt}
+#'
 #' Gleditsch, Kristian S. & Michael D. Ward. 1999. "Interstate System Membership:
 #' A Revised List of the Independent States since 1816." International
 #' Interactions 25: 393-413. The list can be found at
 #' \url{http://privatewww.essex.ac.uk/~ksg/statelist.html}
+#'
+#' Gleditsch, Kristian Skrede. 2002. "Expanded Trade and GDP Data." Journal of
+#' Conflict Resolution 46 (5): 712-24. doi:10.1177/0022002702046005006.
+#'
+#' The Maddison Project. 2013. "The Maddison Project." Dataset.
+#' \url{http://www.ggdc.net/maddison/maddison-project/home.htm}
 #'
 #'
 #'

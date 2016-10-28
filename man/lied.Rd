@@ -139,10 +139,10 @@ distinct values. Most common: Afghanistan (216), China (216), Iran (216), Nepal
 United Kingdom (216), United States (216). NAs = 0.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 223 distinct values. Most common: AFG (216), CHN (216), IRN
-(216), NEP (216), OMA (216), POR (216), RUS (216), SPN (216), SWD (216), THI
-(216), TUR (216), UKG (216), USA (216). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 223 distinct values. Most common: AFG (216), CHN (216),
+IRN (216), NEP (216), OMA (216), POR (216), RUS (216), SPN (216), SWD (216),
+THI (216), TUR (216), UKG (216), USA (216). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

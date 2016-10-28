@@ -740,9 +740,9 @@
 #' \item{deathdate}{Date of death, if known. Other.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 188 distinct values. Most common: FRN (118), JPN (83), SWZ
-#' (140). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 188 distinct values. Most common: FRN (118), JPN (83),
+#' SWZ (140). NAs = 0.}
 #'
 #'
 #' \item{region}{Region. Character with 21 distinct values. Most common: South

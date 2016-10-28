@@ -1075,9 +1075,9 @@ Constituent Assembly (77), Executive (958), Legislative/Parliamentary (2069).
 NAs = 0.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 165 distinct values. Most common: FRN (50), GUA (47), USA (51).
-NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 165 distinct values. Most common: FRN (50), GUA (47),
+USA (51). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

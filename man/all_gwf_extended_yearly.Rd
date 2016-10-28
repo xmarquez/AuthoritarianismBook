@@ -59,9 +59,9 @@ distinct values. Most common: Ethiopia (122), Nepal (149), Oman (270). NAs =
 4203.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 155 distinct values. Most common: LUX (141), NEP (165), NTH
-(141), OMA (270), SWZ (141). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 155 distinct values. Most common: LUX (141), NEP (165),
+NTH (141), OMA (270), SWZ (141). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

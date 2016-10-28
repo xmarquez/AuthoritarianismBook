@@ -38,9 +38,9 @@
 #' 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 96 distinct values. Most common: ARG (20), BOL (23), SUD (14).
-#' NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 96 distinct values. Most common: ARG (20), BOL (23), SUD
+#' (14). NAs = 0.}
 #'
 #'
 #' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

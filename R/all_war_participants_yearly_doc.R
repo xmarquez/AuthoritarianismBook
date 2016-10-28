@@ -34,9 +34,9 @@
 #' NAs = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 141 distinct values. Most common: CHN (191), FRN (179), UKG
-#' (205). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 141 distinct values. Most common: CHN (191), FRN (179),
+#' UKG (205). NAs = 0.}
 #'
 #'
 #' \item{newcow}{newcow Character with 602 distinct values. Most common: ES-482

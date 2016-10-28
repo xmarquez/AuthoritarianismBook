@@ -67,16 +67,16 @@
 #' (65), Venezuela (65), Yemen (65). NAs = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 155 distinct values. Most common: AFG (65), ALB (65), ARG (65),
-#' AUL (65), AUS (65), BEL (65), BOL (65), BRA (65), BUL (65), CAN (65), CHL (65),
-#' CHN (65), COL (65), COS (65), CUB (65), DEN (65), DOM (65), ECU (65), EGY (65),
-#' ETH (65), FIN (65), FRN (65), GRC (65), GUA (65), HAI (65), HON (65), HUN (65),
-#' ICE (65), IRE (65), IRN (65), IRQ (65), LBR (65), LEB (65), LUX (65), MEX (65),
-#' MON (65), NEP (65), NEW (65), NIC (65), NOR (65), NTH (65), OMA (65), PAN (65),
-#' PAR (65), PER (65), POL (65), POR (65), RUM (65), RUS (65), SAF (65), SAL (65),
-#' SAU (65), SPN (65), SWD (65), SWZ (65), THI (65), TUR (65), UKG (65), URU (65),
-#' USA (65), VEN (65), YEM (65). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 155 distinct values. Most common: AFG (65), ALB (65),
+#' ARG (65), AUL (65), AUS (65), BEL (65), BOL (65), BRA (65), BUL (65), CAN (65),
+#' CHL (65), CHN (65), COL (65), COS (65), CUB (65), DEN (65), DOM (65), ECU (65),
+#' EGY (65), ETH (65), FIN (65), FRN (65), GRC (65), GUA (65), HAI (65), HON (65),
+#' HUN (65), ICE (65), IRE (65), IRN (65), IRQ (65), LBR (65), LEB (65), LUX (65),
+#' MEX (65), MON (65), NEP (65), NEW (65), NIC (65), NOR (65), NTH (65), OMA (65),
+#' PAN (65), PAR (65), PER (65), POL (65), POR (65), RUM (65), RUS (65), SAF (65),
+#' SAL (65), SAU (65), SPN (65), SWD (65), SWZ (65), THI (65), TUR (65), UKG (65),
+#' URU (65), USA (65), VEN (65), YEM (65). NAs = 0.}
 #'
 #'
 #' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

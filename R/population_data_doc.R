@@ -24,12 +24,12 @@
 #' = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 224 distinct values. Most common: AND (199), ARG (199), CHN
-#' (199), DEN (199), FRN (199), IRN (199), ITA (199), JPN (199), LIE (199), MNC
-#' (199), NEP (199), NTH (199), OMA (199), PAR (199), POR (199), RUS (199), SNM
-#' (199), SPN (199), SWD (199), SWZ (199), THI (199), TUR (199), UKG (199), USA
-#' (199). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 224 distinct values. Most common: AND (199), ARG (199),
+#' CHN (199), DEN (199), FRN (199), IRN (199), ITA (199), JPN (199), LIE (199),
+#' MNC (199), NEP (199), NTH (199), OMA (199), PAR (199), POR (199), RUS (199),
+#' SNM (199), SPN (199), SWD (199), SWZ (199), THI (199), TUR (199), UKG (199),
+#' USA (199). NAs = 0.}
 #'
 #'
 #' \item{year}{Year. Numeric. Max = 2014, min = 1816, distinct = 199, mean =

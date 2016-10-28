@@ -248,9 +248,9 @@
 #' distinct values. Most common: Bolivia (24), Haiti (25), Russia (18). NAs = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 135 distinct values. Most common: BOL (24), HAI (25), RUS (18).
-#' NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 135 distinct values. Most common: BOL (24), HAI (25),
+#' RUS (18). NAs = 0.}
 #'
 #'
 #' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

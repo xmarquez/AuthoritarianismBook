@@ -93,7 +93,7 @@ personalism_data <- vdem %>%
 
 ```
 
-And Polity IV has a measure of constraints on the executive, the `xconst` variable (excluding the transition/interruption/interregunum codes): 
+And Polity IV has a measure of constraints on the executive, the `exconst` variable (excluding the transition/interruption/interregunum codes): 
 
 ```{r personal_power_data_5}
 
@@ -202,11 +202,11 @@ The graphs basically say that during Soviet times, legislative and executive con
 
 ### Tenure-based measures of executive constraint
 
-The dataset of regime types by Magaloni, Chu, and Min [@MagaloniChuMin2013] contains two measures of personalism: one derived from the `xconst` variable of the Polity IV dataset, and another one (`lindex`) which they describe as follows:
+The dataset of regime types by @MagaloniChuMin2013 contains two measures of personalism: one derived from the `exconst` variable of the Polity IV dataset, and another one (`lindex`) which they describe as follows:
 
 > the variable is essentially a Herfindahl index (sum of squared shares) using the name of the executive. For a given country-year in a unique regime (see reg_id), the following calculation is made: $\sum_{i=1}^m(exec_i/n)^2$ where n is the age of the regime up to that year, and exec is the number of years that a unique executive i (out of a total m executives up to that year) has led the regime. As such, a regime led by only one person up through that year yields a personalism index of 1. A theoretical scenario where leadership changes every single year would yield $1/n$. These calculations are made using the non-rounded values. We note that this is a relatively sensitive measure in the early/formative years of an individual regime, but we propose this is a useful way of considering personalism as an evolving attribute of a regime over time. 
 
-We use this `lindex` variable only (since we directly include the `xconst` variable, noted above):
+I use this `lindex` variable only (since I directly included the `exconst` variable, noted above):
 
 ```{r personal_power_data_2}
 
@@ -349,7 +349,7 @@ ggplot(data = data %>% filter(grepl("lindex", variable)),
            fill = guide_legend(title = ""))
 ```
 
-It is worh noting that because `persagg1ny` is invariant over the life of a regime, it is insensitive to fluctuations in personal power over time in it; by this measure, Lenin, Stalin, and Brezhnev all have the same amount of personal power over the life of the regime, since the "personalism" of the regime is averaged throughout its entire duration. Similarly, because `lindex` is always 1 at the beginning of a regime, the measure barely begins to capture Stalin's personal power as his tenure lengthened. Despite these problems, we nevertheless include both `lindex` and `persagg1ny` in the construction of the personal power index; in any case the model will discount them when they are highly uncorrelated with the rest of the other measures.
+Because `persagg1ny` is invariant over the life of a regime, it is insensitive to fluctuations in personal power; by this measure, Lenin, Stalin, and Brezhnev all have the same amount of personal power over the life of the Soviet regime, since the "personalism" of the regime is averaged throughout its entire duration. Similarly, because `lindex` is always 1 at the beginning of a regime, the measure barely begins to capture Stalin's personal power as his tenure lengthened. Despite these problems, we nevertheless include both `lindex` and `persagg1ny` in the construction of the personal power index; in any case the model will discount them when they are highly uncorrelated with the rest of the other measures.
 
 ```{r correlations_with_rest}
 
@@ -420,7 +420,7 @@ ggcorr(data = dcast(personalism_data, GWn + year + in_system ~ variable) %>%
 
 ### Cutting the data into a a manageable number of intervals
 
-Before running the model, it is necessary to cut the continuous variables into a finite number of intervals. For entirely arbitrary reasons, I use 20 intervals. I also first transform the `lindex` and `persaggny` measures into percentile ranks. In the case of `lindex`, this smooths out some of the initial spikes of personal power.
+Before running the model, it is necessary to cut the continuous variables into a finite number of intervals. For entirely arbitrary reasons, I use 20 intervals. I also first transform the `lindex` and `persagg1ny` measures into percentile ranks. In the case of `lindex`, this smooths out some of the spikes of personal power at the beginning of a regime.
 
 ```{r personal_power_data_7}
 
@@ -734,6 +734,7 @@ for(country in unique(personal_data$country_name)) {
                                      hjust = 1, 
                                      vjust = 0.5,
                                      size = 5)) +
+    labs(x = "") +
     facet_wrap(~country_name, scales="free")
   
   print(p)

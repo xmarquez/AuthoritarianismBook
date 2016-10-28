@@ -11,7 +11,7 @@
 
 <meta name="author" content="Xavier Marquez" />
 
-<meta name="date" content="2016-10-28" />
+<meta name="date" content="2016-10-29" />
 
 <title>Data Sources for Non-democratic Politics Book</title>
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Sources for Non-democratic Politics Book</h1>
 <h4 class="author"><em>Xavier Marquez</em></h4>
-<h4 class="date"><em>2016-10-28</em></h4>
+<h4 class="date"><em>2016-10-29</em></h4>
 
 </div>
 
@@ -1881,7 +1881,7 @@ cor(data2$NELDA, data2$PIPE)</code></pre>
 <h2>Economic data</h2>
 <div id="gdp-per-capita" class="section level3">
 <h3>GDP per capita</h3>
-<p>Economic data on GDP per capita comes from several sources: the Maddison project <span class="citation">(The Maddison Project 2013)</span>, the Penn World Tables versions 8 and 8.1 <span class="citation">(Feenstra and Timmer 2013)</span>, the World Bank’s <a href="http://data.worldbank.org/">Development Indicators</a>, and a dataset of extended GDP values by Kristian Gleditsch <span class="citation">(K. S. Gleditsch 2002)</span>. The original data for the Maddison project is available <a href="http://www.ggdc.net/maddison/maddison-project/home.htm">here</a>; the Penn World Tables (all versions) is available <a href="www.ggdc.net/pwt">here</a>; and the Gleditsch dataset is available <a href="http://privatewww.essex.ac.uk/~ksg/exptradegdp.html">here</a>. These are bundled into a single dataset with information about the source and the type of GDP estimate; it is worth noting that these estimates <a href="http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html">sometimes differ substantially</a>, and they must be used with some care. (For a quick guide to the different types of measures, see the helpful chart at the <a href="www.ggdc.net/pwt">Penn World Table website</a>). Nevertheless, for this books purposes, a simple median of these different measures works fine.</p>
+<p>Economic data on GDP per capita comes from several sources: the Maddison project <span class="citation">(The Maddison Project 2013)</span>, the Penn World Tables versions 8 and 8.1 <span class="citation">(Feenstra and Timmer 2013)</span>, the World Bank’s <a href="http://data.worldbank.org/">Development Indicators</a>, and a dataset of extended GDP values by Kristian Gleditsch <span class="citation">(K. S. Gleditsch 2002)</span>. The original data for the Maddison project is available <a href="http://www.ggdc.net/maddison/maddison-project/home.htm">here</a>; the Penn World Tables (all versions) is available <a href="www.ggdc.net/pwt">here</a>; and the Gleditsch dataset is available <a href="http://privatewww.essex.ac.uk/~ksg/exptradegdp.html">here</a>. These are bundled into a single dataset with information about the source and the type of GDP estimate; it is worth noting that these estimates <a href="http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html">sometimes differ substantially</a>, and they must be used with some care. (For a quick guide to the different types of measures, see the helpful chart at the <a href="www.ggdc.net/pwt">Penn World Table website</a>). Nevertheless, for this book’s purposes, a simple median of these different measures works fine.</p>
 <p>Here’s what they look like, per country:</p>
 <pre class="r"><code>ggplot(data = economic_data %&gt;% 
          filter(in_system) %&gt;%

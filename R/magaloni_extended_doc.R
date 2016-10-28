@@ -38,9 +38,9 @@
 #' (204). NAs = 0.}
 #'
 #'
-#' \item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-#' Character with 172 distinct values. Most common: BEL (183), NEP (244), USA
-#' (204). NAs = 0.}
+#' \item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+#' (1999). Character with 172 distinct values. Most common: BEL (183), NEP (244),
+#' USA (204). NAs = 0.}
 #'
 #'
 #' \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

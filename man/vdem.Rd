@@ -237,14 +237,14 @@ Suriname (116), Taiwan (116), Thailand (116), Tunisia (116), Turkey (116),
 Uganda (116), United States (116), Zimbabwe (116). NAs = 0.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 173 distinct values. Most common: AFG (116), ALG (116), ARG
-(116), BEN (116), BHU (116), BOL (116), BRA (116), CAM (116), COL (116), COS
-(116), ERI (116), ETH (116), ETM (116), FJI (116), GUY (116), IRN (116), KEN
-(116), MAD (116), MAW (116), MYA (116), MZM (116), NEP (116), PAR (116), PHI
-(116), POR (116), QAT (116), RUM (116), RUS (116), SAL (116), SOL (116), SOM
-(116), SUD (116), SUR (116), TAW (116), THI (116), TUN (116), TUR (116), UGA
-(116), USA (116), ZIM (116). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 173 distinct values. Most common: AFG (116), ALG (116),
+ARG (116), BEN (116), BHU (116), BOL (116), BRA (116), CAM (116), COL (116),
+COS (116), ERI (116), ETH (116), ETM (116), FJI (116), GUY (116), IRN (116),
+KEN (116), MAD (116), MAW (116), MYA (116), MZM (116), NEP (116), PAR (116),
+PHI (116), POR (116), QAT (116), RUM (116), RUS (116), SAL (116), SOL (116),
+SOM (116), SUD (116), SUR (116), TAW (116), THI (116), TUN (116), TUR (116),
+UGA (116), USA (116), ZIM (116). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

@@ -64,9 +64,9 @@ distinct values. Most common: China (63), Egypt (63), Iran (63), Oman (63),
 Paraguay (63), Saudi Arabia (63). NAs = 0.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 136 distinct values. Most common: CHN (63), EGY (63), IRN (63),
-OMA (63), PAR (63), SAU (63). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 136 distinct values. Most common: CHN (63), EGY (63),
+IRN (63), OMA (63), PAR (63), SAU (63). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

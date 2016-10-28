@@ -1,0 +1,265 @@
+---
+title: "Chapter 5: Parties"
+author: "Xavier Marquez"
+date: "`r Sys.Date()`"
+bibliography: bibfile.bib
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{Chapter 5}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+  
+## Introduction
+  
+This vignette shows how to replicate the charts in chapter 5 of my book [*Non-democratic Politics: Authoritarianism, Dictatorships, and Democratization*](https://he.palgrave.com/page/detail/non-democratic-politics-xavier-marquez/?sf1=barcode&st1=9781137486301) (Palgrave Macmillan, 2016). It assumes that you have downloaded the replication package as follows:
+  
+```{r, echo = TRUE, eval = FALSE}
+if(!require(devtools)) {
+  install.packages("devtools")
+}
+
+devtools::install_github('xmarquez/AuthoritarianismBook')
+
+```
+
+It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, and `knitr` packages installed:
+
+```{r, echo = TRUE, eval = FALSE}
+if(!require(dplyr)) {
+  install.packages("dplyr")
+}
+
+if(!require(ggplot2)) {
+  install.packages("ggplot2")
+}
+
+if(!require(scales)) {
+  install.packages("forcats")
+}
+
+if(!require(forcats)) {
+  install.packages("scales")
+}
+
+if(!require(knitr)) {
+  install.packages("knitr")
+}
+```
+
+```{r setup_chapter_5, include=FALSE}
+knitr::opts_chunk$set(fig.height = 7, 
+fig.width = 7)
+```
+
+## Figure 5.1: Ruling party control in legislatures of non-democratic regimes
+
+### Original figure
+
+Figure 5.1 uses data by @Svolik2012 on the legislatures of non-democratic regimes. 
+
+```{r fig_5_1}
+library(AuthoritarianismBook)
+library(dplyr)
+library(ggplot2)
+
+data <- svolik_institutions %>% 
+  mutate(legislative = plyr::mapvalues(legislative,
+                                       from = sort(unique(legislative)),
+                                       to = c("5-More than 75% of the seats",
+                                              "6-Less than 75% of the seats",
+                                              "1-No legislature",
+                                              "4-Nonpartisan",
+                                              "3-One party or candidate per seat",
+                                              "2-Unelected or appointed")))
+
+ggplot(data=data, aes(x=year,fill=legislative))+
+  geom_bar(width=1,position="fill") + 
+  theme_bw() +
+  labs(fill="Ruling party control in legislatures of non-democratic regimes",
+       x="Year", 
+       y= "Proportion of non-democratic regimes")+ 
+  guides(fill=guide_legend(title.position="top",ncol=1))+
+  theme(legend.position="bottom")+
+  geom_vline(xintercept=1989,linetype=2) +
+  scale_y_continuous(label=scales::percent) +
+  scale_fill_brewer(type = "div", palette = "RdBu") + 
+  annotate("text", x=1989,y = 0.5,label="End of the Cold War",angle=90)
+```
+
+### Extension 1: Disaggregated by country
+
+We can also visualize this data disaggregated by country, to see how legislative control has evolved over the years in various regimes:
+
+```{r fig_5_2, fig.height= 25}
+
+ggplot(data = data, 
+       aes(x= forcats::fct_rev(country_name), 
+           y = year, 
+           fill=legislative)) +
+  geom_tile() +
+  theme_bw() +
+  labs(fill="Ruling party control in legislatures of non-democratic regimes",
+       x="", 
+       y= "Year") + 
+  guides(fill=guide_legend(title.position="top",ncol=1)) +
+  theme(legend.position="bottom")  +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  geom_hline(yintercept=1989,
+             linetype=2) + 
+  annotate("text", y = 1989,
+           x = length(unique(data$country_name))/2,
+           label="End of the Cold War",
+           angle=90) + 
+  coord_flip()
+```
+
+## Extension: Elections in non-democratic regimes
+
+Chapter 5 discusses elections in non-democratic regimes. The discussion there does not contain figures, but we can use the NELDA dataset [@Hyde2011] and the PIPE dataset [@Przeworski2013] to get a good sense of how frequent elections have been in the non-democratic regimes identified by Svolik:
+
+```{r elections_non_dem, fig.height=25}
+
+# Unnecessary normally - a hack while I clean this file
+
+nelda$country_name[ grepl("Cote",nelda$country_name) ] <- "Cote D'Ivoire"
+  
+data <- full_join(data, nelda %>% select(country_name, GWn, year, types)) %>%
+  filter(!is.na(legislative), in_system)
+
+ggplot(data = data) +
+  geom_tile(aes(x= forcats::fct_rev(country_name), 
+           y = year,
+           fill = legislative)) +
+  geom_point(aes(x = forcats::fct_rev(country_name),
+                 y = year, 
+                 shape = types), 
+               alpha = 1) +
+  theme_bw() +
+  labs(fill="Type of legislature (Svolik)",
+       x="", 
+       y= "Year",
+       shape = "Type of election") + 
+  guides(fill=guide_legend(title.position="top",ncol=1)) +
+  theme(legend.position="bottom")   +
+  scale_fill_brewer(type = "div", palette = "RdBu") +
+  geom_hline(yintercept=1989,
+             linetype=2) + 
+  annotate("text", y = 1989,
+           x = length(unique(data$country_name))/2,
+           label="End of the Cold War",
+           angle=90) + 
+  coord_flip()
+
+```
+
+Svolik's data doesn't always agree with the NELDA data. (Some legislatures that Svolik codes as unelected, or nonexistent, nevertheless indicate legislative elections). Nevertheless, to the extent that we can tell, elections have been more frequent in non-democratic regimes with multiple parties in the legislature:
+
+```{r frequency_elections}
+
+data %>%
+  count(legislative, types) %>%
+  knitr::kable()
+
+data %>%
+  count(legislative, elections = !is.na(types)) %>%
+  group_by(legislative) %>%
+  summarise(total_elections = n[ elections ],
+            elections_per_year = total_elections/sum(n)) %>%
+  arrange(desc(elections_per_year)) %>%
+  knitr::kable()
+
+```
+
+We can get a more complete picture of elections in demoand non-democracies by using the extended Unified Democracy Scores [@Pemstein2010; @Marquez2016] and the combined lies of elections from both NELDA and PIPE:
+
+```{r elections_non_dem_2, fig.height=30, warning = FALSE }
+
+data <- full_join(extended_uds, all_elections) %>%
+  filter(year <= 2012) %>%
+  mutate(is_non_democracy = (index < 0.5)) %>%
+  group_by(country_name) %>%
+  mutate(first_election = min(year[ !is.na(types) ]),
+         first_election = ifelse(year == first_election,
+                                 first_election,
+                                 NA)) %>%
+  ungroup() 
+
+ggplot(data = data, 
+       aes(x= forcats::fct_rev(reorder(country_name, 
+                           first_election,
+                           min,
+                           na.rm = TRUE)))) +
+  geom_tile(aes(y = year,
+           fill = index)) +
+  geom_point(aes(y = year, 
+                 shape = types), 
+               alpha = 0.3) +
+  geom_text(aes(y = first_election, 
+                label = first_election),
+            check_overlap = TRUE,
+            size = 2) +
+  theme_bw() +
+  labs(fill="Extended UD score",
+       x="", 
+       y= "Year",
+       shape = "Type of election",
+       source = "Source of election data") + 
+  guides(fill=guide_legend(title.position="top")) +
+  theme(legend.position="bottom")   +
+  scale_fill_gradient2(midpoint = 0.5) +
+  geom_hline(yintercept=1989,
+             linetype=2) + 
+  annotate("text", y = 1989,
+           x = length(unique(data$country_name))/2,
+           label="End of the Cold War",
+           angle=90) + 
+  coord_flip()
+
+```
+
+And we can view the frequency of elections as follows:
+
+```{r election_frequency_2}
+
+data %>%
+  distinct(country_name, year, types, is_non_democracy) %>%
+  count(is_non_democracy, types) %>%
+  knitr::kable()
+
+data %>%
+  distinct(country_name, year, types, is_non_democracy) %>%
+  count(is_non_democracy, elections = !is.na(types)) %>%
+  group_by(is_non_democracy) %>%
+  summarise(total_elections = n[ elections ], 
+            elections_per_year = total_elections/sum(n)) %>%
+  arrange(desc(elections_per_year)) %>%
+  knitr::kable()
+
+```
+
+As we can see, the frequency of elections is not particularly different between non-democratic and democratic regimes. 
+
+```{r election_frequency_3}
+
+data <- data %>% 
+  left_join(kailitz_yearly)
+
+data %>%
+  count(is_non_democracy, communist, types) %>%
+  knitr::kable()
+
+data %>%
+  count(is_non_democracy, communist, elections = !is.na(types)) %>%
+  group_by(is_non_democracy, communist) %>%
+  summarise(total_elections = n[ elections ], 
+            elections_per_year = total_elections/sum(n)) %>%
+  arrange(desc(elections_per_year)) %>%
+  knitr::kable()
+
+```
+
+# References

@@ -26,9 +26,9 @@ Numeric. Max = 990, min = 2, distinct = 225, mean = 440.49, sd = 255.909, NAs =
 0.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 225 distinct values. Most common: AFG (269), NEP (249), OMA
-(275). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 225 distinct values. Most common: AFG (269), NEP (249),
+OMA (275). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few

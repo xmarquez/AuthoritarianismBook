@@ -80,7 +80,22 @@
     
     <p>A dataset combining historical estimates of GDP from the three main sources
 that publish them: the Maddison Project, the Penn World Tables, and the World
-Bank.</p>
+Bank. Economic data on GDP per capita comes from several sources: the Maddison
+project (Maddison 2013), the Penn World Tables versions 8 and 8.1 (Feenstra and
+Timmer 2013), the World Bank&#39;s Development Indicators (
+<a href = 'http://data.worldbank.org/'>http://data.worldbank.org/</a>), and a dataset of extended GDP values by
+Kristian Gleditsch (Gleditsch 2002). The original data for the Maddison project
+is available at <a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>http://www.ggdc.net/maddison/maddison-project/home.htm</a>;
+the Penn World Tables (all versions) are available at
+<a href = 'http://www.ggdc.net/pwt'>http://www.ggdc.net/pwt</a>; and the Gleditsch dataset is available at
+<a href = 'http://privatewww.essex.ac.uk/~ksg/exptradegdp.html'>http://privatewww.essex.ac.uk/~ksg/exptradegdp.html</a>. These are bundled
+into a single dataset with information about the source and the type of GDP
+estimate; it is worth noting that these estimates sometimes differ
+substantially (see
+<a href = 'http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html'>http://abandonedfootnotes.blogspot.com/2015/08/the-mismeasure-of-growth_28.html</a>),
+and they must be used with some care. For a quick guide to the different types
+of measures, see the helpful chart at the Penn World Table website:
+<a href = 'http://www.ggdc.net/pwt'>http://www.ggdc.net/pwt</a>.</p>
     
 
     <pre><span class='no'>economic_data</span></pre>
@@ -120,7 +135,7 @@ Gleditsch (9627). NAs = 0.</dd></p>
 Numeric. Max = 13956527, min = 52.704, distinct = 123571, mean = 153014.074, sd
 = 688291.172, NAs = 0.</dd></p>
     <p><dt>per_capita</dt><dd>Per capita estimate of GDP. This sometimes differs from value
-If value is a whole economy estimate (not per capita). Numeric. Max =
+if value is a whole economy estimate (not per capita). Numeric. Max =
 632239.505, min = 68.567, distinct = 123682, mean = 8018.621, sd = 12785.183,
 NAs = 0.</dd></p>
     <p><dt>primary_source</dt><dd>The primary source of the estimate. There are five
@@ -139,10 +154,16 @@ NAs = 2566.</dd></p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
+    <p>Feenstra, Robert Inklaar, Robert C., and Marcel P. Timmer. 2013. &quot;The Next
+Generation of the Penn World Table.&quot; Dataset.  <a href = 'http://www.ggdc.net/pwt'>http://www.ggdc.net/pwt</a></p>
     <p>Gleditsch, Kristian S. &amp; Michael D. Ward. 1999. &quot;Interstate System Membership:
 A Revised List of the Independent States since 1816.&quot; International
 Interactions 25: 393-413. The list can be found at
 <a href = 'http://privatewww.essex.ac.uk/~ksg/statelist.html'>http://privatewww.essex.ac.uk/~ksg/statelist.html</a></p>
+    <p>Gleditsch, Kristian Skrede. 2002. &quot;Expanded Trade and GDP Data.&quot; Journal of
+Conflict Resolution 46 (5): 712-24. doi:10.1177/0022002702046005006.</p>
+    <p>The Maddison Project. 2013. &quot;The Maddison Project.&quot; Dataset.
+<a href = 'http://www.ggdc.net/maddison/maddison-project/home.htm'>http://www.ggdc.net/maddison/maddison-project/home.htm</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

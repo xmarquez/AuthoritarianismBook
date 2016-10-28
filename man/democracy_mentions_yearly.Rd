@@ -63,9 +63,9 @@ distinct values. Most common: and except so far as that provision o... (115),
 on a democratic (63), Part I Chapter I General Declarat... (70). NAs = 9929.}
 
 
-\item{GWc}{Gleditsch-Ward numeric country code. See Gleditsch and Ward (1999).
-Character with 213 distinct values. Most common: CAN (251), UKG (799), USA
-(233). NAs = 0.}
+\item{GWc}{Gleditsch-Ward alphabetic country code. See Gleditsch and Ward
+(1999). Character with 213 distinct values. Most common: CAN (251), UKG (799),
+USA (233). NAs = 0.}
 
 
 \item{cown}{Correlates of War numeric country code. Differs from GWn for a few
