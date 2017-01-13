@@ -11,7 +11,7 @@
 
 <meta name="author" content="Xavier Marquez" />
 
-<meta name="date" content="2016-10-29" />
+<meta name="date" content="2016-12-22" />
 
 <title>Data Sources for Non-democratic Politics Book</title>
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Data Sources for Non-democratic Politics Book</h1>
 <h4 class="author"><em>Xavier Marquez</em></h4>
-<h4 class="date"><em>2016-10-29</em></h4>
+<h4 class="date"><em>2016-12-22</em></h4>
 
 </div>
 
@@ -151,6 +151,7 @@ $(document).ready(function () {
 <li><a href="#economic-data">Economic data</a><ul>
 <li><a href="#gdp-per-capita">GDP per capita</a></li>
 <li><a href="#inequality-data">Inequality data</a></li>
+<li><a href="#oil-and-gas-data">Oil and Gas data</a></li>
 </ul></li>
 <li><a href="#violence-data">Violence data</a><ul>
 <li><a href="#repression-data">Repression data</a></li>
@@ -1920,6 +1921,21 @@ cor(data2$NELDA, data2$PIPE)</code></pre>
                                 min(swiid_summary_5$year))))</code></pre>
 <p><img src="all_other_data_files/figure-html/inequality_plot-1.png" /><!-- --></p>
 </div>
+<div id="oil-and-gas-data" class="section level3">
+<h3>Oil and Gas data</h3>
+<p>The data on oil and gas comes from Ross and Mahdavi <span class="citation">(Ross and Mahdavi 2015)</span>. The original data is available <a href="http://dx.doi.org/10.7910/DVN/ZTPW0Y">here</a>.</p>
+<pre class="r"><code>Ross &lt;- PoliticalDatasets::Ross %&gt;%
+  select(country_name, 
+         GWn, 
+         year, 
+         ross_country:eiacty, 
+         oil_gas_value_2014,
+         GWc,
+         cown:in_system) %&gt;%
+  filter(!is.na(oil_gas_value_2014), oil_gas_value_2014 &gt; 0)
+
+devtools::use_data(Ross, overwrite = TRUE)</code></pre>
+</div>
 </div>
 <div id="violence-data" class="section level2">
 <h2>Violence data</h2>
@@ -2101,7 +2117,7 @@ devtools::document()</code></pre>
 <h2>References</h2>
 <div id="refs" class="references">
 <div id="ref-ChenowethLewis2013">
-<p>Chenoweth, Erica, and Orion A Lewis. 2013. “Unpacking Nonviolent Campaigns: Introducing the NAVCO 2.0 Dataset.” <em>Journal of Peace Research</em> 50 (3): 415–23. doi:<a href="https://doi.org/10.1177/0022343312471551">10.1177/0022343312471551</a>.</p>
+<p>Chenoweth, Erica, and Orion A Lewis. 2013. “Unpacking Nonviolent Campaigns: Introducing the Navco 2.0 Dataset.” <em>Journal of Peace Research</em> 50 (3): 415–23. doi:<a href="https://doi.org/10.1177/0022343312471551">10.1177/0022343312471551</a>.</p>
 </div>
 <div id="ref-vdem2015">
 <p>Coppedge, Michael, John Gerring, Staffan I. Lindberg, Svend-Erik Skaaning, Jan Teorell with David Altman, Michael Bernhard, M. Steven Fish, et al. 2015. “V-Dem Codebook V5.” Varieties of Democracy (V-Dem) Project.</p>
@@ -2122,7 +2138,7 @@ devtools::document()</code></pre>
 <p>———. 2010. “Expanded Population Data.” <a href="http://privatewww.essex.ac.uk/~ksg/exppop.html" class="uri">http://privatewww.essex.ac.uk/~ksg/exppop.html</a>.</p>
 </div>
 <div id="ref-Gleditsch2002GDP">
-<p>Gleditsch, Kristian Skrede. 2002. “Expanded Trade and GDP Data.” <em>Journal of Conflict Resolution</em> 46 (5): 712–24. doi:<a href="https://doi.org/10.1177/0022002702046005006">10.1177/0022002702046005006</a>.</p>
+<p>Gleditsch, Kristian Skrede. 2002. “Expanded Trade and Gdp Data.” <em>Journal of Conflict Resolution</em> 46 (5): 712–24. doi:<a href="https://doi.org/10.1177/0022002702046005006">10.1177/0022002702046005006</a>.</p>
 </div>
 <div id="ref-GoemansGleditschChiozza2009">
 <p>Goemans, Henk, Kristian Gleditsch, and Giacomo Chiozza. 2009. “Introducing Archigos: A Dataset of Political Leaders.” <em>Journal of Peace Research</em> 46 (2): 269–83.</p>
@@ -2153,6 +2169,9 @@ devtools::document()</code></pre>
 </div>
 <div id="ref-Przeworski2013">
 <p>Przeworski, Adam. 2013. “Political Institutions and Political Events (PIPE) Data Set.” Data set. Department of Politics, New York University. <a href="https://sites.google.com/a/nyu.edu/adam-przeworski/home/data" class="uri">https://sites.google.com/a/nyu.edu/adam-przeworski/home/data</a>.</p>
+</div>
+<div id="ref-RossMahdavi2015">
+<p>Ross, Michael, and Paasha Mahdavi. 2015. “Oil and Gas Data, 1932-2014.” Dataset. Harvard Dataverse. doi:<a href="https://doi.org/10.7910/DVN/ZTPW0Y">10.7910/DVN/ZTPW0Y</a>.</p>
 </div>
 <div id="ref-SkaaningGerring2015">
 <p>Skaaning, Svend-Erik, John Gerring, and Henrikas Bartusevičius. 2015. “A Lexical Index of Electoral Democracy.” <em>Comparative Political Studies</em> 48 (12): 1491–1525. doi:<a href="https://doi.org/10.1177/0010414015581050">10.1177/0010414015581050</a>.</p>

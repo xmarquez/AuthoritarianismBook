@@ -10,7 +10,6 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +21,7 @@
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
@@ -55,12 +55,12 @@
   <a href="../articles/index.html">Vignettes</a>
 </li>
       </ul>
-
+      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/xmarquez/AuthoritarianismBook">
     <span class="fa fa-github fa-lg"></span>
-
+     
   </a>
 </li>
       </ul>
@@ -68,259 +68,230 @@
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-
+      
       </header>
 
       <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-9">
     <div class="page-header">
-      <h1>Data reference <small>version&nbsp;0.1.0</small></h1>
+      <h1>Function reference</h1>
+      <h4>version&nbsp;0.1.1</h4>
     </div>
-  </div>
-  <div class="col-md-12 side-by-side">
 
-    <div class="section ">
-      <h2>Democracy scores or indexes</h2>
+    <div class="contents">
+      <h2 id="section-democracy-scores-or-indexes" class="hasAnchor"><a href="#section-democracy-scores-or-indexes" class="anchor"></a>Democracy scores or indexes</h2>
       <p class="section-desc"><p>Numerical measures of the degree of democracy in particular countries.</p></p>
 
-      <div class="topic">
-        <p><a href="democracy.html">All Democracy Scores Dataset</a></p>
-        <ul>
-          <li><code><a href="democracy.html">democracy</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="extended_uds.html">Extended Unified Democracy Scores (UDS)</a></p>
-        <ul>
-          <li><code><a href="extended_uds.html">extended_uds</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="lied.html">The Lexical Index of Democracy, v. 3</a></p>
-        <ul>
-          <li><code><a href="lied.html">lied</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="polity_annual.html">Selection from the POLITY IV dataset</a></p>
-        <ul>
-          <li><code><a href="polity_annual.html">polity_annual</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="vdem.html">A selection of indexes from the V-Dem dataset, version 6.1</a></p>
-        <ul>
-          <li><code><a href="vdem.html">vdem</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Regime type datasets</h2>
+      
+      <p><a href="democracy.html">All Democracy Scores Dataset</a></p>
+      <ul>
+        <li><code><a href="democracy.html">democracy</a></code></li>
+      </ul>
+      
+      <p><a href="extended_uds.html">Extended Unified Democracy Scores (UDS)</a></p>
+      <ul>
+        <li><code><a href="extended_uds.html">extended_uds</a></code></li>
+      </ul>
+      
+      <p><a href="lied.html">The Lexical Index of Democracy, v. 3</a></p>
+      <ul>
+        <li><code><a href="lied.html">lied</a></code></li>
+      </ul>
+      
+      <p><a href="polity_annual.html">Selection from the POLITY IV dataset</a></p>
+      <ul>
+        <li><code><a href="polity_annual.html">polity_annual</a></code></li>
+      </ul>
+      
+      <p><a href="vdem.html">A selection of indexes from the V-Dem dataset, version 6.1</a></p>
+      <ul>
+        <li><code><a href="vdem.html">vdem</a></code></li>
+      </ul>
+          <h2 id="section-regime-type-datasets" class="hasAnchor"><a href="#section-regime-type-datasets" class="anchor"></a>Regime type datasets</h2>
       <p class="section-desc"><p>Qualitative judgments about the type of regime in particular countries.</p></p>
 
-      <div class="topic">
-        <p><a href="all_gwf.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
-        <ul>
-          <li><code><a href="all_gwf.html">all_gwf</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="all_gwf_extended_yearly.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
-        <ul>
-          <li><code><a href="all_gwf_extended_yearly.html">all_gwf_extended_yearly</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="all_gwf_periods.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
-        <ul>
-          <li><code><a href="all_gwf_periods.html">all_gwf_periods</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="kailitz_yearly.html">The Steffen Kailitz Dataset of Authoritarian Regime Types</a></p>
-        <ul>
-          <li><code><a href="kailitz_yearly.html">kailitz_yearly</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="magaloni.html">Selection from the Autocracies of the World dataset v. 1.0</a></p>
-        <ul>
-          <li><code><a href="magaloni.html">magaloni</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="magaloni_extended.html">Selection from the Autocracies of the World dataset v. 1.0</a></p>
-        <ul>
-          <li><code><a href="magaloni_extended.html">magaloni_extended</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="wahman_teorell.html">A selection from the Authoritarian Regimes Data Set, v. 5.0</a></p>
-        <ul>
-          <li><code><a href="wahman_teorell.html">wahman_teorell</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Regime institutions data</h2>
+      
+      <p><a href="all_gwf.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
+      <ul>
+        <li><code><a href="all_gwf.html">all_gwf</a></code></li>
+      </ul>
+      
+      <p><a href="all_gwf_extended_yearly.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
+      <ul>
+        <li><code><a href="all_gwf_extended_yearly.html">all_gwf_extended_yearly</a></code></li>
+      </ul>
+      
+      <p><a href="all_gwf_periods.html">Selection from the Geddes, Wright, and Frantz Autocratic Regimes dataset</a></p>
+      <ul>
+        <li><code><a href="all_gwf_periods.html">all_gwf_periods</a></code></li>
+      </ul>
+      
+      <p><a href="kailitz_yearly.html">The Steffen Kailitz Dataset of Authoritarian Regime Types</a></p>
+      <ul>
+        <li><code><a href="kailitz_yearly.html">kailitz_yearly</a></code></li>
+      </ul>
+      
+      <p><a href="magaloni.html">Selection from the Autocracies of the World dataset v. 1.0</a></p>
+      <ul>
+        <li><code><a href="magaloni.html">magaloni</a></code></li>
+      </ul>
+      
+      <p><a href="magaloni_extended.html">Selection from the Autocracies of the World dataset v. 1.0</a></p>
+      <ul>
+        <li><code><a href="magaloni_extended.html">magaloni_extended</a></code></li>
+      </ul>
+      
+      <p><a href="wahman_teorell.html">A selection from the Authoritarian Regimes Data Set, v. 5.0</a></p>
+      <ul>
+        <li><code><a href="wahman_teorell.html">wahman_teorell</a></code></li>
+      </ul>
+          <h2 id="section-regime-institutions-data" class="hasAnchor"><a href="#section-regime-institutions-data" class="anchor"></a>Regime institutions data</h2>
       <p class="section-desc"><p>Information about particular regime institutions in different countries.</p></p>
 
-      <div class="topic">
-        <p><a href="lied.html">The Lexical Index of Democracy, v. 3</a></p>
-        <ul>
-          <li><code><a href="lied.html">lied</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="PIPE.html">Selection from the Political Institutions and Political Events (PIPE) dataset</a></p>
-        <ul>
-          <li><code><a href="PIPE.html">PIPE</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="polity_annual.html">Selection from the POLITY IV dataset</a></p>
-        <ul>
-          <li><code><a href="polity_annual.html">polity_annual</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="svolik_institutions.html">Milan Svolik's Institutions in Dictatorship Dataset</a></p>
-        <ul>
-          <li><code><a href="svolik_institutions.html">svolik_institutions</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Elections data</h2>
+      
+      <p><a href="lied.html">The Lexical Index of Democracy, v. 3</a></p>
+      <ul>
+        <li><code><a href="lied.html">lied</a></code></li>
+      </ul>
+      
+      <p><a href="PIPE.html">Selection from the Political Institutions and Political Events (PIPE) dataset</a></p>
+      <ul>
+        <li><code><a href="PIPE.html">PIPE</a></code></li>
+      </ul>
+      
+      <p><a href="polity_annual.html">Selection from the POLITY IV dataset</a></p>
+      <ul>
+        <li><code><a href="polity_annual.html">polity_annual</a></code></li>
+      </ul>
+      
+      <p><a href="svolik_institutions.html">Milan Svolik's Institutions in Dictatorship Dataset</a></p>
+      <ul>
+        <li><code><a href="svolik_institutions.html">svolik_institutions</a></code></li>
+      </ul>
+          <h2 id="section-elections-data" class="hasAnchor"><a href="#section-elections-data" class="anchor"></a>Elections data</h2>
       <p class="section-desc"><p>Information about elections in most countries of the world throughout their history.</p></p>
 
-      <div class="topic">
-        <p><a href="all_elections.html">A list of all elections in both the NELDA and the PIPE datasets.</a></p>
-        <ul>
-          <li><code><a href="all_elections.html">all_elections</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="nelda.html">The NELDA v.4 dataset (selection)</a></p>
-        <ul>
-          <li><code><a href="nelda.html">nelda</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="PIPE.html">Selection from the Political Institutions and Political Events (PIPE) dataset</a></p>
-        <ul>
-          <li><code><a href="PIPE.html">PIPE</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Constitutional data</h2>
+      
+      <p><a href="all_elections.html">A list of all elections in both the NELDA and the PIPE datasets.</a></p>
+      <ul>
+        <li><code><a href="all_elections.html">all_elections</a></code></li>
+      </ul>
+      
+      <p><a href="nelda.html">The NELDA v.4 dataset (selection)</a></p>
+      <ul>
+        <li><code><a href="nelda.html">nelda</a></code></li>
+      </ul>
+      
+      <p><a href="PIPE.html">Selection from the Political Institutions and Political Events (PIPE) dataset</a></p>
+      <ul>
+        <li><code><a href="PIPE.html">PIPE</a></code></li>
+      </ul>
+          <h2 id="section-constitutional-data" class="hasAnchor"><a href="#section-constitutional-data" class="anchor"></a>Constitutional data</h2>
       <p class="section-desc"><p>Data about features of the constitutions of different countries throughout their history.</p></p>
 
-      <div class="topic">
-        <p><a href="democracy_mentions_yearly.html">Mentions of democracy in constitutional documents, V. 1.0</a></p>
-        <ul>
-          <li><code><a href="democracy_mentions_yearly.html">democracy_mentions_yearly</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Leader data</h2>
+      
+      <p><a href="democracy_mentions_yearly.html">Mentions of democracy in constitutional documents, V. 1.0</a></p>
+      <ul>
+        <li><code><a href="democracy_mentions_yearly.html">democracy_mentions_yearly</a></code></li>
+      </ul>
+          <h2 id="section-leader-data" class="hasAnchor"><a href="#section-leader-data" class="anchor"></a>Leader data</h2>
       <p class="section-desc"><p>Information about the effective leaders of different regimes since the last century.</p></p>
 
-      <div class="topic">
-        <p><a href="archigos.html">The Archigos dataset of political regimes, v. 4.1</a></p>
-        <ul>
-          <li><code><a href="archigos.html">archigos</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="svolik_leader.html">Milan Svolik's Leaders in Dictatorship Dataset</a></p>
-        <ul>
-          <li><code><a href="svolik_leader.html">svolik_leader</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Personal power data</h2>
+      
+      <p><a href="archigos.html">The Archigos dataset of political regimes, v. 4.1</a></p>
+      <ul>
+        <li><code><a href="archigos.html">archigos</a></code></li>
+      </ul>
+      
+      <p><a href="svolik_leader.html">Milan Svolik's Leaders in Dictatorship Dataset</a></p>
+      <ul>
+        <li><code><a href="svolik_leader.html">svolik_leader</a></code></li>
+      </ul>
+          <h2 id="section-personal-power-data" class="hasAnchor"><a href="#section-personal-power-data" class="anchor"></a>Personal power data</h2>
       <p class="section-desc"><p>Measures of the degree of personal power of particular leaders in different regimes since the last century.</p></p>
 
-      <div class="topic">
-        <p><a href="personal_scores.html">Latent variable index of personalism, v. 1.0</a></p>
-        <ul>
-          <li><code><a href="personal_scores.html">personal_scores</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Violence and repression data</h2>
+      
+      <p><a href="personal_scores.html">Latent variable index of personalism, v. 1.0</a></p>
+      <ul>
+        <li><code><a href="personal_scores.html">personal_scores</a></code></li>
+      </ul>
+          <h2 id="section-violence-and-repression-data" class="hasAnchor"><a href="#section-violence-and-repression-data" class="anchor"></a>Violence and repression data</h2>
       <p class="section-desc"><p>Data about war, state violence, and anti-regime campaigns in different regimes.</p></p>
 
-      <div class="topic">
-        <p><a href="all_war_participants_yearly.html">List of War Participants by Gleditsch.</a></p>
-        <ul>
-          <li><code><a href="all_war_participants_yearly.html">all_war_participants_yearly</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="fariss.html">Fariss latent variable index of repression</a></p>
-        <ul>
-          <li><code><a href="fariss.html">fariss</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="interstate_dyads_yearly.html">List of Interstate War Dyads by Gleditsch</a></p>
-        <ul>
-          <li><code><a href="interstate_dyads_yearly.html">interstate_dyads_yearly</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="navco_2.html">Selection from the NAVCO dataset v. 2.0</a></p>
-        <ul>
-          <li><code><a href="navco_2.html">navco_2</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="powell_thyne.html">Powell-Thyne coup data (V2015.09.30)</a></p>
-        <ul>
-          <li><code><a href="powell_thyne.html">powell_thyne</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Economic and demographic data</h2>
+      
+      <p><a href="all_war_participants_yearly.html">List of War Participants by Gleditsch.</a></p>
+      <ul>
+        <li><code><a href="all_war_participants_yearly.html">all_war_participants_yearly</a></code></li>
+      </ul>
+      
+      <p><a href="fariss.html">Fariss latent variable index of repression</a></p>
+      <ul>
+        <li><code><a href="fariss.html">fariss</a></code></li>
+      </ul>
+      
+      <p><a href="interstate_dyads_yearly.html">List of Interstate War Dyads by Gleditsch</a></p>
+      <ul>
+        <li><code><a href="interstate_dyads_yearly.html">interstate_dyads_yearly</a></code></li>
+      </ul>
+      
+      <p><a href="navco_2.html">Selection from the NAVCO dataset v. 2.0</a></p>
+      <ul>
+        <li><code><a href="navco_2.html">navco_2</a></code></li>
+      </ul>
+      
+      <p><a href="powell_thyne.html">Powell-Thyne coup data (V2015.09.30)</a></p>
+      <ul>
+        <li><code><a href="powell_thyne.html">powell_thyne</a></code></li>
+      </ul>
+          <h2 id="section-economic-and-demographic-data" class="hasAnchor"><a href="#section-economic-and-demographic-data" class="anchor"></a>Economic and demographic data</h2>
       <p class="section-desc"></p>
 
-      <div class="topic">
-        <p><a href="economic_data.html">Combined GDP dataset</a></p>
-        <ul>
-          <li><code><a href="economic_data.html">economic_data</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="population_data.html">Population of Independent States</a></p>
-        <ul>
-          <li><code><a href="population_data.html">population_data</a></code></li>
-        </ul>
-      </div>
-      <div class="topic">
-        <p><a href="swiid_summary_5.html">Summary of the Standardized World Income Inequality Database</a></p>
-        <ul>
-          <li><code><a href="swiid_summary_5.html">swiid_summary_5</a></code></li>
-        </ul>
-      </div>
-    </div>
-    <div class="section ">
-      <h2>Geographic data</h2>
+      
+      <p><a href="economic_data.html">Combined GDP dataset</a></p>
+      <ul>
+        <li><code><a href="economic_data.html">economic_data</a></code></li>
+      </ul>
+      
+      <p><a href="population_data.html">Population of Independent States</a></p>
+      <ul>
+        <li><code><a href="population_data.html">population_data</a></code></li>
+      </ul>
+      
+      <p><a href="Ross.html">A selection from Ross and Mahdavi's Oil and Gas dataset</a></p>
+      <ul>
+        <li><code><a href="Ross.html">Ross</a></code></li>
+      </ul>
+      
+      <p><a href="swiid_summary_5.html">Summary of the Standardized World Income Inequality Database</a></p>
+      <ul>
+        <li><code><a href="swiid_summary_5.html">swiid_summary_5</a></code></li>
+      </ul>
+          <h2 id="section-geographic-data" class="hasAnchor"><a href="#section-geographic-data" class="anchor"></a>Geographic data</h2>
       <p class="section-desc"><p>Map data, useful for plotting.</p></p>
 
-      <div class="topic">
-        <p><a href="world.html">World map data, in country-year format, for use with ggplot2.</a></p>
-        <ul>
-          <li><code><a href="world.html">world</a></code></li>
-        </ul>
-      </div>
+      
+      <p><a href="world.html">World map data, in country-year format, for use with ggplot2.</a></p>
+      <ul>
+        <li><code><a href="world.html">world</a></code></li>
+      </ul>
+    
     </div>
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-democracy-scores-or-indexes">Democracy scores or indexes</a></li>
+      <li><a href="#section-regime-type-datasets">Regime type datasets</a></li>
+      <li><a href="#section-regime-institutions-data">Regime institutions data</a></li>
+      <li><a href="#section-elections-data">Elections data</a></li>
+      <li><a href="#section-constitutional-data">Constitutional data</a></li>
+      <li><a href="#section-leader-data">Leader data</a></li>
+      <li><a href="#section-personal-power-data">Personal power data</a></li>
+      <li><a href="#section-violence-and-repression-data">Violence and repression data</a></li>
+      <li><a href="#section-economic-and-demographic-data">Economic and demographic data</a></li>
+      <li><a href="#section-geographic-data">Geographic data</a></li>
+    </ul>
   </div>
 </div>
 

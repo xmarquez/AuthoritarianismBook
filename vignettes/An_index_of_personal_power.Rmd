@@ -1,7 +1,7 @@
 ---
 title: "Creating a latent variable index of personal power"
 author: "Xavier Marquez"
-date: "`r Sys.Date()`"
+date: "22 December 2016"
 bibliography: bibfile.bib
 output: 
   rmarkdown::html_vignette:
@@ -694,7 +694,7 @@ ggcorr(data = data, label = TRUE, label_round = 2)
 
 We can visualize the full set of scores (this takes a long time to run, so it is not run by default; set `eval = TRUE` to run the chunk when compiling the vignette):
 
-```{r visual_test, eval = FALSE }
+```{r visual_test, eval = TRUE }
 
 library(lubridate)
 

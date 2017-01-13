@@ -1031,6 +1031,25 @@ ggplot(data = swiid_summary_5 %>%
 
 ![](all_other_data_files/figure-html/inequality_plot-1.png)<!-- -->
 
+### Oil and Gas data
+
+The data on oil and gas comes from Ross and Mahdavi [@RossMahdavi2015]. The original data is available [here](http://dx.doi.org/10.7910/DVN/ZTPW0Y).
+
+
+```r
+Ross <- PoliticalDatasets::Ross %>%
+  select(country_name, 
+         GWn, 
+         year, 
+         ross_country:eiacty, 
+         oil_gas_value_2014,
+         GWc,
+         cown:in_system) %>%
+  filter(!is.na(oil_gas_value_2014), oil_gas_value_2014 > 0)
+
+devtools::use_data(Ross, overwrite = TRUE)
+```
+
 ## Violence data
 
 ### Repression data

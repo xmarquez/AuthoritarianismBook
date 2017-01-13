@@ -9,3 +9,4 @@
 ^docs/
 ^README_cache/
 ^_pkgdown.yml$
+^vignettes/An_index_of_personal_power.Rmd$
