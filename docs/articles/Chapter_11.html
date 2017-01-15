@@ -57,7 +57,7 @@
       <h1>Chapter 11: How do regimes change? Contentious politics and its diffusion</h1>
                         <h4 class="author">Xavier Marquez</h4>
             
-            <h4 class="date">2017-01-14</h4>
+            <h4 class="date">2017-01-15</h4>
           </div>
 
     
@@ -72,7 +72,7 @@
 }
 
 devtools::<span class="kw">install_github</span>(<span class="st">'xmarquez/AuthoritarianismBook'</span>)</code></pre></div>
-<p>It also assumes you have the <code>dplyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>forcats</code>, and <code>knitr</code> packages installed:</p>
+<p>It also assumes you have the <code>dplyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>forcats</code>, <code>tidyr</code>, and <code>knitr</code> packages installed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if(!<span class="kw">require</span>(dplyr)) {
   <span class="kw">install.packages</span>(<span class="st">"dplyr"</span>)
 }
@@ -91,6 +91,10 @@ if(!<span class="kw">require</span>(forcats)) {
 
 if(!<span class="kw">require</span>(knitr)) {
   <span class="kw">install.packages</span>(<span class="st">"knitr"</span>)
+}
+
+if(!<span class="kw">require</span>(tidyr)) {
+  <span class="kw">install.packages</span>(<span class="st">"tidyr"</span>)
 }</code></pre></div>
 </div>
 <div id="figure-11-1-transition-events-in-non-democratic-regimes-1945-2010" class="section level2">
@@ -329,7 +333,9 @@ data &lt;-<span class="st"> </span>all_gwf_periods %&gt;%<span class="st"> </spa
 <h3 class="hasAnchor">
 <html><body><a href="#original-figure-3" class="anchor"> </a></body></html>Original figure</h3>
 <p>Post-campaign outcomes for successful and usuccessful regime change campaigns. The data on regime change campaigns is from the Nonviolent and Violent Campaigns and Outcomes (NAVCO) data project, version 2.0, described in <span class="citation">Chenoweth and Lewis (2013)</span>. The primary method of resistance is an ideal type; campaigns sometimes used both violent and non-violent methods over their lifetime, and some changed their goals as well. Democracy data from <span class="citation">Pemstein, Meserve, and Melton (2010)</span>, extended by me <span class="citation">(Márquez 2016)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span>navco_2 %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+
+data &lt;-<span class="st"> </span>navco_2 %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(id) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(camp_goals ==<span class="st"> </span><span class="dv">0</span>) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year_success =</span> <span class="kw">max</span>(year)) %&gt;%<span class="st"> </span>
@@ -341,7 +347,8 @@ data &lt;-<span class="st"> </span>all_gwf_periods %&gt;%<span class="st"> </spa
            success,
            year_success,
            navco1designation) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">do</span>(<span class="kw">data.frame</span>(<span class="dt">year =</span> <span class="dv">1930</span>:<span class="dv">2014</span>)) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">list</span>(<span class="dv">1930</span>:<span class="dv">2014</span>)) %&gt;%
+<span class="st">  </span><span class="kw">unnest</span>() %&gt;%
 <span class="st">  </span><span class="kw">left_join</span>(extended_uds %&gt;%
 <span class="st">              </span><span class="kw">select</span>(country_name,
                      GWn, year, 

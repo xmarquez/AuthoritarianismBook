@@ -123,10 +123,13 @@ These measures are generally reasonable. Here's the graph for Russia, for exampl
 ```{r Russia_constraints_graph}
 
 library(lubridate)
+library(purrr)
+library(tidyr)
 
-leader_data_yearly <- archigos %>% 
+leader_data_yearly <- archigos %>%
   group_by(obsid, GWn, leader, startdate,enddate) %>%
-  do(data.frame(year = year(.$startdate):year(.$enddate))) %>%
+  mutate(year = map2(startdate, enddate, ~ year(.x):year(.y))) %>%
+  unnest() %>%
   group_by(GWn, year) %>%
   filter(enddate == max(enddate), startdate == max(startdate)) %>%
   group_by(leader) %>%

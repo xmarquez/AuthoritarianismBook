@@ -58,11 +58,11 @@ if(!require(knitr)) {
 }
 ```
 
-For the interactive graph below, you also need the `highcharter` package:
+For the interactive graph below, you also need the `plotly` package:
 
 ```{r, echo = TRUE, eval = FALSE}
-if(!require(highcharter)) {
-  install.packages("highcharter")
+if(!require(plotly)) {
+  install.packages("plotly")
 }
 ```
 
@@ -468,7 +468,7 @@ ggplot(data = data,
                  y = index.y)) + 
   geom_density_2d() +
   theme_bw() +
-  theme(legend.position="bottom") +
+  theme(legend.position = "bottom") +
   labs(x = "UD score of side A in war
        (0-1 probability scale,
        democracies = score >0.5)",
@@ -491,38 +491,43 @@ ggplot(data = data,
 
 ### Interactive Version
 
-This requires the `highcharter` package:
+This requires the `plotly` package:
 
 ```{r fig_9_6_interactive}
-library(highcharter)
+library(plotly)
 
-highchart() %>% 
-  hc_add_series_df(data,
-                   type = "scatter", 
-                   x = round(index.x, 2), 
-                   y = round(index.y, 2),  
-                   name = warname,
-                   country_name_x = country_name.x,
-                   country_name_y = country_name.y,
-                   year = year) %>% 
-  hc_title(text = "War and regime types") %>% 
-  hc_tooltip(valueDecimals = 1,
-             pointFormat = "War name: {point.name} ({point.year}) <br> 
-             Side A: {point.country_name_x} <br> 
-             UDS of side A: {point.x} <br>
-             Side B: {point.country_name_y} <br> 
-             UDS of side B: {point.y}") %>% 
-  hc_xAxis(title = list(text = "UDS of side A"),
-           plotLines = list(
-             list(color = "#FF0000",
-                  width = 2,
-                  value = 0.5))) %>% 
-  hc_yAxis(title = list(text = "UDS of side B"),
-           plotLines = list(
-             list(color = "#FF0000",
-                  width = 2,
-                  value = 0.5))) %>% 
-  hc_legend(enabled = FALSE) 
+data <- data %>%
+  mutate(uds_side_A = index.x,
+         uds_side_B = index.y,
+         name = paste0(warname, 
+                       " (", 
+                       year,
+                       ") ",
+                       country_name.x,
+                       " (A) vs. ",
+                       country_name.y,
+                       " (B)")) %>%
+  select(name, year, uds_side_A, uds_side_B) %>%
+  filter(!is.na(uds_side_A), !is.na(uds_side_B))
+
+p <- ggplot(data = data,
+              aes(text = name,
+                  x = uds_side_A, 
+                  y = uds_side_B)) +
+  geom_point() + 
+  theme_bw() +
+  theme(legend.position="bottom") +
+  labs(x = "UD score of side A in war
+       (0-1 probability scale,
+       democracies = score >0.5)",
+       y = "UD score of side B in war
+       (0-1 probability scale
+       democracies = score >0.5)", 
+       alpha = "Density") +
+  geom_vline(xintercept = 0.5, color = "red") +
+  geom_hline(yintercept = 0.5, color = "red")
+
+ggplotly(p)
 ```
 
 

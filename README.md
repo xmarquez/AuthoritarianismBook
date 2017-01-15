@@ -44,8 +44,8 @@ All other required packages are listed at the beginning of each vignette. You ca
 ```r 
 install.packages(c("knitr", "rmarkdown", "plyr", "dplyr", "reshape2", "ggplot2",
                 "GGally", "ggrepel", "scales", "survival", "lubridate",
-                "forcats", "mirt", "cshapes", "stringr", "broom", 
-                "highcharter","maptools", "rgeos"))
+                "forcats", "mirt", "cshapes", "stringr", "broom",
+                "purrr", "tidyr",  "plotly","maptools", "rgeos"))
 ```
 
 All the data used to construct all figures and perform all analyses is fully documented; click on the [datasets](reference/index.html) link on this website for more information about each of the datasets used.

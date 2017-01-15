@@ -26,7 +26,7 @@ devtools::install_github('xmarquez/AuthoritarianismBook')
 
 ```
 
-It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, and `knitr` packages installed:
+It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, `tidyr`, and `knitr` packages installed:
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require(dplyr)) {
@@ -48,6 +48,11 @@ if(!require(forcats)) {
 if(!require(knitr)) {
   install.packages("knitr")
 }
+
+if(!require(tidyr)) {
+  install.packages("tidyr")
+}
+
 ```
 
 ```{r setup_chapter_11, include=FALSE}
@@ -304,6 +309,8 @@ Post-campaign outcomes for successful and usuccessful regime change campaigns. T
 
 ```{r fig_11_4}
 
+library(tidyr)
+
 data <- navco_2 %>%
   group_by(id) %>% 
   filter(camp_goals == 0) %>% 
@@ -316,7 +323,8 @@ data <- navco_2 %>%
            success,
            year_success,
            navco1designation) %>% 
-  do(data.frame(year = 1930:2014)) %>%
+  mutate(year = list(1930:2014)) %>%
+  unnest() %>%
   left_join(extended_uds %>%
               select(country_name,
                      GWn, year, 

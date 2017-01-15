@@ -57,7 +57,7 @@
       <h1>Chapter 4: Personal Rule</h1>
                         <h4 class="author">Xavier Marquez</h4>
             
-            <h4 class="date">2017-01-13</h4>
+            <h4 class="date">2017-01-15</h4>
           </div>
 
     
@@ -72,7 +72,7 @@
 }
 
 devtools::<span class="kw">install_github</span>(<span class="st">'xmarquez/AuthoritarianismBook'</span>)</code></pre></div>
-<p>It also assumes you have the <code>dplyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>forcats</code>, <code>lubridate</code>, ,<code>ggrepel</code>, <code>maptools</code>, <code>rgeos</code>, and <code>knitr</code> packages installed:</p>
+<p>It also assumes you have the <code>dplyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>forcats</code>, <code>lubridate</code>, ,<code>ggrepel</code>, <code>maptools</code>, <code>rgeos</code>, <code>knitr</code>, <code>purrr</code>, and <code>tidyr</code> packages installed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">if(!<span class="kw">require</span>(dplyr)) {
   <span class="kw">install.packages</span>(<span class="st">"dplyr"</span>)
 }
@@ -91,6 +91,14 @@ if(!<span class="kw">require</span>(forcats)) {
 
 if(!<span class="kw">require</span>(lubridate)) {
   <span class="kw">install.packages</span>(<span class="st">"lubridate"</span>)
+}
+
+if(!<span class="kw">require</span>(purrr)) {
+  <span class="kw">install.packages</span>(<span class="st">"purrr"</span>)
+}
+
+if(!<span class="kw">require</span>(tidyr)) {
+  <span class="kw">install.packages</span>(<span class="st">"tidyr"</span>)
 }
 
 if(!<span class="kw">require</span>(knitr)) {
@@ -120,18 +128,22 @@ if(!<span class="kw">require</span>(rgeos)) {
 <span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(lubridate)
+<span class="kw">library</span>(purrr)
+<span class="kw">library</span>(tidyr)
 
 top_leaders &lt;-<span class="st"> </span>personal_scores %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(year &gt;=<span class="st"> </span><span class="dv">1900</span>, year &lt;=<span class="st"> </span><span class="dv">2012</span>) %&gt;%
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rank_world =</span> <span class="kw">percent_rank</span>(-z1)) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(rank_world &gt;<span class="st"> </span><span class="fl">0.95</span>)
 
-leader_data &lt;-<span class="st"> </span>archigos %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate,enddate) %&gt;%
-<span class="st">  </span><span class="kw">do</span>(<span class="kw">data.frame</span>(<span class="dt">year =</span> <span class="kw">year</span>(.$startdate):<span class="kw">year</span>(.$enddate)))
+leader_data &lt;-<span class="st"> </span>archigos %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate, enddate) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">map2</span>(startdate, enddate, ~<span class="st"> </span><span class="kw">year</span>(.x):<span class="kw">year</span>(.y))) %&gt;%
+<span class="st">  </span><span class="kw">unnest</span>() %&gt;%
+<span class="st">  </span><span class="kw">ungroup</span>() 
 
 top_leaders &lt;-<span class="st"> </span><span class="kw">left_join</span>(top_leaders,leader_data) </code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">top_leaders &lt;-<span class="st"> </span>top_leaders %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(leader)) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(country_name,leader) %&gt;%
@@ -188,7 +200,7 @@ data &lt;-<span class="st"> </span>data %&gt;%<span class="st"> </span><span cla
                          leader,
                          <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>)) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(leader)) </code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> leader_data %&gt;%<span class="st"> </span><span class="kw">filter</span>(rank &gt;<span class="st"> </span><span class="fl">0.9</span>), <span class="kw">aes</span>(<span class="dt">color =</span> in_book)) +
 <span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(<span class="kw">paste0</span>(leader,<span class="st">"</span><span class="ch">\n</span><span class="st">("</span>,country_name,<span class="st">", "</span>,startdate,<span class="st">"-"</span>,enddate,<span class="st">")"</span>), avg_personalism), 
                       <span class="dt">y =</span> avg_personalism,
@@ -201,9 +213,10 @@ data &lt;-<span class="st"> </span>data %&gt;%<span class="st"> </span><span cla
 <span class="st">  </span><span class="kw">guides</span>(<span class="dt">color =</span> <span class="kw">guide_legend</span>(<span class="dt">title.position =</span> <span class="st">"top"</span>))</code></pre></div>
 <p><img src="Chapter_04_files/figure-html/most_personal_leaders-1.png" width="672"></p>
 <p>We can also look at maximum, rather than average, scores for personal power, which shows a different picture:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">leader_data &lt;-<span class="st"> </span>archigos %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate,enddate) %&gt;%
-<span class="st">  </span><span class="kw">do</span>(<span class="kw">data.frame</span>(<span class="dt">year =</span> <span class="kw">year</span>(.$startdate):<span class="kw">year</span>(.$enddate))) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">leader_data &lt;-<span class="st"> </span>archigos %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate, enddate) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">map2</span>(startdate, enddate, ~<span class="st"> </span><span class="kw">year</span>(.x):<span class="kw">year</span>(.y))) %&gt;%
+<span class="st">  </span><span class="kw">unnest</span>() %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">full_join</span>(personal_scores) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(country_name, GWn, leader, startdate, enddate) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(<span class="kw">n</span>() &gt;<span class="st"> </span><span class="dv">5</span>) %&gt;%
@@ -222,7 +235,7 @@ data &lt;-<span class="st"> </span>data %&gt;%<span class="st"> </span><span cla
                          leader,
                          <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>))  %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(leader)) </code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> leader_data %&gt;%<span class="st"> </span><span class="kw">filter</span>(rank &gt;<span class="st"> </span><span class="fl">0.9</span>), <span class="kw">aes</span>(<span class="dt">color =</span> in_book)) +
 <span class="st">  </span><span class="kw">geom_pointrange</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">reorder</span>(<span class="kw">paste0</span>(leader,<span class="st">"</span><span class="ch">\n</span><span class="st">("</span>,country_name,<span class="st">", peak power in "</span>, peak_year,<span class="st">")"</span>), max_personalism),
                       <span class="dt">y =</span> max_personalism,
@@ -247,9 +260,10 @@ world_1967 &lt;-<span class="st"> </span>cshapes::<span class="kw">cshp</span>(<
 <span class="st">  </span><span class="kw">fortify</span>(<span class="dt">region =</span> <span class="st">"GWCODE"</span>) %&gt;%
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">GWn =</span> id)
 
-leader_data &lt;-<span class="st"> </span>archigos %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate,enddate) %&gt;%
-<span class="st">  </span><span class="kw">do</span>(<span class="kw">data.frame</span>(<span class="dt">year =</span> <span class="kw">year</span>(.$startdate):<span class="kw">year</span>(.$enddate))) %&gt;%
+leader_data &lt;-<span class="st"> </span>archigos %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate, enddate) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">map2</span>(startdate, enddate, ~<span class="st"> </span><span class="kw">year</span>(.x):<span class="kw">year</span>(.y))) %&gt;%
+<span class="st">  </span><span class="kw">unnest</span>() %&gt;%
 <span class="st">  </span><span class="kw">full_join</span>(personal_scores) %&gt;%
 <span class="st">  </span><span class="kw">full_join</span>(extended_uds %&gt;%
 <span class="st">              </span><span class="kw">select</span>(country_name, GWn, year, lat, lon)) %&gt;%
@@ -265,8 +279,8 @@ leader_data &lt;-<span class="st"> </span>archigos %&gt;%<span class="st"> </spa
                          leader,
                          <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>)) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(!<span class="kw">is.na</span>(leader)) </code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
-<pre><code>## Joining, by = c("GWn", "year", "country_name")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "lon", "lat", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> world,
             <span class="kw">aes</span>(<span class="dt">y =</span> lat, <span class="dt">x =</span> long, <span class="dt">group =</span> group)) +

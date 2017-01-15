@@ -26,7 +26,7 @@ devtools::install_github('xmarquez/AuthoritarianismBook')
 
 ```
 
-It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, `lubridate`, ,`ggrepel`, `maptools`, `rgeos`, and `knitr` packages installed:
+It also assumes you have the `dplyr`, `ggplot2`, `scales`, `forcats`, `lubridate`, ,`ggrepel`, `maptools`, `rgeos`, `knitr`, `purrr`, and `tidyr` packages installed:
 
 ```{r, echo = TRUE, eval = FALSE}
 if(!require(dplyr)) {
@@ -47,6 +47,14 @@ if(!require(forcats)) {
 
 if(!require(lubridate)) {
   install.packages("lubridate")
+}
+
+if(!require(purrr)) {
+  install.packages("purrr")
+}
+
+if(!require(tidyr)) {
+  install.packages("tidyr")
 }
 
 if(!require(knitr)) {
@@ -82,15 +90,19 @@ library(AuthoritarianismBook)
 library(dplyr)
 library(ggplot2)
 library(lubridate)
+library(purrr)
+library(tidyr)
 
 top_leaders <- personal_scores %>%
   filter(year >= 1900, year <= 2012) %>%
   mutate(rank_world = percent_rank(-z1)) %>%
   filter(rank_world > 0.95)
 
-leader_data <- archigos %>% 
-  group_by(obsid, GWn, leader, startdate,enddate) %>%
-  do(data.frame(year = year(.$startdate):year(.$enddate)))
+leader_data <- archigos %>%
+  group_by(obsid, GWn, leader, startdate, enddate) %>%
+  mutate(year = map2(startdate, enddate, ~ year(.x):year(.y))) %>%
+  unnest() %>%
+  ungroup() 
 
 top_leaders <- left_join(top_leaders,leader_data) 
 
@@ -171,9 +183,10 @@ We can also look at maximum, rather than average, scores for personal power, whi
 
 ```{r most_personal_leaders_2, fig.height=25, warning=FALSE}
 
-leader_data <- archigos %>% 
-  group_by(obsid, GWn, leader, startdate,enddate) %>%
-  do(data.frame(year = year(.$startdate):year(.$enddate))) %>%
+leader_data <- archigos %>%
+  group_by(obsid, GWn, leader, startdate, enddate) %>%
+  mutate(year = map2(startdate, enddate, ~ year(.x):year(.y))) %>%
+  unnest() %>% 
   full_join(personal_scores) %>%
   group_by(country_name, GWn, leader, startdate, enddate) %>%
   filter(n() > 5) %>%
@@ -220,9 +233,10 @@ world_1967 <- cshapes::cshp(as.Date("1967-1-1")) %>%
   fortify(region = "GWCODE") %>%
   mutate(GWn = id)
 
-leader_data <- archigos %>% 
-  group_by(obsid, GWn, leader, startdate,enddate) %>%
-  do(data.frame(year = year(.$startdate):year(.$enddate))) %>%
+leader_data <- archigos %>%
+  group_by(obsid, GWn, leader, startdate, enddate) %>%
+  mutate(year = map2(startdate, enddate, ~ year(.x):year(.y))) %>%
+  unnest() %>%
   full_join(personal_scores) %>%
   full_join(extended_uds %>%
               select(country_name, GWn, year, lat, lon)) %>%

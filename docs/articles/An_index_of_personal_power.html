@@ -143,10 +143,13 @@ personalism_data &lt;-<span class="st"> </span><span class="kw">bind_rows</span>
 <p><img src="An_index_of_personal_power_files/figure-html/correlations_vdem_personal-1.png" width="672"></p>
 <p>These measures are generally reasonable. Here’s the graph for Russia, for example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)
+<span class="kw">library</span>(purrr)
+<span class="kw">library</span>(tidyr)
 
-leader_data_yearly &lt;-<span class="st"> </span>archigos %&gt;%<span class="st"> </span>
+leader_data_yearly &lt;-<span class="st"> </span>archigos %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(obsid, GWn, leader, startdate,enddate) %&gt;%
-<span class="st">  </span><span class="kw">do</span>(<span class="kw">data.frame</span>(<span class="dt">year =</span> <span class="kw">year</span>(.$startdate):<span class="kw">year</span>(.$enddate))) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">map2</span>(startdate, enddate, ~<span class="st"> </span><span class="kw">year</span>(.x):<span class="kw">year</span>(.y))) %&gt;%
+<span class="st">  </span><span class="kw">unnest</span>() %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(GWn, year) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(enddate ==<span class="st"> </span><span class="kw">max</span>(enddate), startdate ==<span class="st"> </span><span class="kw">max</span>(startdate)) %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(leader) %&gt;%
@@ -157,7 +160,7 @@ country &lt;-<span class="st"> "Russia (Soviet Union)"</span>
   
 data &lt;-<span class="st"> </span><span class="kw">left_join</span>(personalism_data, leader_data_yearly) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(country_name %in%<span class="st"> </span>country)</code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">extra_breaks &lt;-<span class="st"> </span><span class="ot">NULL</span>
 
 extra_labels &lt;-<span class="st"> </span><span class="ot">NULL</span>
@@ -262,7 +265,7 @@ reconstruction &lt;-<span class="st"> </span>magaloni %&gt;%
 <pre><code>## Joining, by = c("country_name", "GWn", "year", "in_system")
 ## Joining, by = c("country_name", "GWn", "year", "in_system")
 ## Joining, by = c("country_name", "GWn", "year", "in_system")</code></pre>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggcorr</span>(reconstruction %&gt;%<span class="st"> </span>
 <span class="st">         </span><span class="kw">select</span>(gwf_persagg1ny, persagg1ny, lindex), 
        <span class="dt">label =</span> <span class="ot">TRUE</span>,
@@ -410,12 +413,12 @@ personalism_data &lt;-<span class="st"> </span><span class="kw">bind_rows</span>
 ##                                                                   
 ##     exconst        gwf_lindex    gwf_persagg1ny   gwf_personal  
 ##  Min.   :1.000   Min.   :0.000   Min.   :0.000   Min.   :0.000  
-##  1st Qu.:1.000   1st Qu.:0.027   1st Qu.:0.034   1st Qu.:0.000  
-##  Median :3.000   Median :0.217   Median :0.100   Median :0.000  
-##  Mean   :3.777   Mean   :0.434   Mean   :0.148   Mean   :0.349  
+##  1st Qu.:1.000   1st Qu.:0.026   1st Qu.:0.036   1st Qu.:0.000  
+##  Median :3.000   Median :0.217   Median :0.107   Median :0.000  
+##  Mean   :3.777   Mean   :0.431   Mean   :0.149   Mean   :0.349  
 ##  3rd Qu.:7.000   3rd Qu.:1.000   3rd Qu.:0.220   3rd Qu.:0.000  
 ##  Max.   :7.000   Max.   :1.000   Max.   :0.985   Max.   :2.000  
-##  NA's   :6310    NA's   :13235   NA's   :13235   NA's   :13030  
+##  NA's   :6310    NA's   :13286   NA's   :13286   NA's   :13030  
 ##      lindex        persagg1ny       personal      v2x_execorr   
 ##  Min.   :0.114   Min.   :0.000   Min.   :0.000   Min.   :0.011  
 ##  1st Qu.:0.515   1st Qu.:0.050   1st Qu.:0.000   1st Qu.:0.166  
@@ -464,7 +467,7 @@ personalism_data &lt;-<span class="st"> </span>personalism_data %&gt;%<span clas
                         <span class="st">"v2x_jucon"</span>, 
                         <span class="st">"v2x_execorr"</span>,
                         <span class="st">"exconst"</span>))</code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> data, 
        <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">y =</span> value,
            <span class="dt">color =</span> variable,
@@ -594,33 +597,33 @@ personal_model_2</code></pre></div>
 ##     model = 1, itemtype = "graded", SE = TRUE, verbose = FALSE)
 ## 
 ## Full-information item factor analysis with 1 factor(s).
-## Converged within 1e-04 tolerance after 352 EM iterations.
+## Converged within 1e-04 tolerance after 43 EM iterations.
 ## mirt version: 1.21 
 ## M-step optimizer: BFGS 
 ## EM acceleration: Ramsay
 ## Number of rectangular quadrature: 61
 ## 
 ## Information matrix estimated with method: crossprod
-## Condition number of information matrix = 1899.979
+## Condition number of information matrix = 1897.445
 ## Second-order test: model is a possible local maximum
 ## 
-## Log-likelihood = -199413.7
+## Log-likelihood = -199257.5
 ## Estimated parameters: 110 
-## AIC = 399047.5; AICc = 399048.6
-## BIC = 399930.3; SABIC = 399580.7</code></pre>
+## AIC = 398734.9; AICc = 398736
+## BIC = 399617.7; SABIC = 399268.1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(personal_model_2)</code></pre></div>
 <pre><code>##                    F1    h2
-## v2x_execorr    -0.770 0.593
-## v2xlg_legcon    0.840 0.706
-## v2x_jucon       0.894 0.799
-## exconst         0.856 0.732
-## gwf_lindex     -0.643 0.414
-## gwf_persagg1ny  0.632 0.399
+## v2x_execorr    -0.770 0.592
+## v2xlg_legcon    0.840 0.705
+## v2x_jucon       0.895 0.801
+## exconst         0.855 0.731
+## gwf_lindex     -0.641 0.411
+## gwf_persagg1ny  0.631 0.398
 ## personal       -0.792 0.627
-## gwf_personal   -0.819 0.671
+## gwf_personal   -0.818 0.668
 ## 
-## SS loadings:  4.94 
-## Proportion Var:  0.618 
+## SS loadings:  4.933 
+## Proportion Var:  0.617 
 ## 
 ## Factor correlations: 
 ## 
@@ -719,7 +722,7 @@ personal_scores &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(
 <p>With that adjustment, this is what these scores look like for Russia:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">left_join</span>(personal_scores, leader_data_yearly) %&gt;%
 <span class="st">  </span><span class="kw">filter</span>(country_name %in%<span class="st"> </span>country)</code></pre></div>
-<pre><code>## Joining, by = c("GWn", "year")</code></pre>
+<pre><code>## Joining, by = c("country_name", "GWn", "year")</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> data, 
        <span class="kw">aes</span>(<span class="dt">x=</span>year, <span class="dt">y =</span> z1,
            <span class="dt">ymin =</span> pct025,
